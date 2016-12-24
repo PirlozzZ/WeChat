@@ -119,6 +119,8 @@
   <ItemGroup>
     <Compile Include="Core\Config.cs" />
     <Compile Include="Core\Cryptography.cs" />
+    <Compile Include="Core\HTTPHelper.cs" />
+    <Compile Include="Core\PubCore.cs" />
     <Compile Include="Core\WXBizMsgCrypt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PubWeChat.ashx.cs">
