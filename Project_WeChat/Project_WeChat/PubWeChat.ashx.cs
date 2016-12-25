@@ -45,7 +45,8 @@ namespace Project_WeChat
                 }
                 catch (Exception e)
                 {
-
+                    log4net.ILog log = log4net.LogManager.GetLogger("testApp.Logging");//获取一个日志记录器
+                    log.Info(DateTime.Now.ToString() + ": login success");//写入一条新log
                 }
             }
         }
