@@ -12,6 +12,7 @@ namespace Project_WeChat.Core
     {
         private static string sAccessToken;
         private Config config;
+        log4net.ILog log = log4net.LogManager.GetLogger("Log.Logging");
 
         public PubCore():this("")
         {
@@ -21,9 +22,10 @@ namespace Project_WeChat.Core
         public PubCore(string sign)
         {
             config = new Config(sign);
+
         }
 
-        private static string getAccessToken()
+        private string getAccessToken()
         {
             if (string.IsNullOrEmpty(sAccessToken))
             {
@@ -37,16 +39,25 @@ namespace Project_WeChat.Core
             return sAccessToken;
         }
 
-        public static bool PubAuth(string sTimeStampm, string sNonce, string sMsgEncrypt, string sMsgSignature)
+        public string PubAuth(string sTimeStampm, string sNonce, string sMsgEncrypt, string sMsgSignature)
         {
-            bool result = false;
-            string tempSignature = string.Empty;
-            WXBizMsgCrypt.GenarateSinature(Config.getToken(), sTimeStampm, sNonce, sMsgEncrypt, ref tempSignature);
-            if (tempSignature.Equals(sMsgSignature))
-            {
-                result = true;
+            string sEchoStr = string.Empty;
+            try
+            {  
+                Tencent.WXBizMsgCrypt wxcpt = new WXBizMsgCrypt(Config.getToken(),Config.getEncodingAESKey(),Config.getAppID());
+                int ret = 0;
+                ret = wxcpt.VerifyURL(sMsgSignature, sTimeStampm, sNonce, sMsgEncrypt, ref sEchoStr);
+                if (ret != 0)
+                {
+                    log.Info("PubCore PubAuth VerifyURL failed"+ret); 
+                } 
+                log.Debug("PubCore PubAuth:"+Config.getToken()+"-"+ Config.getEncodingAESKey() + "-" + Config.getAppID());
             }
-            return result;
+            catch (Exception e)
+            {
+                log.Error("PubCore PubAuth:", e);
+            }
+            return sEchoStr;
         }
     }
 }

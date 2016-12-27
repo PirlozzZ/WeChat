@@ -12,8 +12,8 @@ namespace Project_WeChat
     /// </summary>
     public class PubWeChat : IHttpHandler
     {
-        log4net.ILog log_err = log4net.LogManager.GetLogger("Error.Logging");//获取一个日志记录器
-        log4net.ILog log_deb = log4net.LogManager.GetLogger("Debug.Logging");//获取一个日志记录器
+        log4net.ILog log = log4net.LogManager.GetLogger("Log.Logging");//获取一个日志记录器 
+        PubCore pubCore = new PubCore();
 
         public bool IsReusable
         {
@@ -25,31 +25,31 @@ namespace Project_WeChat
 
         public void ProcessRequest(HttpContext context)
         {
+             
             if (HttpContext.Current.Request.HttpMethod.ToUpper() == "Post")
             {
 
             }
             else
-            {
-                log_deb.Info("init test"); 
+            { 
                 string sMsgSignature = HttpContext.Current.Request.QueryString["signature"];
                 string pTimeStamp = HttpContext.Current.Request.QueryString["timestamp"];
                 string pNonce = HttpContext.Current.Request.QueryString["nonce"];
                 string pEchoStr = HttpContext.Current.Request.QueryString["echostr"]; 
                 try
                 { 
-                    bool result = false;
-                    result = PubCore.PubAuth(pTimeStamp, pNonce, pEchoStr, sMsgSignature);
-                    if (result)
-                    { 
-                        HttpContext.Current.Response.Write("success");
+                    string sEchoStr = string.Empty;
+                    sEchoStr = pubCore.PubAuth(pTimeStamp, pNonce, pEchoStr, sMsgSignature);
+                    if (!string.IsNullOrEmpty(sEchoStr))
+                    {
+                        HttpContext.Current.Response.Write(sEchoStr);
                         HttpContext.Current.Response.End();
                     }
                 }
                 catch (Exception e)
                 {
 
-                    log_err.Info(DateTime.Now.ToString("yyyy-MM-dd") + ": login success");//写入一条新log
+                    log.Error("ProcessRequest Get:",e);//写入一条新log
                 }
             }
         }

@@ -49,6 +49,43 @@ namespace Tencent
             m_sEncodingAESKey = sEncodingAESKey;
         }
 
+        //验证URL
+        // @param sMsgSignature: 签名串，对应URL参数的msg_signature
+        // @param sTimeStamp: 时间戳，对应URL参数的timestamp
+        // @param sNonce: 随机串，对应URL参数的nonce
+        // @param sEchoStr: 随机串，对应URL参数的echostr
+        // @param sReplyEchoStr: 解密之后的echostr，当return返回0时有效
+        // @return：成功0，失败返回对应的错误码
+        public int VerifyURL(string sMsgSignature, string sTimeStamp, string sNonce, string sEchoStr, ref string sReplyEchoStr)
+        {
+            int ret = 0;
+            if (m_sEncodingAESKey.Length != 43)
+            {
+                return (int)WXBizMsgCryptErrorCode.WXBizMsgCrypt_IllegalAesKey;
+            }
+            ret = VerifySignature(m_sToken, sTimeStamp, sNonce, sEchoStr, sMsgSignature);
+            if (0 != ret)
+            {
+                return ret;
+            }
+            sReplyEchoStr = "";
+            string appid = "";
+            try
+            {
+                sReplyEchoStr = Cryptography.AES_decrypt(sEchoStr, m_sEncodingAESKey, ref appid); 
+            }
+            catch (Exception)
+            {
+                sReplyEchoStr = "";
+                return (int)WXBizMsgCryptErrorCode.WXBizMsgCrypt_DecryptAES_Error;
+            }
+            if (appid != m_sAppID)
+            {
+                sReplyEchoStr = "";
+                return (int)WXBizMsgCryptErrorCode.WXBizMsgCrypt_ValidateAppid_Error;
+            }
+            return 0;
+        }
 
         // 检验消息的真实性，并且获取解密后的明文
         // @param sMsgSignature: 签名串，对应URL参数的msg_signature
