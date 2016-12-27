@@ -12,6 +12,9 @@ namespace Project_WeChat
     /// </summary>
     public class PubWeChat : IHttpHandler
     {
+        log4net.ILog log_err = log4net.LogManager.GetLogger("Error.Logging");//获取一个日志记录器
+        log4net.ILog log_deb = log4net.LogManager.GetLogger("Debug.Logging");//获取一个日志记录器
+
         public bool IsReusable
         {
             get
@@ -27,9 +30,8 @@ namespace Project_WeChat
 
             }
             else
-            { 
-
-                string pResultStr = "";
+            {
+                log_deb.Info("init test"); 
                 string sMsgSignature = HttpContext.Current.Request.QueryString["signature"];
                 string pTimeStamp = HttpContext.Current.Request.QueryString["timestamp"];
                 string pNonce = HttpContext.Current.Request.QueryString["nonce"];
@@ -39,14 +41,15 @@ namespace Project_WeChat
                     bool result = false;
                     result = PubCore.PubAuth(pTimeStamp, pNonce, pEchoStr, sMsgSignature);
                     if (result)
-                    {
-                        pResultStr = "success";
+                    { 
+                        HttpContext.Current.Response.Write("success");
+                        HttpContext.Current.Response.End();
                     }
                 }
                 catch (Exception e)
                 {
-                    log4net.ILog log = log4net.LogManager.GetLogger("testApp.Logging");//获取一个日志记录器
-                    log.Info(DateTime.Now.ToString() + ": login success");//写入一条新log
+
+                    log_err.Info(DateTime.Now.ToString("yyyy-MM-dd") + ": login success");//写入一条新log
                 }
             }
         }
