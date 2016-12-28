@@ -37,13 +37,12 @@ namespace Project_WeChat
                 string pNonce = HttpContext.Current.Request.QueryString["nonce"];
                 string pEchoStr = HttpContext.Current.Request.QueryString["echostr"]; 
                 try
-                { 
-                    string sEchoStr = string.Empty;
-                    sEchoStr = pubCore.PubAuth(pTimeStamp, pNonce, pEchoStr, sMsgSignature);
-                    if (!string.IsNullOrEmpty(sEchoStr))
-                    {
-                        HttpContext.Current.Response.Write(sEchoStr);
-                        HttpContext.Current.Response.End();
+                {   
+                    if (pubCore.PubAuth(pTimeStamp, pNonce, pEchoStr, sMsgSignature))
+                    { 
+                        HttpContext.Current.Response.Write(pEchoStr);
+                        HttpContext.Current.ApplicationInstance.CompleteRequest();
+                        //HttpContext.Current.Response.End();
                     }
                 }
                 catch (Exception e)

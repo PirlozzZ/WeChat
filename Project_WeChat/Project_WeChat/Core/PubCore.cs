@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Security;
 using Tencent;
 
 namespace Project_WeChat.Core
@@ -39,25 +40,31 @@ namespace Project_WeChat.Core
             return sAccessToken;
         }
 
-        public string PubAuth(string sTimeStampm, string sNonce, string sMsgEncrypt, string sMsgSignature)
+        public bool PubAuth(string sTimeStampm, string sNonce, string sMsgEncrypt, string sMsgSignature)
         {
-            string sEchoStr = string.Empty;
+            bool sign=true;
             try
-            {  
-                Tencent.WXBizMsgCrypt wxcpt = new WXBizMsgCrypt(Config.getToken(),Config.getEncodingAESKey(),Config.getAppID());
-                int ret = 0;
-                ret = wxcpt.VerifyURL(sMsgSignature, sTimeStampm, sNonce, sMsgEncrypt, ref sEchoStr);
-                if (ret != 0)
+            {
+                List<string> tempList = new List<string>();
+                tempList.Add(Config.getToken());
+                tempList.Add(sTimeStampm);
+                tempList.Add(sNonce);
+                tempList.Sort();
+                string tempStr = string.Empty;
+                foreach (string _s in tempList)
+                tempStr += _s;
+                tempStr = FormsAuthentication.HashPasswordForStoringInConfigFile(tempStr, "SHA1").ToLower();
+                if (!tempStr.Equals(sMsgSignature))
                 {
-                    log.Info("PubCore PubAuth VerifyURL failed"+ret); 
-                } 
-                log.Debug("PubCore PubAuth:"+Config.getToken()+"-"+ Config.getEncodingAESKey() + "-" + Config.getAppID());
+                    sign = false; 
+                }
+                log.Debug("PubCore PubAuth2:"+Config.getToken()+"-"+ Config.getEncodingAESKey() + "-" + Config.getAppID());
             }
             catch (Exception e)
             {
                 log.Error("PubCore PubAuth:", e);
             }
-            return sEchoStr;
+            return sign;
         }
     }
 }
