@@ -137,6 +137,15 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Menu\Menu.cs" />
+    <Compile Include="Menu\RootMenu.cs" />
+    <Compile Include="Model\PubRecMsgBase.cs" />
+    <Compile Include="Model\PubRecMsgImage.cs" />
+    <Compile Include="Model\PubRecMsgLink.cs" />
+    <Compile Include="Model\PubRecMsgLocation.cs" />
+    <Compile Include="Model\PubRecMsgText.cs" />
+    <Compile Include="Model\PubRecMsgVideo.cs" />
+    <Compile Include="Model\PubRecMsgVoice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PubWeChat.ashx.cs">
       <DependentUpon>PubWeChat.ashx</DependentUpon>
