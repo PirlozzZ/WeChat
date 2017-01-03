@@ -134,11 +134,16 @@
     <Compile Include="Core\HTTPHelper.cs" />
     <Compile Include="Core\PubCore.cs" />
     <Compile Include="Core\WXBizMsgCrypt.cs" />
+    <Compile Include="Core\XmlUtil.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Menu\Menu.cs" />
     <Compile Include="Menu\RootMenu.cs" />
+    <Compile Include="Model\PubRecEventBase.cs" />
+    <Compile Include="Model\PubRecEventMenu.cs" />
+    <Compile Include="Model\PubRecEventLocation.cs" />
+    <Compile Include="Model\PubRecEventSubscribe.cs" />
     <Compile Include="Model\PubRecMsgBase.cs" />
     <Compile Include="Model\PubRecMsgImage.cs" />
     <Compile Include="Model\PubRecMsgLink.cs" />

@@ -39,6 +39,9 @@ namespace Project_WeChat.Model
         /// </summary>
         public string MsgId { get; protected set; }
 
-
+        public string ToXML()
+        {
+            return Core.XmlUtil.Serializer(this);
+        }
     }
 }

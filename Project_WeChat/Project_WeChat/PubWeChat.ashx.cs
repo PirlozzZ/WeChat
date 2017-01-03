@@ -1,4 +1,5 @@
 ﻿using Project_WeChat.Core;
+using Project_WeChat.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -92,7 +93,7 @@ namespace Project_WeChat
             //        be = new PubEventClick(sMsg);
             //        sign = doClick(be, out result);
             //    }
-            //}
+            //} 
             #endregion
         }
     }
