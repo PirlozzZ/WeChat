@@ -5,14 +5,7 @@ using System.Configuration;
 namespace Project_WeChat.Core
 {
     public class Config
-    {
-        
-        private static string sAppID; 
-        private static string sSecret;
-        private static string sToken;
-        private static string sEncodingAESKey;
-       
-
+    {        
         public Config():this("")
         {
             
@@ -20,47 +13,16 @@ namespace Project_WeChat.Core
 
         public Config(string sign)
         {
-            sAppID = ConfigurationManager.AppSettings[sign + "pubAppID"];
-            sSecret = ConfigurationManager.AppSettings[sign + "pubSecret"];
-            sToken = ConfigurationManager.AppSettings[sign + "pubToken"];
-            sEncodingAESKey = ConfigurationManager.AppSettings[sign + "pubEncodingAESKey"];
+            AppID = ConfigurationManager.AppSettings[sign + "pubAppID"];
+            Secret = ConfigurationManager.AppSettings[sign + "pubSecret"];
+            Token = ConfigurationManager.AppSettings[sign + "pubToken"];
+            EncodingAESKey = ConfigurationManager.AppSettings[sign + "pubEncodingAESKey"];
         }
 
-        public static string getToken()
-        {
-            if (string.IsNullOrEmpty(sToken))
-            {  
-
-            }
-            return sToken;
-        }
-
-        public static string getAppID()
-        {
-            if (string.IsNullOrEmpty(sAppID))
-            {  
-
-            }
-            return sAppID;
-        }
-
-        public static string getSecret()
-        {
-            if (string.IsNullOrEmpty(sSecret))
-            {
-               
-            }
-            return sSecret;
-        }
-
-        public static string getEncodingAESKey()
-        {
-            if (string.IsNullOrEmpty(sEncodingAESKey))
-            { 
-                
-            }
-            return sEncodingAESKey;
-        }
+        public string AppID { get; private set; }
+        public string Secret { get; private set; }
+        public string Token { get; private set; }
+        public string EncodingAESKey { get; private set; }
 
 
     }

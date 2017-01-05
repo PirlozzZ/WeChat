@@ -28,7 +28,10 @@ namespace Project_WeChat
 
         public void ProcessRequest(HttpContext context)
         {
-             
+            string sMsgSignature = HttpContext.Current.Request.QueryString["signature"];
+            string pTimeStamp = HttpContext.Current.Request.QueryString["timestamp"];
+            string pNonce = HttpContext.Current.Request.QueryString["nonce"];
+
             if (HttpContext.Current.Request.HttpMethod.ToUpper() == "Post")
             {
                 string postStr = string.Empty;
@@ -40,15 +43,12 @@ namespace Project_WeChat
                 }
                 if (!string.IsNullOrEmpty(postStr))
                 {
-                    Execute(postStr);
+                    Execute(postStr, sMsgSignature, pTimeStamp, pNonce);
 
                 }
             }
             else
             { 
-                string sMsgSignature = HttpContext.Current.Request.QueryString["signature"];
-                string pTimeStamp = HttpContext.Current.Request.QueryString["timestamp"];
-                string pNonce = HttpContext.Current.Request.QueryString["nonce"];
                 string pEchoStr = HttpContext.Current.Request.QueryString["echostr"]; 
                 try
                 {
@@ -73,13 +73,10 @@ namespace Project_WeChat
             }
         }
 
-        private void Execute(string postStr)
+        private void Execute(string postStr, string sMsgSignature, string pTimeStamp, string pNonce)
         {
             bool sign = true;
             string result = "success";
-            string sReqMsgSig = HttpContext.Current.Request.QueryString["msg_signature"];
-            string sReqTimeStamp = HttpContext.Current.Request.QueryString["timestamp"];
-            string sReqNonce = HttpContext.Current.Request.QueryString["nonce"];
             string sMsgType = string.Empty;
             string sEventType = string.Empty;
             //string sMsg = core.decryptMsg(sReqMsgSig, sReqTimeStamp, sReqNonce, postStr, ref sMsgType, ref sEventType);  // 解析之后的明文
