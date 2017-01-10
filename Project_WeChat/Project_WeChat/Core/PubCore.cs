@@ -4,8 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Security;
+using System.Xml;
 using Tencent;
 
 namespace Project_WeChat.Core
@@ -33,7 +35,7 @@ namespace Project_WeChat.Core
             t.Enabled = true;//是否执行System.Timers.Timer.Elapsed事件；
             if (isDES)
             {
-                wxcpt = new WXBizMsgCrypt(config.Token, config.EncodingAESKey, config.EncodingAESKey);
+                wxcpt = new WXBizMsgCrypt(config.Token, config.EncodingAESKey, config.AppID);
             }
         }
 
@@ -84,11 +86,38 @@ namespace Project_WeChat.Core
                 {
                     int ret = 0;
                     ret = wxcpt.DecryptMsg(sMsgSignature, sTimeStamp, sNonce, postStr, ref postStr);
+                    log.Debug("DecryptMsg Msg:" + postStr);
                     if (ret != 0)
                     {
                         log.Info("PubCore DecryptMsg failed");
+                        return postStr;
                     }
+
                 }
+
+                XmlDocument doc = new XmlDocument();
+                doc.LoadXml(postStr);
+                XmlNode root = doc.FirstChild;
+                sMsgType = root["MsgType"].InnerText;
+                Assembly assembly = Assembly.GetExecutingAssembly();
+                Type type; 
+                if ("event".Equals(sMsgType))
+                {
+                    sEventType = root["Event"].InnerText;
+             
+                    type = assembly.GetType("Project_WeChat.Model.PubRecEvent" + sEventType.Substring(0, 1).ToUpper() + sEventType.Substring(1));
+                }
+                else
+                { 
+                    type = assembly.GetType("Project_WeChat.Model.PubRecMsg" + sMsgType.Substring(0, 1).ToUpper() + sMsgType.Substring(1));
+                } 
+                object instance = Activator.CreateInstance(type, new object[] { postStr });
+                if (instance != null)
+                {
+                    log.Info("DecryptMsg instance:" + instance.ToString());
+                }
+
+
                 return postStr;
             }
             catch (Exception e)

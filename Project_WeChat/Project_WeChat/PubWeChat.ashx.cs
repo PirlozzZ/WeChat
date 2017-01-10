@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Web;
 using Tencent;
@@ -28,11 +29,18 @@ namespace Project_WeChat
 
         public void ProcessRequest(HttpContext context)
         {
-            string sMsgSignature = HttpContext.Current.Request.QueryString["signature"];
+            string pMsgSignature = HttpContext.Current.Request.QueryString["signature"];
             string pTimeStamp = HttpContext.Current.Request.QueryString["timestamp"];
             string pNonce = HttpContext.Current.Request.QueryString["nonce"];
 
-            if (HttpContext.Current.Request.HttpMethod.ToUpper() == "Post")
+            //for debug
+            //pTimeStamp = "1483334816";
+            //pNonce = "709329334";
+            //pMsgSignature = "7ebda6ce61cbd4f8fbbca69e195c2768e3c9e71e";
+
+
+
+            if (HttpContext.Current.Request.HttpMethod.ToUpper() == "POST")
             {
                 string postStr = string.Empty;
                 using (Stream stream = HttpContext.Current.Request.InputStream)
@@ -41,25 +49,34 @@ namespace Project_WeChat
                     stream.Read(postBytes, 0, (Int32)stream.Length);
                     postStr = Encoding.UTF8.GetString(postBytes);
                 }
+
+                //for debug 
+                //postStr = "<xml><ToUserName><![CDATA[gh_dc9f5aee123b]]></ToUserName><FromUserName><![CDATA[o6w0juLpCRYHJTqUTcG1L9hz-uh0]]></FromUserName><CreateTime>1484057461</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[6]]></Content><MsgId>6373978260806390997</MsgId><Encrypt><![CDATA[dK8jouN8itPoAPz+kN1ayvWSKlKQsyEOA2A9ja0Vnq/kdsHnQgWlKYt5HAqkUwWIs2B09BVUkZuvlYgsYar6VcjjuH2kPtFbfhHYmYDKASVDEq2y4/ZLiMhdYm9aWIoTlsYTPWEuD8MDYbWmDSfFKbC5N39XbO38yqifgkHWsA9f7/NuiWTczjw4CjsjpwjlciZwPWo52YiprcafwwtQcYia+jCAyhkaaezAqFcSIchYhBQQw0RfHFb0Ig6ved8Dxw/jWqZEjAonfOiPpZiRBz0y2OvjxSIWroHAqLk9qPESA2zAW09F+HM/gX/PAmmXAvnoGn95Cgku2gv+IcF0xE1d8o8UWneRrOTMspriI9Wg01fanLK+kUQK25cfMPLjF0EZlzEoSSzZIzarKc4KefBLWRpPbX07NQYfZxT5T6Q=]]></Encrypt></xml>";
+
+                log.Debug("ProcessRequest Get:" + postStr);
                 if (!string.IsNullOrEmpty(postStr))
                 {
-                    Execute(postStr, sMsgSignature, pTimeStamp, pNonce);
-
+                    Execute(postStr, pMsgSignature, pTimeStamp, pNonce);
                 }
             }
             else
-            { 
-                string pEchoStr = HttpContext.Current.Request.QueryString["echostr"]; 
+            {
+                //string postStr = "<xml><ToUserName><![CDATA[gh_dc9f5aee123b]]></ToUserName><FromUserName><![CDATA[o6w0juLpCRYHJTqUTcG1L9hz-uh0]]></FromUserName><CreateTime>1484060654</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[gu]]></Content><MsgId>6373991974636967843</MsgId></xml>";
+                //Assembly assembly = Assembly.GetExecutingAssembly();
+                //Type type = assembly.GetType("Project_WeChat.Model.PubRecMsgText");
+                //object instance = Activator.CreateInstance(type, new object[] { postStr });
+
+                string pEchoStr = HttpContext.Current.Request.QueryString["echostr"];
                 try
                 {
                     //for debug
                     //pTimeStamp = "1483334816";
                     //pNonce = "709329334";
                     //pEchoStr = "6890308849856673530";
-                    //sMsgSignature = "7ebda6ce61cbd4f8fbbca69e195c2768e3c9e71e";
+                    //pMsgSignature = "7ebda6ce61cbd4f8fbbca69e195c2768e3c9e71e";
 
-                    if (pubCore.PubAuth(pTimeStamp, pNonce, pEchoStr, sMsgSignature))
-                    { 
+                    if (pubCore.PubAuth(pTimeStamp, pNonce, pEchoStr, pMsgSignature))
+                    {
                         HttpContext.Current.Response.Write(pEchoStr);
                         HttpContext.Current.ApplicationInstance.CompleteRequest();
                         //HttpContext.Current.Response.End(); 
@@ -67,8 +84,7 @@ namespace Project_WeChat
                 }
                 catch (Exception e)
                 {
-
-                    log.Error("ProcessRequest Get:",e);//写入一条新log
+                    log.Error("ProcessRequest Get:", e);//写入一条新log
                 }
             }
         }
@@ -79,7 +95,14 @@ namespace Project_WeChat
             string result = "success";
             string sMsgType = string.Empty;
             string sEventType = string.Empty;
-            //string sMsg = core.decryptMsg(sReqMsgSig, sReqTimeStamp, sReqNonce, postStr, ref sMsgType, ref sEventType);  // 解析之后的明文
+            log.Debug("Execute Msg:" + postStr);
+
+
+       
+
+            string sMsg = pubCore.DecryptMsg(sMsgSignature, pTimeStamp, pNonce, postStr, ref sMsgType, ref sEventType);  // 解析之后的明文
+            HttpContext.Current.Response.Write("success");
+            HttpContext.Current.ApplicationInstance.CompleteRequest();
             //PubBaseEvent be = null;
             //MyLog.WriteLog("temp sMsg:" + sMsg + sMsgType.ToLower() + sEventType.ToLower());
             #region 响应事件消息

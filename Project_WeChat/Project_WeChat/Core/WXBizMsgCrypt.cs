@@ -72,7 +72,7 @@ namespace Tencent
                 root = doc.FirstChild;
                 sEncryptMsg = root["Encrypt"].InnerText;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return (int)WXBizMsgCryptErrorCode.WXBizMsgCrypt_ParseXml_Error;
             }
@@ -190,7 +190,7 @@ namespace Tencent
             AL.Add(sToken);
             AL.Add(sTimeStamp);
             AL.Add(sNonce);
-            AL.Add(sMsgEncrypt);
+            //AL.Add(sMsgEncrypt);
             AL.Sort(new DictionarySort());
             string raw = "";
             for (int i = 0; i < AL.Count; ++i)
