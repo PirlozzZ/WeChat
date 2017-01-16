@@ -97,9 +97,6 @@ namespace Project_WeChat
             string sEventType = string.Empty;
             log.Debug("Execute Msg:" + postStr);
 
-
-       
-
             string sMsg = pubCore.DecryptMsg(sMsgSignature, pTimeStamp, pNonce, postStr, ref sMsgType, ref sEventType);  // 解析之后的明文
             HttpContext.Current.Response.Write("success");
             HttpContext.Current.ApplicationInstance.CompleteRequest();

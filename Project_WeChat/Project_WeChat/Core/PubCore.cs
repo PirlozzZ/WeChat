@@ -92,9 +92,7 @@ namespace Project_WeChat.Core
                         log.Info("PubCore DecryptMsg failed");
                         return postStr;
                     }
-
                 }
-
                 XmlDocument doc = new XmlDocument();
                 doc.LoadXml(postStr);
                 XmlNode root = doc.FirstChild;
