@@ -61,11 +61,6 @@ namespace Project_WeChat
             }
             else
             {
-                //string postStr = "<xml><ToUserName><![CDATA[gh_dc9f5aee123b]]></ToUserName><FromUserName><![CDATA[o6w0juLpCRYHJTqUTcG1L9hz-uh0]]></FromUserName><CreateTime>1484060654</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[gu]]></Content><MsgId>6373991974636967843</MsgId></xml>";
-                //Assembly assembly = Assembly.GetExecutingAssembly();
-                //Type type = assembly.GetType("Project_WeChat.Model.PubRecMsgText");
-                //object instance = Activator.CreateInstance(type, new object[] { postStr });
-
                 string pEchoStr = HttpContext.Current.Request.QueryString["echostr"];
                 try
                 {
@@ -100,18 +95,6 @@ namespace Project_WeChat
             string sMsg = pubCore.DecryptMsg(sMsgSignature, pTimeStamp, pNonce, postStr, ref sMsgType, ref sEventType);  // 解析之后的明文
             HttpContext.Current.Response.Write("success");
             HttpContext.Current.ApplicationInstance.CompleteRequest();
-            //PubBaseEvent be = null;
-            //MyLog.WriteLog("temp sMsg:" + sMsg + sMsgType.ToLower() + sEventType.ToLower());
-            #region 响应事件消息
-            //if ("event".Equals(sMsgType.ToLower()))
-            //{
-            //    if ("click".Equals(sEventType.ToLower()))
-            //    {
-            //        be = new PubEventClick(sMsg);
-            //        sign = doClick(be, out result);
-            //    }
-            //} 
-            #endregion
         }
     }
 }
