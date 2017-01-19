@@ -18,7 +18,7 @@ namespace Project_WeChat.Model
         public string Event { get; protected set; }
 
         public delegate void ProcessHandler();   //声明委托
-        public event ProcessHandler ProcessEvent;        //声明事件
+        public static event ProcessHandler ProcessEvent;        //声明事件
 
         public void DoProcess()
         {
