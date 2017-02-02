@@ -11,6 +11,8 @@ namespace Project_WeChat.Model
     /// </summary>
     public class PubRecEventLocation: PubRecEventBase
     {
+        public static event EventHandler<PubRecEventLocation> LocationEventHandler;        //声明事件
+
         public PubRecEventLocation(string sMsg)
         {
             try
@@ -49,5 +51,13 @@ namespace Project_WeChat.Model
         /// 地理位置精度
         /// </summary>
         public string Precision { get; private set; }
+
+        public override void DoProcess()
+        {
+            if (LocationEventHandler != null)
+            { //如果有对象注册 
+                LocationEventHandler(this);  //调用所有注册对象的方法
+            }
+        }
     }
 }

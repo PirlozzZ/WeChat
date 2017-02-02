@@ -140,6 +140,7 @@
     </Compile>
     <Compile Include="Menu\Menu.cs" />
     <Compile Include="Menu\RootMenu.cs" />
+    <Compile Include="Model\PubRecAbstract.cs" />
     <Compile Include="Model\PubRecEventBase.cs" />
     <Compile Include="Model\PubRecEventMenu.cs" />
     <Compile Include="Model\PubRecEventLocation.cs" />

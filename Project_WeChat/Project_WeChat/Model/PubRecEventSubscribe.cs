@@ -11,6 +11,8 @@ namespace Project_WeChat.Model
     /// </summary>
     public class PubRecEventSubscribe:PubRecEventBase
     {
+        public static event EventHandler<PubRecEventSubscribe> SubscribeEventHandler;        //声明事件
+
         public PubRecEventSubscribe(string sMsg)
         {
             try
@@ -47,5 +49,13 @@ namespace Project_WeChat.Model
         /// 二维码的ticket，可用来换取二维码图片
         /// </summary>
         public string Ticket { get; private set; }
+
+        public override void DoProcess()
+        {
+            if (SubscribeEventHandler != null)
+            { //如果有对象注册 
+                SubscribeEventHandler(this);  //调用所有注册对象的方法
+            }
+        }
     }
 }

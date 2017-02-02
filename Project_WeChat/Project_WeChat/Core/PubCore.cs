@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Project_WeChat.Model;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -102,7 +103,6 @@ namespace Project_WeChat.Core
                 if ("event".Equals(sMsgType))
                 {
                     sEventType = root["Event"].InnerText;
-             
                     type = assembly.GetType("Project_WeChat.Model.PubRecEvent" + sEventType.Substring(0, 1).ToUpper() + sEventType.Substring(1));
                 }
                 else
@@ -112,6 +112,8 @@ namespace Project_WeChat.Core
                 object instance = Activator.CreateInstance(type, new object[] { postStr });
                 if (instance != null)
                 {
+                    PubRecAbstract temp = (PubRecAbstract)instance;
+                    temp.DoProcess();
                     log.Info("DecryptMsg instance:" + instance.ToString());
                 }
 

@@ -11,6 +11,8 @@ namespace Project_WeChat.Model
     /// </summary>
     public class PubRecEventMenu : PubRecEventBase
     {
+        public static event EventHandler<PubRecEventMenu> MenuEventHandler;        //声明事件
+
         public PubRecEventMenu(string sMsg)
         {
             try
@@ -31,7 +33,13 @@ namespace Project_WeChat.Model
             }
         }
 
-
+        public override void DoProcess()
+        {
+            if (MenuEventHandler != null)
+            { //如果有对象注册 
+                MenuEventHandler(this);  //调用所有注册对象的方法
+            } 
+        }
 
         /// <summary>
         /// CLICK:事件KEY值，与自定义菜单接口中KEY值对应

@@ -5,10 +5,10 @@ using System.Web;
 
 namespace Project_WeChat.Model
 {
-    public class PubRecMsgBase
+    public class PubRecMsgBase:PubRecAbstract
     {
-        protected log4net.ILog log;
-        
+        protected log4net.ILog log; 
+
         public PubRecMsgBase()
         {
             log = log4net.LogManager.GetLogger("Log.Logging");//获取一个日志记录器 
@@ -39,9 +39,14 @@ namespace Project_WeChat.Model
         /// </summary>
         public string MsgId { get; protected set; }
 
-        public string ToXML()
+        public override string ToXML()
         {
             return Core.XmlUtil.Serializer(this);
+        }
+
+        public override void DoProcess()
+        { 
+
         }
     }
 }
