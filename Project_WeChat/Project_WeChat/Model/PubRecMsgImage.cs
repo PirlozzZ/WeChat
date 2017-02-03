@@ -31,6 +31,15 @@ namespace Project_WeChat.Model
             }
         }
 
+        public static event EventHandler<PubRecMsgImage> MsgImageEventHandler;        //声明事件
+        public override void DoProcess()
+        {
+            if (MsgImageEventHandler != null)
+            { //如果有对象注册 
+                MsgImageEventHandler(this);  //调用所有注册对象的方法
+            }
+        }
+
         /// <summary>
         /// 图片链接（由系统生成）
         /// </summary>
