@@ -142,9 +142,10 @@
     <Compile Include="Menu\RootMenu.cs" />
     <Compile Include="Model\PubRecAbstract.cs" />
     <Compile Include="Model\PubRecEventBase.cs" />
-    <Compile Include="Model\PubRecEventMenu.cs" />
+    <Compile Include="Model\PubRecEventClick.cs" />
     <Compile Include="Model\PubRecEventLocation.cs" />
     <Compile Include="Model\PubRecEventSubscribe.cs" />
+    <Compile Include="Model\PubRecEventView.cs" />
     <Compile Include="Model\PubRecMsgBase.cs" />
     <Compile Include="Model\PubRecMsgImage.cs" />
     <Compile Include="Model\PubRecMsgLink.cs" />

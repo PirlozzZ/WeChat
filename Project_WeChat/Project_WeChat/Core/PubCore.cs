@@ -79,52 +79,68 @@ namespace Project_WeChat.Core
             return sign;
         }
 
-        public string DecryptMsg(string sMsgSignature, string sTimeStamp, string sNonce, string postStr, ref string sMsgType, ref string sEventType)
+        public string DecryptMsg(string sMsgSignature, string sTimeStamp, string sNonce, string postStr)
         {
+            string strReuslt = postStr;
             try
             {
                 if (isDES)
                 {
                     int ret = 0;
-                    ret = wxcpt.DecryptMsg(sMsgSignature, sTimeStamp, sNonce, postStr, ref postStr);
+                    ret = wxcpt.DecryptMsg(sMsgSignature, sTimeStamp, sNonce, postStr, ref strReuslt);
                     log.Debug("DecryptMsg Msg:" + postStr);
                     if (ret != 0)
                     {
-                        log.Info("PubCore DecryptMsg failed");
-                        return postStr;
+                        log.Info("PubCore DecryptMsg failed");  
                     }
                 }
+                return strReuslt;
+            }
+            catch (Exception e)
+            {
+                log.Error("PubCore DecryptMsg:", e);
+                return strReuslt;
+            }
+        }
+
+        public bool ProcessMsg(string postStr, string sMsgSignature, string pTimeStamp, string pNonce)
+        {
+            bool sign = true;
+            string sMsgType = string.Empty;
+            string sEventType = string.Empty;
+            string sMsg = DecryptMsg(sMsgSignature, pTimeStamp, pNonce, postStr);  // 解析之后的明文
+            try
+            {
                 XmlDocument doc = new XmlDocument();
-                doc.LoadXml(postStr);
+                doc.LoadXml(sMsg);
                 XmlNode root = doc.FirstChild;
                 sMsgType = root["MsgType"].InnerText;
                 Assembly assembly = Assembly.GetExecutingAssembly();
-                Type type; 
+                Type type;
                 if ("event".Equals(sMsgType))
                 {
                     sEventType = root["Event"].InnerText;
-                    type = assembly.GetType("Project_WeChat.Model.PubRecEvent" + sEventType.Substring(0, 1).ToUpper() + sEventType.Substring(1));
+                    type = assembly.GetType("Project_WeChat.Model.PubRecEvent" + sEventType.Substring(0, 1).ToUpper() + sEventType.Substring(1).ToLower()); 
                 }
                 else
-                { 
-                    type = assembly.GetType("Project_WeChat.Model.PubRecMsg" + sMsgType.Substring(0, 1).ToUpper() + sMsgType.Substring(1));
-                } 
+                {
+                    type = assembly.GetType("Project_WeChat.Model.PubRecMsg" + sMsgType.Substring(0, 1).ToUpper() + sMsgType.Substring(1).ToLower());
+                }
+                log.Debug("ReflectClassName:" + type.Name);
                 object instance = Activator.CreateInstance(type, new object[] { postStr });
                 if (instance != null)
                 {
                     PubRecAbstract temp = (PubRecAbstract)instance;
                     temp.DoProcess();
-                    log.Info("DecryptMsg instance:" + instance.ToString());
+                    log.Debug("ProcessMsg instance:" + instance.ToString());
                 }
-
-
-                return postStr;
             }
             catch (Exception e)
             {
-                log.Error("PubCore DecryptMsg:", e);
-                return postStr;
+                sign = false;
+                log.Error("PubCore ProcessMsg:", e);             
             }
+            return sign;
         }
 
         #region 菜单管理

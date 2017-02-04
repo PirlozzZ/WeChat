@@ -7,7 +7,7 @@ namespace Project_WeChat.Model
 {
     public abstract class PubRecAbstract
     {
-        public delegate void EventHandler<in T>(T instanse);   //声明委托
+        public delegate void WechatEventHandler<in T>(T instanse);   //声明委托
 
         public abstract void DoProcess();
 

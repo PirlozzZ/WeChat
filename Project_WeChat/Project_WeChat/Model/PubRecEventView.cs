@@ -6,10 +6,11 @@ using System.Xml;
 
 namespace Project_WeChat.Model
 {
-    public class PubRecMsgText: PubRecMsgBase
+    public class PubRecEventView : PubRecEventBase
     {
-         
-        public PubRecMsgText(string sMsg)
+        public static event WechatEventHandler<PubRecEventView> OnEventView;        //声明事件
+
+        public PubRecEventView(string sMsg)
         {
             try
             {
@@ -20,28 +21,26 @@ namespace Project_WeChat.Model
                 this.FromUserName = root["FromUserName"].InnerText;
                 this.CreateTime = root["CreateTime"].InnerText;
                 this.MsgType = root["MsgType"].InnerText;
-                this.Content = root["Content"].InnerText;
-                this.MsgId = root["MsgId"].InnerText;
-
+                this.Event = root["Event"].InnerText;
+                this.EventKey = root["EventKey"].InnerText;
             }
             catch (Exception e)
-            { 
-                log.Error("PubRecMsgText", e);
+            {
+                log.Error("PubRecEventClick", e);
             }
         }
 
-        public static event WechatEventHandler<PubRecMsgText> OnMsgText;        //声明事件
         public override void DoProcess()
         {
-            if (OnMsgText != null)
+            if (OnEventView != null)
             { //如果有对象注册 
-                OnMsgText(this);  //调用所有注册对象的方法
+                OnEventView(this);  //调用所有注册对象的方法
             }
         }
 
-        /// <summary>
-        /// 文本消息内容
+        /// <summary> 
+        /// VIEW:事件KEY值，设置的跳转URL
         /// </summary>
-        public string Content { get; private set; }
+        public string EventKey { get; private set; }
     }
 }

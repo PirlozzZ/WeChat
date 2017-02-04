@@ -21,8 +21,8 @@ namespace Project_WeChat
 
         public PubWeChat()
         {
-            PubRecEventMenu.MenuEventHandler += DoMenu;
-            PubRecEventSubscribe.SubscribeEventHandler += DoSubscribe; 
+            PubRecEventClick.OnEventClick += DoClick;
+            PubRecEventSubscribe.OnEventSubscribe += DoSubscribe; 
         }
 
         public bool IsReusable
@@ -62,7 +62,12 @@ namespace Project_WeChat
                 log.Debug("ProcessRequest Get:" + postStr);
                 if (!string.IsNullOrEmpty(postStr))
                 {
-                    Execute(postStr, pMsgSignature, pTimeStamp, pNonce);
+                    if (!pubCore.ProcessMsg(postStr, pMsgSignature, pTimeStamp, pNonce))
+                    {
+                        log.Info("PubCore ProcessMsg Failed!");
+                    }
+                    HttpContext.Current.Response.Write("success");
+                    HttpContext.Current.ApplicationInstance.CompleteRequest();
                 }
             }
             else
@@ -91,29 +96,27 @@ namespace Project_WeChat
             }
         }
 
-        private void Execute(string postStr, string sMsgSignature, string pTimeStamp, string pNonce)
+        public void DoClick(PubRecEventClick instanse)
         {
-            bool sign = true;
-            string result = "success";
-            string sMsgType = string.Empty;
-            string sEventType = string.Empty;
-            log.Debug("Execute Msg:" + postStr);
-
-            
-
-            string sMsg = pubCore.DecryptMsg(sMsgSignature, pTimeStamp, pNonce, postStr, ref sMsgType, ref sEventType);  // 解析之后的明文
-            HttpContext.Current.Response.Write("success");
-            HttpContext.Current.ApplicationInstance.CompleteRequest();
-        }
-
-        public void DoMenu(PubRecEventMenu instanse)
-        {
-            log.Info("DoMenu");
+            log.Info("DoClick");
         }
 
         public void DoSubscribe(PubRecEventSubscribe instanse)
         {
             log.Info("DoSubscribe");
+        }
+
+        public void DoMsgText(PubRecMsgText instanse)
+        {
+            if ("createmenu".Equals(instanse.Content.ToLower()))
+            {
+                CreateMenu();
+            }
+        }
+
+        public void CreateMenu()
+        {
+
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Project_WeChat.Model
     /// </summary>
     public class PubRecEventSubscribe:PubRecEventBase
     {
-        public static event EventHandler<PubRecEventSubscribe> SubscribeEventHandler;        //声明事件
+        public static event WechatEventHandler<PubRecEventSubscribe> OnEventSubscribe;        //声明事件
 
         public PubRecEventSubscribe(string sMsg)
         {
@@ -52,9 +52,9 @@ namespace Project_WeChat.Model
 
         public override void DoProcess()
         {
-            if (SubscribeEventHandler != null)
+            if (OnEventSubscribe != null)
             { //如果有对象注册 
-                SubscribeEventHandler(this);  //调用所有注册对象的方法
+                OnEventSubscribe(this);  //调用所有注册对象的方法
             }
         }
     }

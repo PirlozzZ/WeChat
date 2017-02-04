@@ -34,12 +34,12 @@ namespace Project_WeChat.Model
             }
         }
 
-        public static event EventHandler<PubRecEventLocation> LocationEventHandler;        //声明事件
+        public static event WechatEventHandler<PubRecEventLocation> OnEventLocation;        //声明事件
         public override void DoProcess()
         {
-            if (LocationEventHandler != null)
+            if (OnEventLocation != null)
             { //如果有对象注册 
-                LocationEventHandler(this);  //调用所有注册对象的方法
+                OnEventLocation(this);  //调用所有注册对象的方法
             }
         }
 
