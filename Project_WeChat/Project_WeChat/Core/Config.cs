@@ -14,7 +14,7 @@ namespace Project_WeChat.Core
         public Config(string sign)
         {
             AppID = ConfigurationManager.AppSettings[sign + "pubAppID"];
-            Secret = ConfigurationManager.AppSettings[sign + "pubSecret"];
+            Secret = ConfigurationManager.AppSettings[sign + "pubAppSecret"];
             Token = ConfigurationManager.AppSettings[sign + "pubToken"];
             EncodingAESKey = ConfigurationManager.AppSettings[sign + "pubEncodingAESKey"];
         }

@@ -22,7 +22,8 @@ namespace Project_WeChat
         public PubWeChat()
         {
             PubRecEventClick.OnEventClick += DoClick;
-            PubRecEventSubscribe.OnEventSubscribe += DoSubscribe; 
+            PubRecEventSubscribe.OnEventSubscribe += DoSubscribe;
+            PubRecMsgText.OnMsgText += DoMsgText;
         }
 
         public bool IsReusable
@@ -116,7 +117,19 @@ namespace Project_WeChat
 
         public void CreateMenu()
         {
+            RootMenu rootmenu = new RootMenu();
+            Menu menu1 = new Menu("菜单一");
+            Menu menu2=new Menu("菜单二",Menu.MenuTypeEnum.click,"2");
 
+            Menu menu11 = new Menu("子菜单一", Menu.MenuTypeEnum.click, "11");
+            Menu menu12 = new Menu("子菜单二", Menu.MenuTypeEnum.view, "http://www.baidu.com");
+
+            menu1.sub_button.Add(menu11);
+            menu1.sub_button.Add(menu12);
+            rootmenu.button.Add(menu1);
+            rootmenu.button.Add(menu2);
+
+            pubCore.CreateMenu(rootmenu);
         }
     }
 }

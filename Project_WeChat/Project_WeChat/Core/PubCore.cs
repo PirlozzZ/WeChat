@@ -34,21 +34,32 @@ namespace Project_WeChat.Core
             t.Elapsed += new System.Timers.ElapsedEventHandler(GetAccessToken);//到达时间的时候执行事件；
             t.AutoReset = true;//设置是执行一次（false）还是一直执行(true)；
             t.Enabled = true;//是否执行System.Timers.Timer.Elapsed事件；
+            t.Start();
             if (isDES)
             {
                 wxcpt = new WXBizMsgCrypt(config.Token, config.EncodingAESKey, config.AppID);
-            }
+            } 
         }
 
         private void GetAccessToken(object source, System.Timers.ElapsedEventArgs e)
         {
-            if (string.IsNullOrEmpty(sAccessToken))
+            log.Debug(string.Format("GetAccessToken before loop: {0} ", sAccessToken));
+            try
             {
-                string url = string.Format("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}", config.AppID, config.Secret);
-                string result = string.Empty;
-                result = HTTPHelper.GetRequest(url);
-                JObject o = (JObject)JsonConvert.DeserializeObject(result);
-                sAccessToken = o["access_token"].ToString();
+                if (string.IsNullOrEmpty(sAccessToken))
+                {
+                    string url = string.Format("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}", config.AppID, config.Secret);
+                    string result = string.Empty;
+                    result = HTTPHelper.GetRequest(url);
+                    log.Debug(string.Format("GetAccessToken result: {0} ", result + "--" + url));
+                    JObject o = (JObject)JsonConvert.DeserializeObject(result);
+                    sAccessToken = o["access_token"].ToString();
+                    log.Debug(string.Format("GetAccessToken after loop: {0} ", sAccessToken ));
+                }
+            }
+            catch (Exception err)
+            {
+                log.Error("GetAccessToken error!", err);
             }
         }
 
@@ -153,7 +164,7 @@ namespace Project_WeChat.Core
         {
             bool sign = false;
             string result = string.Empty;
-            string strJson = JsonConvert.SerializeObject(root);
+            string strJson = JsonConvert.SerializeObject(root); 
             log.Debug("createMenu strjson:" + strJson);
             try
             { 

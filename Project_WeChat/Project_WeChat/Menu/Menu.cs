@@ -13,10 +13,11 @@ namespace Project_WeChat.Core
         }
         public Menu(string name, MenuTypeEnum type,string value)
         {
+            this.type = type.ToString();
             this.name = name;
             if(type== MenuTypeEnum.view)
             {
-                view = value;
+                url = value;
             }
             else
             {
@@ -26,8 +27,9 @@ namespace Project_WeChat.Core
         }
         public string name { get; set; }
         public string key { get; set; }
-        public string view { get; set; }
+        public string url { get; set; }
         public List<Menu> sub_button { get; set; }
+        public string type { get; private set; }
         /// <summary>
         /// 微信菜单类型
         /// </summary>
