@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace Project_WeChat.Core
+namespace Project_WeChat.Menu
 {
-    public class Menu
+    public class ChildMenu
     {
-        public Menu(string name) : this(name,MenuTypeEnum.click,string.Empty)
+        public ChildMenu(string name) : this(name,MenuTypeEnum.click,string.Empty)
         {
 
         }
-        public Menu(string name, MenuTypeEnum type,string value)
+        public ChildMenu(string name, MenuTypeEnum type,string value)
         {
             this.type = type.ToString();
             this.name = name;
@@ -23,12 +20,13 @@ namespace Project_WeChat.Core
             {
                 key = value;
             }
-            this.sub_button = new List<Menu>();
+            this.sub_button = new List<ChildMenu>();
         }
+
         public string name { get; set; }
         public string key { get; set; }
         public string url { get; set; }
-        public List<Menu> sub_button { get; set; }
+        public List<ChildMenu> sub_button { get; set; }
         public string type { get; private set; }
         /// <summary>
         /// 微信菜单类型

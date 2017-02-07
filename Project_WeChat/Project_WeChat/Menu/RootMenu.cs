@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Project_WeChat.Core
+namespace Project_WeChat.Menu
 {
     public class RootMenu
     {
         public RootMenu()
         {
-            this.button = new List<Menu>();
+            this.button = new List<ChildMenu>();
         }
 
-        public List<Menu> button { get; set; }
+        public List<ChildMenu> button { get; set; }
     }
 }

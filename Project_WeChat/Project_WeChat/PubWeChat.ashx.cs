@@ -1,13 +1,10 @@
 ﻿using Project_WeChat.Core;
+using Project_WeChat.Menu;
 using Project_WeChat.Model;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Web;
-using Tencent;
 
 namespace Project_WeChat
 {
@@ -117,17 +114,19 @@ namespace Project_WeChat
 
         public void CreateMenu()
         {
-            RootMenu rootmenu = new RootMenu();
-            Menu menu1 = new Menu("菜单一");
-            Menu menu2=new Menu("菜单二",Menu.MenuTypeEnum.click,"2");
+            ConditionalRootMenu rootmenu = new ConditionalRootMenu();
+            ChildMenu menu1 = new ChildMenu("菜单女一");
+            ChildMenu menu2 =new ChildMenu("菜单二", ChildMenu.MenuTypeEnum.click,"2");
 
-            Menu menu11 = new Menu("子菜单一", Menu.MenuTypeEnum.click, "11");
-            Menu menu12 = new Menu("子菜单二", Menu.MenuTypeEnum.view, "http://www.baidu.com");
+            ChildMenu menu11 = new ChildMenu("子菜单一", ChildMenu.MenuTypeEnum.click, "11");
+            ChildMenu menu12 = new ChildMenu("子菜单二", ChildMenu.MenuTypeEnum.view, "http://www.baidu.com");
 
             menu1.sub_button.Add(menu11);
             menu1.sub_button.Add(menu12);
             rootmenu.button.Add(menu1);
             rootmenu.button.Add(menu2);
+
+            rootmenu.matchrule.sex = "2";
 
             pubCore.CreateMenu(rootmenu);
         }

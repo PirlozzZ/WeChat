@@ -1,12 +1,11 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Project_WeChat.Menu;
 using Project_WeChat.Model;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 using System.Reflection;
-using System.Web;
 using System.Web.Security;
 using System.Xml;
 using Tencent;
@@ -28,22 +27,30 @@ namespace Project_WeChat.Core
 
         public PubCore(string sign)
         {
+            log.Info("PubCore refresh accesstoken!");
             config = new Config(sign);
             int expires_in = Int32.Parse(ConfigurationManager.AppSettings["expires_in"]);
-            System.Timers.Timer t = new System.Timers.Timer(expires_in);//实例化Timer类，设置间隔时间为7000毫秒；
-            t.Elapsed += new System.Timers.ElapsedEventHandler(GetAccessToken);//到达时间的时候执行事件；
+            System.Timers.Timer t = new System.Timers.Timer(expires_in);//实例化Timer类，设置间隔时间；
+            t.Elapsed += new System.Timers.ElapsedEventHandler(AutoRefreshAccessToken);//到达时间的时候执行事件；
             t.AutoReset = true;//设置是执行一次（false）还是一直执行(true)；
             t.Enabled = true;//是否执行System.Timers.Timer.Elapsed事件；
             t.Start();
+            GetAccessToken();
             if (isDES)
             {
                 wxcpt = new WXBizMsgCrypt(config.Token, config.EncodingAESKey, config.AppID);
             } 
         }
 
-        private void GetAccessToken(object source, System.Timers.ElapsedEventArgs e)
+        private void AutoRefreshAccessToken(object source, System.Timers.ElapsedEventArgs e)
         {
-            log.Debug(string.Format("GetAccessToken before loop: {0} ", sAccessToken));
+            log.Debug(string.Format("AutoRefreshAccessToken before: {0} ", sAccessToken));
+            GetAccessToken();
+            log.Debug(string.Format("AutoRefreshAccessToken after: {0} ", sAccessToken));     
+        }
+
+        private void GetAccessToken()
+        { 
             try
             {
                 if (string.IsNullOrEmpty(sAccessToken))
@@ -53,8 +60,7 @@ namespace Project_WeChat.Core
                     result = HTTPHelper.GetRequest(url);
                     log.Debug(string.Format("GetAccessToken result: {0} ", result + "--" + url));
                     JObject o = (JObject)JsonConvert.DeserializeObject(result);
-                    sAccessToken = o["access_token"].ToString();
-                    log.Debug(string.Format("GetAccessToken after loop: {0} ", sAccessToken ));
+                    sAccessToken = o["access_token"].ToString(); 
                 }
             }
             catch (Exception err)
@@ -158,34 +164,52 @@ namespace Project_WeChat.Core
         /// <summary>
         /// 创建菜单
         /// </summary>
-        /// <param name="root"></param>
+        /// <param name="root">RootMenu：创建默认菜单；ConditionalRootMenu：创建个性化菜单</param>
         /// <returns></returns>
         public bool CreateMenu(RootMenu root)
         {
             bool sign = false;
             string result = string.Empty;
-            string strJson = JsonConvert.SerializeObject(root); 
+            string strJson = JsonConvert.SerializeObject(root);
+            bool isDefault = root.GetType() == typeof(RootMenu);
             log.Debug("createMenu strjson:" + strJson);
             try
-            { 
-                string url = string.Format("https://api.weixin.qq.com/cgi-bin/menu/create?access_token={0}", sAccessToken);
+            {
+                string strType = (isDefault ? "create" : "addconditional");
+                log.Debug("createMenu type:" + strType + "---" + root.GetType());
+                string url = string.Format("https://api.weixin.qq.com/cgi-bin/menu/{0}?access_token={1}", strType, sAccessToken);
                 result = HTTPHelper.PostRequest(url, DataTypeEnum.json, strJson);
                 JObject jo = (JObject)JsonConvert.DeserializeObject(result);
-                if ("ok".Equals(jo["errmsg"].ToString()))
+                if (isDefault)
                 {
-                    sign = true;
+                    if ("ok".Equals(jo["errmsg"].ToString()))
+                    {
+                        sign = true;
+                    }
+                    else
+                    {
+                        log.Info(string.Format("createMenu Failed: {0} ", result));
+                    }
                 }
                 else
                 {
-                    log.Info(string.Format("createMenu Failed: {0} ", result));
+                    if (jo.Count==1)
+                    {
+                        sign = true;
+                    }
+                    else
+                    {
+                        log.Info(string.Format("createConditionalMenu Failed: {0} ", result));
+                    }
                 }
             }
             catch (Exception e)
             {
-                log.Error("createMenu Error",e);
+                log.Error("createMenu Error", e);
             }
             return sign;
         }
+        
         #endregion
     }
 }

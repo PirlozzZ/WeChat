@@ -138,6 +138,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Menu\ConditionalRootMenu.cs" />
     <Compile Include="Menu\Menu.cs" />
     <Compile Include="Menu\RootMenu.cs" />
     <Compile Include="Model\PubRecAbstract.cs" />
