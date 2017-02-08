@@ -39,18 +39,18 @@ namespace Project_WeChat.Core
             if (isDES)
             {
                 wxcpt = new WXBizMsgCrypt(config.Token, config.EncodingAESKey, config.AppID);
-            } 
+            }
         }
 
         private void AutoRefreshAccessToken(object source, System.Timers.ElapsedEventArgs e)
         {
             log.Debug(string.Format("AutoRefreshAccessToken before: {0} ", sAccessToken));
             GetAccessToken();
-            log.Debug(string.Format("AutoRefreshAccessToken after: {0} ", sAccessToken));     
+            log.Debug(string.Format("AutoRefreshAccessToken after: {0} ", sAccessToken));
         }
 
         private void GetAccessToken()
-        { 
+        {
             try
             {
                 if (string.IsNullOrEmpty(sAccessToken))
@@ -60,7 +60,7 @@ namespace Project_WeChat.Core
                     result = HTTPHelper.GetRequest(url);
                     log.Debug(string.Format("GetAccessToken result: {0} ", result + "--" + url));
                     JObject o = (JObject)JsonConvert.DeserializeObject(result);
-                    sAccessToken = o["access_token"].ToString(); 
+                    sAccessToken = o["access_token"].ToString();
                 }
             }
             catch (Exception err)
@@ -108,7 +108,7 @@ namespace Project_WeChat.Core
                     log.Debug("DecryptMsg Msg:" + postStr);
                     if (ret != 0)
                     {
-                        log.Info("PubCore DecryptMsg failed");  
+                        log.Info("PubCore DecryptMsg failed");
                     }
                 }
                 return strReuslt;
@@ -137,7 +137,7 @@ namespace Project_WeChat.Core
                 if ("event".Equals(sMsgType))
                 {
                     sEventType = root["Event"].InnerText;
-                    type = assembly.GetType("Project_WeChat.Model.PubRecEvent" + sEventType.Substring(0, 1).ToUpper() + sEventType.Substring(1).ToLower()); 
+                    type = assembly.GetType("Project_WeChat.Model.PubRecEvent" + sEventType.Substring(0, 1).ToUpper() + sEventType.Substring(1).ToLower());
                 }
                 else
                 {
@@ -155,7 +155,7 @@ namespace Project_WeChat.Core
             catch (Exception e)
             {
                 sign = false;
-                log.Error("PubCore ProcessMsg:", e);             
+                log.Error("PubCore ProcessMsg:", e);
             }
             return sign;
         }
@@ -171,36 +171,19 @@ namespace Project_WeChat.Core
             bool sign = false;
             string result = string.Empty;
             string strJson = JsonConvert.SerializeObject(root);
-            bool isDefault = root.GetType() == typeof(RootMenu);
             log.Debug("createMenu strjson:" + strJson);
             try
             {
-                string strType = (isDefault ? "create" : "addconditional");
-                log.Debug("createMenu type:" + strType + "---" + root.GetType());
-                string url = string.Format("https://api.weixin.qq.com/cgi-bin/menu/{0}?access_token={1}", strType, sAccessToken);
+                string url = string.Format("https://api.weixin.qq.com/cgi-bin/menu/create?access_token={0}", sAccessToken);
                 result = HTTPHelper.PostRequest(url, DataTypeEnum.json, strJson);
                 JObject jo = (JObject)JsonConvert.DeserializeObject(result);
-                if (isDefault)
+                if ("ok".Equals(jo["errmsg"].ToString()))
                 {
-                    if ("ok".Equals(jo["errmsg"].ToString()))
-                    {
-                        sign = true;
-                    }
-                    else
-                    {
-                        log.Info(string.Format("createMenu Failed: {0} ", result));
-                    }
+                    sign = true;
                 }
                 else
                 {
-                    if (jo.Count==1)
-                    {
-                        sign = true;
-                    }
-                    else
-                    {
-                        log.Info(string.Format("createConditionalMenu Failed: {0} ", result));
-                    }
+                    log.Info(string.Format("createMenu Failed: {0} ", result));
                 }
             }
             catch (Exception e)
@@ -209,7 +192,90 @@ namespace Project_WeChat.Core
             }
             return sign;
         }
-        
+
+        public bool DeleteMenu()
+        {
+            bool sign = false;
+            string url = string.Format("https://api.weixin.qq.com/cgi-bin/menu/delete?access_token={0}", sAccessToken);
+            try
+            {
+                string result = HTTPHelper.GetRequest(url);
+                JObject jo = (JObject)JsonConvert.DeserializeObject(result);
+                if ("ok".Equals(jo["errmsg"].ToString()))
+                {
+                    sign = true;
+                }
+            }
+            catch (Exception e)
+            {
+                log.Error("DeleteMenu:", e);
+            }
+            return sign;
+        }
+
+        public string GetMenu()
+        {
+            string strResult = string.Empty;
+            string url = string.Format("https://api.weixin.qq.com/cgi-bin/menu/get?access_token={0}", sAccessToken);
+            try
+            {
+                strResult = HTTPHelper.GetRequest(url); 
+                log.Info("GetMenu result:" + strResult);
+            }
+            catch (Exception e)
+            {
+                log.Error("GetMenu:", e);
+            }
+            return strResult;
+        }
+
+        public bool CreateConditionalMenu(ConditionalRootMenu root)
+        {
+            bool sign = false;
+            string result = string.Empty;
+            string strJson = JsonConvert.SerializeObject(root); 
+            log.Debug("CreateConditionalMenu strjson:" + strJson);
+            try
+            {  
+                string url = string.Format("https://api.weixin.qq.com/cgi-bin/menu/addconditional?access_token={0}",  sAccessToken);
+                result = HTTPHelper.PostRequest(url, DataTypeEnum.json, strJson);
+                JObject jo = (JObject)JsonConvert.DeserializeObject(result);
+                if (jo.Count == 1)
+                {
+                    sign = true;
+                }
+                else
+                {
+                    log.Info(string.Format("createConditionalMenu Failed: {0} ", result));
+                }
+            }
+            catch (Exception e)
+            {
+                log.Error("CreateConditionalMenu Error", e);
+            }
+            return sign;
+        }
+
+        public bool DeleteConditionalMenu(string menuid)
+        {
+            bool sign = false;
+            string url = string.Format("https://api.weixin.qq.com/cgi-bin/menu/delete?access_token={0}", sAccessToken);
+            try
+            {
+                string result = HTTPHelper.GetRequest(url);
+                JObject jo = (JObject)JsonConvert.DeserializeObject(result);
+                if ("ok".Equals(jo["errmsg"].ToString()))
+                {
+                    sign = true;
+                }
+            }
+            catch (Exception e)
+            {
+                log.Error("DeleteConditionalMenu:", e);
+            }
+            return sign;
+        }
+
         #endregion
     }
 }
