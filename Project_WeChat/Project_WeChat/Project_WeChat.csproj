@@ -141,6 +141,7 @@
     <Compile Include="Menu\ConditionalRootMenu.cs" />
     <Compile Include="Menu\Menu.cs" />
     <Compile Include="Menu\RootMenu.cs" />
+    <Compile Include="Model\OAuth_AccessToken.cs" />
     <Compile Include="Model\PubRecAbstract.cs" />
     <Compile Include="Model\PubRecEventBase.cs" />
     <Compile Include="Model\PubRecEventClick.cs" />
@@ -151,9 +152,12 @@
     <Compile Include="Model\PubRecMsgImage.cs" />
     <Compile Include="Model\PubRecMsgLink.cs" />
     <Compile Include="Model\PubRecMsgLocation.cs" />
+    <Compile Include="Model\PubRecMsgTemplate.cs" />
     <Compile Include="Model\PubRecMsgText.cs" />
     <Compile Include="Model\PubRecMsgVideo.cs" />
     <Compile Include="Model\PubRecMsgVoice.cs" />
+    <Compile Include="Model\PubRecPersonInfo.cs" />
+    <Compile Include="Model\QRCode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PubWeChat.ashx.cs">
       <DependentUpon>PubWeChat.ashx</DependentUpon>
