@@ -33,9 +33,9 @@ namespace WeChat.WebApp
 
         private void AutoRefreshAccessToken(object source, System.Timers.ElapsedEventArgs e)
         {
-            log.Debug(string.Format("AutoRefreshAccessToken before: {0} ", PubCore.sAccessToken));
+            log.Debug(string.Format("AutoRefreshAccessToken before: {0} ", pubCore.sAccessToken));
             pubCore.GetAccessToken();
-            log.Debug(string.Format("AutoRefreshAccessToken after: {0} ", PubCore.sAccessToken));
+            log.Debug(string.Format("AutoRefreshAccessToken after: {0} ", pubCore.sAccessToken));
         }
 
         public bool IsReusable

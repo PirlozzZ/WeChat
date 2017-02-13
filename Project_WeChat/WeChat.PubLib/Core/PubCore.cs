@@ -16,7 +16,7 @@ namespace WeChat.PubLib.Core
 {
     public class PubCore
     {
-        public static string sAccessToken { get; private set; }
+        public  string sAccessToken { get; private set; }
         private Config config;
         log4net.ILog log = log4net.LogManager.GetLogger("Log.Logging");
         bool isDES = bool.Parse(ConfigurationManager.AppSettings["isDES"]);
