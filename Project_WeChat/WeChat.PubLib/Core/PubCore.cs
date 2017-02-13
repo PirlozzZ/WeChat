@@ -115,7 +115,7 @@ namespace WeChat.PubLib.Core
         { 
             string sMsgType = string.Empty;
             string sEventType = string.Empty;
-            string sResult = "suceess";
+            string sResult = "success";
             string sMsg = DecryptMsg(sMsgSignature, pTimeStamp, pNonce, postStr);  // 解析之后的明文
             try
             {

@@ -51,6 +51,7 @@ namespace WeChat.WebApp
             string pMsgSignature = HttpContext.Current.Request.QueryString["signature"];
             string pTimeStamp = HttpContext.Current.Request.QueryString["timestamp"];
             string pNonce = HttpContext.Current.Request.QueryString["nonce"];
+            string sResult = "success";
 
             #region for debug
             //pTimeStamp = "1483334816";
@@ -75,11 +76,11 @@ namespace WeChat.WebApp
                 log.Debug("ProcessRequest Get:" + postStr);
                 if (!string.IsNullOrEmpty(postStr))
                 {
-                    string sResult = pubCore.ProcessMsg(postStr, pMsgSignature, pTimeStamp, pNonce);
-                    HttpContext.Current.Response.Write(sResult);
-                    HttpContext.Current.ApplicationInstance.CompleteRequest();
+                    sResult = pubCore.ProcessMsg(postStr, pMsgSignature, pTimeStamp, pNonce);
+                    log.Debug("ProcessRequest sResult:" + sResult); 
                 }
-
+                HttpContext.Current.Response.Write(sResult);
+                HttpContext.Current.ApplicationInstance.CompleteRequest();
 
             }
 
