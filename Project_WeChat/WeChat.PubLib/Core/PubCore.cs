@@ -16,7 +16,19 @@ namespace WeChat.PubLib.Core
 {
     public class PubCore
     {
-        public  string sAccessToken { get; private set; }
+        public DateTime sDateTime { get; private set; }
+        public string sAccessToken
+        {
+            get {
+                if (DateTime.Compare(sDateTime.AddMinutes(7000), DateTime.Now) < 0)
+                {
+                    sDateTime = DateTime.Now;
+                    GetAccessToken();
+                }
+                return sAccessToken;
+            }
+            private set { sAccessToken = value; }
+        }
         private Config config;
         log4net.ILog log = log4net.LogManager.GetLogger("Log.Logging");
         bool isDES = bool.Parse(ConfigurationManager.AppSettings["isDES"]);
@@ -38,21 +50,19 @@ namespace WeChat.PubLib.Core
                 wxcpt = new WXBizMsgCrypt(config.Token, config.EncodingAESKey, config.AppID);
             }
         }
-         
+
 
         public void GetAccessToken()
         {
             try
             {
-                if (string.IsNullOrEmpty(sAccessToken))
-                {
-                    string url = string.Format("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}", config.AppID, config.Secret);
-                    string result = string.Empty;
-                    result = HTTPHelper.GetRequest(url);
-                    log.Debug(string.Format("GetAccessToken result: {0} ", result + "--" + url));
-                    JObject o = (JObject)JsonConvert.DeserializeObject(result);
-                    sAccessToken = o["access_token"].ToString();
-                }
+
+                string url = string.Format("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}", config.AppID, config.Secret);
+                string result = string.Empty;
+                result = HTTPHelper.GetRequest(url);
+                log.Debug(string.Format("GetAccessToken result: {0} ", result + "--" + url));
+                JObject o = (JObject)JsonConvert.DeserializeObject(result);
+                sAccessToken = o["access_token"].ToString();
             }
             catch (Exception err)
             {
