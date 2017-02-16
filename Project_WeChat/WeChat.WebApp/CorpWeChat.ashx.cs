@@ -1,42 +1,33 @@
 ﻿using System;
-using System.Configuration;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Web;
-using WeChat.PubLib.Core;
-using WeChat.PubLib.Menu;
-using WeChat.PubLib.Model;
+using WeChat.CorpLib.Core;
 
 namespace WeChat.WebApp
 {
     /// <summary>
-    /// PubWeChat 的摘要说明
+    /// CorpWeChat 的摘要说明
     /// </summary>
-    public class PubWeChat : IHttpHandler
+    public class CorpWeChat : IHttpHandler
     {
+
         log4net.ILog log = log4net.LogManager.GetLogger("Log.Logging");//获取一个日志记录器 
-        PubCore pubCore;
+        CorpCore corpCore;
 
-        public PubWeChat()
+        public CorpWeChat()
         {
-            pubCore = new PubCore();
-            //int expires_in = Int32.Parse(ConfigurationManager.AppSettings["expires_in"]);
-            //System.Timers.Timer t = new System.Timers.Timer(expires_in);//实例化Timer类，设置间隔时间；
-            //t.Elapsed += new System.Timers.ElapsedEventHandler(AutoRefreshAccessToken);//到达时间的时候执行事件；
-            //t.AutoReset = true;//设置是执行一次（false）还是一直执行(true)；
-            //t.Enabled = true;//是否执行System.Timers.Timer.Elapsed事件； 
+            corpCore = new CorpCore();
+         
 
-            PubRecEventClick.OnEventClick += DoClick;
-            PubRecEventSubscribe.OnEventSubscribe += DoSubscribe;
-            PubRecMsgText.OnMsgText += DoMsgText;
+            //PubRecEventClick.OnEventClick += DoClick;
+            //PubRecEventSubscribe.OnEventSubscribe += DoSubscribe;
+            //PubRecMsgText.OnMsgText += DoMsgText;
         }
 
-        //private void AutoRefreshAccessToken(object source, System.Timers.ElapsedEventArgs e)
-        //{
-        //    log.Debug(string.Format("AutoRefreshAccessToken before: {0} ", pubCore.sAccessToken));
-        //    pubCore.GetAccessToken();
-        //    log.Debug(string.Format("AutoRefreshAccessToken after: {0} ", pubCore.sAccessToken));
-        //}
+       
 
         public bool IsReusable
         {
@@ -48,7 +39,7 @@ namespace WeChat.WebApp
 
         public void ProcessRequest(HttpContext context)
         {
-            string pMsgSignature = HttpContext.Current.Request.QueryString["signature"];
+            string pMsgSignature = HttpContext.Current.Request.QueryString["msg_signature"];
             string pTimeStamp = HttpContext.Current.Request.QueryString["timestamp"];
             string pNonce = HttpContext.Current.Request.QueryString["nonce"];
             string sResult = "success";
@@ -76,8 +67,8 @@ namespace WeChat.WebApp
                 log.Debug("ProcessRequest Get:" + postStr);
                 if (!string.IsNullOrEmpty(postStr))
                 {
-                    sResult = pubCore.ProcessMsg(postStr, pMsgSignature, pTimeStamp, pNonce);
-                    log.Debug("ProcessRequest sResult:" + sResult); 
+                    //sResult = corpCore.ProcessMsg(postStr, pMsgSignature, pTimeStamp, pNonce);
+                    log.Debug("ProcessRequest sResult:" + sResult);
                 }
                 HttpContext.Current.Response.Write(sResult);
                 HttpContext.Current.ApplicationInstance.CompleteRequest();
@@ -96,7 +87,7 @@ namespace WeChat.WebApp
                     //pMsgSignature = "7ebda6ce61cbd4f8fbbca69e195c2768e3c9e71e";
                     #endregion
 
-                    if (pubCore.PubAuth(pTimeStamp, pNonce, pEchoStr, pMsgSignature))
+                    if (corpCore.CorpAuth(pTimeStamp, pNonce, pEchoStr, pMsgSignature))
                     {
                         HttpContext.Current.Response.Write(pEchoStr);
                         HttpContext.Current.ApplicationInstance.CompleteRequest();
@@ -109,44 +100,5 @@ namespace WeChat.WebApp
                 }
             }
         }
-
-        #region 业务逻辑
-        public void DoClick(PubRecEventClick instanse)
-        {
-            log.Info("DoClick");
-        }
-
-        public void DoSubscribe(PubRecEventSubscribe instanse)
-        {
-            log.Info("DoSubscribe");
-        }
-
-        public void DoMsgText(PubRecMsgText instanse)
-        {
-            if ("createmenu".Equals(instanse.Content.ToLower()))
-            {
-                CreateMenu();
-            }
-        }
-
-        public void CreateMenu()
-        {
-            ConditionalRootMenu rootmenu = new ConditionalRootMenu();
-            ChildMenu menu1 = new ChildMenu("菜单女一");
-            ChildMenu menu2 = new ChildMenu("菜单二", ChildMenu.MenuTypeEnum.click, "2");
-
-            ChildMenu menu11 = new ChildMenu("子菜单一", ChildMenu.MenuTypeEnum.click, "11");
-            ChildMenu menu12 = new ChildMenu("子菜单二", ChildMenu.MenuTypeEnum.view, "http://www.baidu.com");
-
-            menu1.sub_button.Add(menu11);
-            menu1.sub_button.Add(menu12);
-            rootmenu.button.Add(menu1);
-            rootmenu.button.Add(menu2);
-
-            rootmenu.matchrule.sex = "2";
-
-            pubCore.CreateMenu(rootmenu);
-        }
-        #endregion
     }
 }

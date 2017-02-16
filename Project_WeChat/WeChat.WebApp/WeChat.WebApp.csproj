@@ -99,6 +99,7 @@
   <ItemGroup>
     <Content Include="packages.config" />
     <Content Include="PubWeChat.ashx" />
+    <Content Include="CorpWeChat.ashx" />
     <None Include="Properties\PublishProfiles\Project_WeChat.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -114,6 +115,9 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CorpWeChat.ashx.cs">
+      <DependentUpon>CorpWeChat.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -126,6 +130,10 @@
     <Folder Include="Dll\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\WeChat.CorpLib\WeChat.CorpLib.csproj">
+      <Project>{1d5ba145-f585-40c9-ab77-0aff7642219c}</Project>
+      <Name>WeChat.CorpLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WeChat.PubLib\WeChat.PubLib.csproj">
       <Project>{1322d0c8-2d7f-4bf1-a6f2-3bf9a104afa4}</Project>
       <Name>WeChat.PubLib</Name>
