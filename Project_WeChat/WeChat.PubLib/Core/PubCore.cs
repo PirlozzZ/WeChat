@@ -20,9 +20,10 @@ namespace WeChat.PubLib.Core
         public string sAccessToken
         {
             get {
-                if (DateTime.Compare(sDateTime.AddMinutes(7000), DateTime.Now) < 0)
+                DateTime temp = DateTime.Now;
+                if (DateTime.Compare(sDateTime.AddMinutes(7000), temp) < 0)
                 {
-                    sDateTime = DateTime.Now;
+                    sDateTime = temp;
                     GetAccessToken();
                 }
                 return sAccessToken;
@@ -43,8 +44,8 @@ namespace WeChat.PubLib.Core
         public PubCore(string sign)
         {
             log.Info("PubCore refresh accesstoken!");
-            config = new Config(sign);  
-            GetAccessToken();
+            config = new Config(sign);
+            sDateTime = DateTime.Now;
             if (isDES)
             {
                 wxcpt = new WXBizMsgCrypt(config.Token, config.EncodingAESKey, config.AppID);

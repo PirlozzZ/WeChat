@@ -69,11 +69,11 @@ namespace WeChat.CorpLib.Core
                 {
                     sign = false;
                 }
-                log.Debug("CorpAuth PubAuth:" + sTimeStamp + "-" + sNonce + "-" + sMsgEncrypt);
+                log.Debug("CorpAuth:" + sTimeStamp + "-" + sNonce + "-" + sMsgEncrypt);
             }
             catch (Exception e)
             {
-                log.Error("CorpAuth PubAuth:", e);
+                log.Error("CorpAuth:", e);
             }
             return sign;
         }
