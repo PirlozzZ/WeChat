@@ -86,9 +86,10 @@ namespace WeChat.WebApp
                     //pEchoStr = "6890308849856673530";
                     //pMsgSignature = "7ebda6ce61cbd4f8fbbca69e195c2768e3c9e71e";
                     #endregion
-
+                    
                     if (corpCore.CorpAuth(pTimeStamp, pNonce, pEchoStr, pMsgSignature))
                     {
+                        log.Debug("ProcessRequest pEchoStr:" + pEchoStr);
                         HttpContext.Current.Response.Write(pEchoStr);
                         HttpContext.Current.ApplicationInstance.CompleteRequest();
                         //HttpContext.Current.Response.End(); 

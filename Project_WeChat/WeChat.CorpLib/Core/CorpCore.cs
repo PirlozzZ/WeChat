@@ -18,9 +18,10 @@ namespace WeChat.CorpLib.Core
         {
             get
             {
-                if (DateTime.Compare(sDateTime.AddMinutes(7000), DateTime.Now) < 0)
+                DateTime temp = DateTime.Now;
+                if (DateTime.Compare(sDateTime.AddMinutes(7000), temp) < 0)
                 {
-                    sDateTime = DateTime.Now;
+                    sDateTime = temp;
                     GetAccessToken();
                 }
                 return sAccessToken;
@@ -32,6 +33,23 @@ namespace WeChat.CorpLib.Core
         bool isDES = bool.Parse(ConfigurationManager.AppSettings["isDES"]);
         bool isCustomerMsg = bool.Parse(ConfigurationManager.AppSettings["isCustomerMsg"]);
         WXBizMsgCrypt wxcpt;
+
+        public CorpCore() : this("")
+        {
+
+        }
+
+        public CorpCore(string sign)
+        {
+            log.Info("CorpCore refresh accesstoken!");
+            config = new Config(sign);
+            sDateTime = DateTime.Now;
+            if (isDES)
+            {
+                wxcpt = new WXBizMsgCrypt(config.Token, config.EncodingAESKey, config.AppID);
+            }
+        }
+
 
         public void GetAccessToken()
         {
