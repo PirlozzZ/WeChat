@@ -69,31 +69,24 @@ namespace WeChat.CorpLib.Core
             }
         }
 
-        public bool CorpAuth(string sTimeStamp, string sNonce, string sMsgEncrypt, string sMsgSignature)
+        public string CorpAuth(string sTimeStamp, string sNonce, string sEchoStr, string sMsgSignature)
         {
-            bool sign = true;
+            string sReplyEchoStr = "";
+
             try
             {
-                List<string> tempList = new List<string>();
-                tempList.Add(config.Token);
-                tempList.Add(sTimeStamp);
-                tempList.Add(sNonce);
-                tempList.Sort();
-                string tempStr = string.Empty;
-                foreach (string _s in tempList)
-                    tempStr += _s;
-                tempStr = FormsAuthentication.HashPasswordForStoringInConfigFile(tempStr, "SHA1").ToLower();
-                if (!tempStr.Equals(sMsgSignature))
+                int ret = 0;
+                ret = wxcpt.VerifyURL(sMsgSignature, sTimeStamp, sNonce, sEchoStr, ref sReplyEchoStr);
+                if (ret != 0)
                 {
-                    sign = false;
+                    log.Info("Refresh GetAccessToken!");
                 }
-                log.Debug("CorpAuth:" + sTimeStamp + "-" + sNonce + "-" + sMsgEncrypt);
             }
             catch (Exception e)
-            {
-                log.Error("CorpAuth:", e);
+            {              
+                log.Error("CorpAuth error:", e); 
             }
-            return sign;
+            return sReplyEchoStr;
         }
 
     }
