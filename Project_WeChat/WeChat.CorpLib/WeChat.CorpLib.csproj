@@ -57,8 +57,14 @@
     <Compile Include="Core\WXBizMsgCrypt.cs" />
     <Compile Include="Core\XmlUtil.cs" />
     <Compile Include="Model\CorpRecAbstract.cs" />
+    <Compile Include="Model\CorpRecEventBase.cs" />
+    <Compile Include="Model\CorpRecEventClick.cs" />
+    <Compile Include="Model\CorpRecEventLocation.cs" />
+    <Compile Include="Model\CorpRecEventSubscribe.cs" />
     <Compile Include="Model\CorpRecMsgBase.cs" />
     <Compile Include="Model\CorpRecMsgImage.cs" />
+    <Compile Include="Model\CorpRecMsgLink.cs" />
+    <Compile Include="Model\CorpRecMsgLocation.cs" />
     <Compile Include="Model\CorpRecMsgText.cs" />
     <Compile Include="Model\CorpRecMsgVideo.cs" />
     <Compile Include="Model\CorpRecMsgVoice.cs" />
