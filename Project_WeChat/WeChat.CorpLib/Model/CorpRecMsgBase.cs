@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WeChat.CorpLib.Model
 {
-    class CorpRecMsgBase:CorpRecAbstract
+    public class CorpRecMsgBase:CorpRecAbstract
     {
         protected log4net.ILog log;
 
