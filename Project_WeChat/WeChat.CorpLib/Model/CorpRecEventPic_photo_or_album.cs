@@ -7,11 +7,12 @@ using System.Xml;
 
 namespace WeChat.CorpLib.Model
 {
-    public class CorpRecEventPic_sysphoto : CorpRecEventBase
+     
+    public class CorpRecEventPic_photo_or_album : CorpRecEventBase
     {
-        public static event WechatEventHandler<CorpRecEventPic_sysphoto> OnEventPic_sysphoto;        //声明事件
+        public static event WechatEventHandler<CorpRecEventPic_photo_or_album> OnEventPic_photo_or_album;        //声明事件
 
-        public CorpRecEventPic_sysphoto(string sMsg)
+        public CorpRecEventPic_photo_or_album(string sMsg)
         {
             try
             {
@@ -32,22 +33,22 @@ namespace WeChat.CorpLib.Model
                 foreach (XmlNode childnode in nodeSendPicsInfo["PicList"].ChildNodes)
                 {
                     PicList piclist = new PicList();
-                    piclist.item=  new Item();
+                    piclist.item = new Item();
                     piclist.item.PicMd5Sum = childnode["PicMd5Sum"].InnerText;
                     this.picList.Add(piclist);
                 }
             }
             catch (Exception e)
             {
-                log.Error("CorpRecEventPic_sysphoto", e);
+                log.Error("CorpRecEventPic_photo_or_album", e);
             }
         }
 
         public override void DoProcess()
         {
-            if (OnEventPic_sysphoto != null)
+            if (OnEventPic_photo_or_album != null)
             { //如果有对象注册 
-                OnEventPic_sysphoto(this);  //调用所有注册对象的方法
+                OnEventPic_photo_or_album(this);  //调用所有注册对象的方法
             }
         }
 
@@ -61,14 +62,14 @@ namespace WeChat.CorpLib.Model
         /// </summary>
         public SendPicsInfo sendPicsInfo { get; private set; }
 
-        
+
 
         /// <summary> 
         /// 图片列表
         /// </summary>
         public List<PicList> picList { get; private set; }
 
-        
+
 
         public class SendPicsInfo
         {
@@ -80,7 +81,7 @@ namespace WeChat.CorpLib.Model
 
         public class PicList
         {
-            public  Item item{ get; set; }
+            public Item item { get; set; }
         }
 
         public class Item
@@ -88,7 +89,7 @@ namespace WeChat.CorpLib.Model
             /// <summary> 
             /// 图片的MD5值，开发者若需要，可用于验证接收到图片
             /// </summary>
-            public string PicMd5Sum { get;  set; }
+            public string PicMd5Sum { get; set; }
         }
     }
 }

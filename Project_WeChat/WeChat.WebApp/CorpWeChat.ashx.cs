@@ -68,6 +68,14 @@ namespace WeChat.WebApp
                 if (!string.IsNullOrEmpty(postStr))
                 {
                     //sResult = corpCore.ProcessMsg(postStr, pMsgSignature, pTimeStamp, pNonce);
+                    string sMsg=string.Empty;
+
+                    //Tencent.WXBizMsgCrypt wxcpt = new Tencent.WXBizMsgCrypt("A8g63ewDwHqpWPv3XWwkOHCkqGyI", "FmdgzIbwLJ56TzbABxGUmXUFIzQ472ccTSPO4D1zKLc", "wx92133d8721792124");
+                    //int ret = 0;
+                    //ret = wxcpt.DecryptMsg(pMsgSignature, pTimeStamp, pNonce, postStr, ref sMsg);
+                    //log.Debug("ProcessRequest Get2:" + sMsg);
+                     
+
                     log.Debug("ProcessRequest sResult:" + sResult);
                 }
                 HttpContext.Current.Response.Write(sResult);
@@ -100,5 +108,8 @@ namespace WeChat.WebApp
                 }
             }
         }
+
+       
+
     }
 }

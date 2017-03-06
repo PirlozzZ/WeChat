@@ -26,8 +26,9 @@ namespace WeChat.CorpLib.Model
                 this.EventKey = root["EventKey"].InnerText;
                 this.AgentID = root["AgentID"].InnerText;
                 this.scanCodeInfo = new ScanCodeInfo();
-                scanCodeInfo.ScanType = root["ScanType"].InnerText;
-                scanCodeInfo.ScanResult = root["ScanResult"].InnerText;
+                XmlNode nodeScanCodeInfo = root["ScanCodeInfo"];
+                scanCodeInfo.ScanType = nodeScanCodeInfo["ScanType"].InnerText;
+                scanCodeInfo.ScanResult = nodeScanCodeInfo["ScanResult"].InnerText;
             }
             catch (Exception e)
             {
