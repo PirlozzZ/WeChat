@@ -60,7 +60,11 @@
     <Compile Include="Model\CorpRecEventBase.cs" />
     <Compile Include="Model\CorpRecEventClick.cs" />
     <Compile Include="Model\CorpRecEventLocation.cs" />
+    <Compile Include="Model\CorpRecEventPic_sysphoto.cs" />
+    <Compile Include="Model\CorpRecEventScancode_push.cs" />
+    <Compile Include="Model\CorpRecEventScancode_waitmsg.cs" />
     <Compile Include="Model\CorpRecEventSubscribe.cs" />
+    <Compile Include="Model\CorpRecEventView.cs" />
     <Compile Include="Model\CorpRecMsgBase.cs" />
     <Compile Include="Model\CorpRecMsgImage.cs" />
     <Compile Include="Model\CorpRecMsgLink.cs" />

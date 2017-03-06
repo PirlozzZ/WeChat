@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
 
-namespace WeChat.PubLib.Model
+namespace WeChat.CorpLib.Model
 {
-    /// <summary>
-    /// 事件类型，CLICK
-    /// </summary>
-    public class PubRecEventClick : PubRecEventBase
+    public class CorpRecEventView : CorpRecEventBase
     {
-        public static event WechatEventHandler<PubRecEventClick> OnEventClick;        //声明事件
+        public static event WechatEventHandler<CorpRecEventView> OnEventView;        //声明事件
 
-        public PubRecEventClick(string sMsg)
+        public CorpRecEventView(string sMsg)
         {
             try
             {
@@ -26,23 +24,24 @@ namespace WeChat.PubLib.Model
                 this.MsgType = root["MsgType"].InnerText;
                 this.Event = root["Event"].InnerText;
                 this.EventKey = root["EventKey"].InnerText;
+                this.AgentID = root["AgentID"].InnerText;
             }
             catch (Exception e)
             {
-                log.Error("PubRecEventClick", e);
+                log.Error("CorpRecEventView", e);
             }
         }
 
         public override void DoProcess()
         {
-            if (OnEventClick != null)
+            if (OnEventView != null)
             { //如果有对象注册 
-                OnEventClick(this);  //调用所有注册对象的方法
-            } 
+                OnEventView(this);  //调用所有注册对象的方法
+            }
         }
 
-        /// <summary>
-        /// CLICK:事件KEY值，与自定义菜单接口中KEY值对应
+        /// <summary> 
+        /// VIEW:事件KEY值，设置的跳转URL
         /// </summary>
         public string EventKey { get; private set; }
     }

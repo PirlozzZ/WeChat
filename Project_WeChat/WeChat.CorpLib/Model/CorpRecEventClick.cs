@@ -8,7 +8,7 @@ using System.Xml;
 namespace WeChat.CorpLib.Model
 {
     /// <summary>
-    /// 事件类型，CLICK、VIEW
+    /// 事件类型，CLICK
     /// </summary>
     public class CorpRecEventClick : CorpRecEventBase
     {
