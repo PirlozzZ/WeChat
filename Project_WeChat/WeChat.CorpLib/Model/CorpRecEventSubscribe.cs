@@ -8,10 +8,13 @@ using System.Xml;
 namespace WeChat.CorpLib.Model
 {
     /// <summary>
-    /// 事件类型，subscribe(订阅)、unsubscribe(取消订阅)
+    /// 成员关注/取消关注事件类
     /// </summary>
     public class CorpRecEventSubscribe : CorpRecEventBase
     {
+        /// <summary>
+        /// 成员关注/取消关注事件
+        /// </summary>
         public static event WechatEventHandler<CorpRecEventSubscribe> OnEventSubscribe;        //声明事件
 
         public CorpRecEventSubscribe(string sMsg)

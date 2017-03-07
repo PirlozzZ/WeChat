@@ -8,10 +8,13 @@ using System.Xml;
 namespace WeChat.CorpLib.Model
 {
     /// <summary>
-    /// 事件类型，enter_agent
+    /// 成员进入应用的事件推送类
     /// </summary>
     public class CorpRecEventEnter_agent : CorpRecEventBase
     {
+        /// <summary>
+        /// 成员进入应用的事件
+        /// </summary>
         public static event WechatEventHandler<CorpRecEventEnter_agent> OnEventEnter_agent;        //声明事件
 
         public CorpRecEventEnter_agent(string sMsg)

@@ -8,16 +8,16 @@ using System.Xml;
 namespace WeChat.CorpLib.Model
 {
     /// <summary>
-    /// 弹出拍照或者相册发图的事件推送类
+    /// 弹出微信相册发图器的事件推送类
     /// </summary>
-    public class CorpRecEventPic_photo_or_album : CorpRecEventBase
+    public class CorpRecEventPic_weixin : CorpRecEventBase
     {
         /// <summary>
-        /// 弹出拍照或者相册发图的事件
+        /// 弹出微信相册发图器的事件
         /// </summary>
-        public static event WechatEventHandler<CorpRecEventPic_photo_or_album> OnEventPic_photo_or_album;        //声明事件
+        public static event WechatEventHandler<CorpRecEventPic_weixin> OnEventPic_weixin;        //声明事件
 
-        public CorpRecEventPic_photo_or_album(string sMsg)
+        public CorpRecEventPic_weixin(string sMsg)
         {
             try
             {
@@ -45,15 +45,15 @@ namespace WeChat.CorpLib.Model
             }
             catch (Exception e)
             {
-                log.Error("CorpRecEventPic_photo_or_album", e);
+                log.Error("CorpRecEventPic_weixin", e);
             }
         }
 
         public override void DoProcess()
         {
-            if (OnEventPic_photo_or_album != null)
+            if (OnEventPic_weixin != null)
             { //如果有对象注册 
-                OnEventPic_photo_or_album(this);  //调用所有注册对象的方法
+                OnEventPic_weixin(this);  //调用所有注册对象的方法
             }
         }
 

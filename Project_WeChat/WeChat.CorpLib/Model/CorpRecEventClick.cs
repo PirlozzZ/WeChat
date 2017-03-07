@@ -8,10 +8,14 @@ using System.Xml;
 namespace WeChat.CorpLib.Model
 {
     /// <summary>
-    /// 事件类型，CLICK
+    /// 点击菜单拉取消息的事件推送类
     /// </summary>
     public class CorpRecEventClick : CorpRecEventBase
     {
+
+        /// <summary>
+        /// 点击菜单拉取消息的事件
+        /// </summary>
         public static event WechatEventHandler<CorpRecEventClick> OnEventClick;        //声明事件
 
         public CorpRecEventClick(string sMsg)

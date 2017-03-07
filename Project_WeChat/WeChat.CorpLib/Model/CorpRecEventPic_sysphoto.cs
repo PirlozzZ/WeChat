@@ -7,8 +7,14 @@ using System.Xml;
 
 namespace WeChat.CorpLib.Model
 {
+    /// <summary>
+    /// 弹出系统拍照发图的事件推送类
+    /// </summary>
     public class CorpRecEventPic_sysphoto : CorpRecEventBase
     {
+        /// <summary>
+        /// 弹出系统拍照发图的事件
+        /// </summary>
         public static event WechatEventHandler<CorpRecEventPic_sysphoto> OnEventPic_sysphoto;        //声明事件
 
         public CorpRecEventPic_sysphoto(string sMsg)

@@ -7,8 +7,12 @@ using System.Xml;
 
 namespace WeChat.CorpLib.Model
 {
+    /// <summary>
+    /// 扫码推事件且弹出“消息接收中”提示框的事件推送类
+    /// </summary>
     public class CorpRecEventScancode_waitmsg : CorpRecEventBase
     {
+        //扫码推事件且弹出“消息接收中”提示框的事件
         public static event WechatEventHandler<CorpRecEventScancode_waitmsg> OnEventScancode_waitmsg;        //声明事件
 
         public CorpRecEventScancode_waitmsg(string sMsg)

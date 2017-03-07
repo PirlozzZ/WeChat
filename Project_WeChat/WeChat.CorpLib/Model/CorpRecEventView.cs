@@ -7,8 +7,15 @@ using System.Xml;
 
 namespace WeChat.CorpLib.Model
 {
+
+    /// <summary>
+    /// 点击菜单跳转链接的事件推送类
+    /// </summary>
     public class CorpRecEventView : CorpRecEventBase
     {
+        /// <summary>
+        /// 点击菜单跳转链接的事件
+        /// </summary>
         public static event WechatEventHandler<CorpRecEventView> OnEventView;        //声明事件
 
         public CorpRecEventView(string sMsg)

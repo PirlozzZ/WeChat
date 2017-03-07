@@ -7,8 +7,14 @@ using System.Xml;
 
 namespace WeChat.CorpLib.Model
 {
+    /// <summary>
+    /// 扫码推事件的事件推送类
+    /// </summary>
     public class CorpRecEventScancode_push : CorpRecEventBase
     {
+        /// <summary>
+        /// 扫码推事件的事件
+        /// </summary>
         public static event WechatEventHandler<CorpRecEventScancode_push> OnEventScancode_push;        //声明事件
 
         public CorpRecEventScancode_push(string sMsg)
