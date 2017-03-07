@@ -42,7 +42,7 @@ namespace WeChat.PubLib.Model
                 OnEventLocation(this);  //调用所有注册对象的方法
             }
         }
-
+         
         /// <summary>
         /// 地理位置纬度
         /// </summary>
