@@ -58,6 +58,7 @@
     <Compile Include="Core\XmlUtil.cs" />
     <Compile Include="Model\CorpRecAbstract.cs" />
     <Compile Include="Model\CorpRecEventBase.cs" />
+    <Compile Include="Model\CorpRecEventBatch_job_result.cs" />
     <Compile Include="Model\CorpRecEventClick.cs" />
     <Compile Include="Model\CorpRecEventEnter_agent.cs" />
     <Compile Include="Model\CorpRecEventLocation.cs" />
