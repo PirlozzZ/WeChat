@@ -31,6 +31,6 @@ namespace WeChat.PubLib.Model
 
         public abstract void DoProcess();
 
-        public abstract string ToXML();
+        //public abstract string ToXML();
     }
 }

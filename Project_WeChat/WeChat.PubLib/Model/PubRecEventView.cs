@@ -6,8 +6,14 @@ using System.Xml;
 
 namespace WeChat.PubLib.Model
 {
+    /// <summary>
+    /// 自定义菜单跳转事件类
+    /// </summary>
     public class PubRecEventView : PubRecEventBase
     {
+        /// <summary>
+        /// 自定义菜单跳转事件
+        /// </summary>
         public static event WechatEventHandler<PubRecEventView> OnEventView;        //声明事件
 
         public PubRecEventView(string sMsg)

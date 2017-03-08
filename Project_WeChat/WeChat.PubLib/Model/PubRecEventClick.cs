@@ -7,10 +7,13 @@ using System.Xml;
 namespace WeChat.PubLib.Model
 {
     /// <summary>
-    /// 事件类型，CLICK
+    /// 自定义菜单点击事件类
     /// </summary>
     public class PubRecEventClick : PubRecEventBase
     {
+        /// <summary>
+        /// 自定义菜单点击事件
+        /// </summary>
         public static event WechatEventHandler<PubRecEventClick> OnEventClick;        //声明事件
 
         public PubRecEventClick(string sMsg)

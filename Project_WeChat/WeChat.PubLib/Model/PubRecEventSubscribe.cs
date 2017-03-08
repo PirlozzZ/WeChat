@@ -7,10 +7,14 @@ using System.Xml;
 namespace WeChat.PubLib.Model
 {
     /// <summary>
-    /// 事件类型，subscribe(订阅)、unsubscribe(取消订阅)
+    /// 关注/取消关注事件类
     /// </summary>
     public class PubRecEventSubscribe:PubRecEventBase
     {
+
+        /// <summary>
+        /// 关注/取消关注事件
+        /// </summary>
         public static event WechatEventHandler<PubRecEventSubscribe> OnEventSubscribe;        //声明事件
 
         public PubRecEventSubscribe(string sMsg)

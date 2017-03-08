@@ -75,6 +75,13 @@
     <Compile Include="Model\PubRecMsgVideo.cs" />
     <Compile Include="Model\PubRecMsgVoice.cs" />
     <Compile Include="Model\PubRecPersonInfo.cs" />
+    <Compile Include="Model\PubResMsgBase.cs" />
+    <Compile Include="Model\PubResMsgImage.cs" />
+    <Compile Include="Model\PubResMsgMusic.cs" />
+    <Compile Include="Model\PubResMsgNews.cs" />
+    <Compile Include="Model\PubResMsgText.cs" />
+    <Compile Include="Model\PubResMsgVideo.cs" />
+    <Compile Include="Model\PubResMsgVoice.cs" />
     <Compile Include="Model\QRCode.cs" />
     <Compile Include="Model\QRCodeTemp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

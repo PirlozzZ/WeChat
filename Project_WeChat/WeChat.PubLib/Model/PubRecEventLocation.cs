@@ -7,11 +7,15 @@ using System.Xml;
 namespace WeChat.PubLib.Model
 {
     /// <summary>
-    /// 事件类型，LOCATION
+    /// 上报地理位置事件类
     /// </summary>
     public class PubRecEventLocation: PubRecEventBase
     {
-        
+        /// <summary>
+        /// 上报地理位置事件
+        /// </summary>
+        public static event WechatEventHandler<PubRecEventLocation> OnEventLocation;        //声明事件
+
         public PubRecEventLocation(string sMsg)
         {
             try
@@ -33,8 +37,7 @@ namespace WeChat.PubLib.Model
                 log.Error("PubRecEventLocation", e);
             }
         }
-
-        public static event WechatEventHandler<PubRecEventLocation> OnEventLocation;        //声明事件
+  
         public override void DoProcess()
         {
             if (OnEventLocation != null)

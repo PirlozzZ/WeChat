@@ -18,10 +18,10 @@ namespace WeChat.PubLib.Model
         /// </summary>
         public string Event { get; protected set; }
 
-        public override string ToXML()
-        {
-            return Core.XmlUtil.Serializer(this);
-        }
+        //public override string ToXML()
+        //{
+        //    return Core.XmlUtil.Serializer(this);
+        //}
 
         public override void DoProcess()
         {
