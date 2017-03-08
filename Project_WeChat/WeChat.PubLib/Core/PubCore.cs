@@ -98,7 +98,89 @@ namespace WeChat.PubLib.Core
             return sign;
         }
 
-        public string DecryptMsg(string sMsgSignature, string sTimeStamp, string sNonce, string postStr)
+        /// <summary>
+        /// 消息处理
+        /// </summary>
+        /// <param name="postStr"></param>
+        /// <param name="sMsgSignature"></param>
+        /// <param name="pTimeStamp"></param>
+        /// <param name="pNonce"></param>
+        /// <returns></returns>
+        public string ProcessMsg(string postStr, string sMsgSignature, string pTimeStamp, string pNonce)
+        {
+            string sMsgType = string.Empty;
+            string sEventType = string.Empty;
+            string sResult = string.Empty;
+            string sMsg = DecryptMsg(sMsgSignature, pTimeStamp, pNonce, postStr);  // 解析之后的明文
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.LoadXml(sMsg);
+                XmlNode root = doc.FirstChild;
+                sMsgType = root["MsgType"].InnerText;
+                Assembly assembly = Assembly.GetExecutingAssembly();
+                Type type;
+                if ("event".Equals(sMsgType))
+                {   
+                    sEventType = root["Event"].InnerText;
+                    type = assembly.GetType("WeChat.PubLib.Model.PubRecEvent" + sEventType.Substring(0, 1).ToUpper() + sEventType.Substring(1).ToLower());
+                }
+                else
+                {
+                    type = assembly.GetType("WeChat.PubLib.Model.PubRecMsg" + sMsgType.Substring(0, 1).ToUpper() + sMsgType.Substring(1).ToLower());
+                }
+                log.Debug("ReflectClassName:" + type.Name);
+                object instance = Activator.CreateInstance(type, new object[] { postStr });
+                if (instance != null)
+                {
+                    PubRecAbstract temp = (PubRecAbstract)instance;
+                    sResult = temp.DoProcess();
+                    if (string.IsNullOrEmpty(sResult))
+                    {
+                        sResult = "success";
+                    }
+                    log.Debug("ProcessMsg instance:" + instance.ToString());
+                }
+            }
+            catch (Exception e)
+            {
+                log.Error("PubCore ProcessMsg:", e);
+            }
+            return sResult;
+        }
+
+        /// <summary>
+        /// 消息转发到客服
+        /// </summary>
+        /// <param name="instanse"></param>
+        /// <returns></returns>
+        public string TransferCustomerService(PubRecAbstract instanse)
+        {
+            string strResult = string.Empty;
+            if (isCustomerMsg)
+            {
+                strResult = string.Format(@"<xml><ToUserName>{0}</ToUserName><FromUserName>{1}</FromUserName><CreateTime>1399197672</CreateTime><MsgType><![CDATA[transfer_customer_service]]></MsgType></xml>", instanse.FromUserName,instanse.ToUserName);
+            }
+            return strResult;
+        }
+
+        public string AutoResponse(PubResMsgBase model)
+        {
+            string strResult = string.Empty;
+
+            return strResult;
+        }
+
+        #region 信息加密解密
+        /// <summary>
+        /// 解密信息
+        /// </summary>
+        /// <param name="sMsgSignature"></param>
+        /// <param name="sTimeStamp"></param>
+        /// <param name="sNonce"></param>
+        /// <param name="postStr"></param>
+        /// <returns></returns>
+        private string DecryptMsg(string sMsgSignature, string sTimeStamp, string sNonce, string postStr)
         {
             string strReuslt = postStr;
             try
@@ -122,51 +204,37 @@ namespace WeChat.PubLib.Core
             }
         }
 
-        public string ProcessMsg(string postStr, string sMsgSignature, string pTimeStamp, string pNonce)
-        { 
-            string sMsgType = string.Empty;
-            string sEventType = string.Empty;
-            string sResult = "success";
-            string sMsg = DecryptMsg(sMsgSignature, pTimeStamp, pNonce, postStr);  // 解析之后的明文
+        /// <summary>
+        /// 加密信息
+        /// </summary> 
+        /// <param name="sTimeStamp"></param>
+        /// <param name="sNonce"></param>
+        /// <param name="postStr"></param>
+        /// <returns></returns>
+        private string EncryptMsg(string sTimeStamp, string sNonce, string postStr)
+        {
+            string strReuslt = postStr;
             try
             {
-                XmlDocument doc = new XmlDocument();
-                doc.LoadXml(sMsg);
-                XmlNode root = doc.FirstChild;
-                sMsgType = root["MsgType"].InnerText;
-                Assembly assembly = Assembly.GetExecutingAssembly();
-                Type type;
-                if ("event".Equals(sMsgType))
+                if (isDES)
                 {
-                    if (isCustomerMsg)
+                    int ret = 0;
+                    ret = wxcpt.EncryptMsg(postStr, sTimeStamp, sNonce,  ref strReuslt);
+                    log.Debug("DecryptMsg Msg:" + postStr);
+                    if (ret != 0)
                     {
-                        sResult = @"<xml><ToUserName><![CDATA[touser]]></ToUserName>
-                                <FromUserName><![CDATA[fromuser]]></FromUserName>
-                                <CreateTime>1399197672</CreateTime>
-                                <MsgType><![CDATA[transfer_customer_service]]></MsgType></xml>";
+                        log.Info("PubCore EncryptMsg failed");
                     }
-                    sEventType = root["Event"].InnerText;
-                    type = assembly.GetType("WeChat.PubLib.Model.PubRecEvent" + sEventType.Substring(0, 1).ToUpper() + sEventType.Substring(1).ToLower());
                 }
-                else
-                {
-                    type = assembly.GetType("WeChat.PubLib.Model.PubRecMsg" + sMsgType.Substring(0, 1).ToUpper() + sMsgType.Substring(1).ToLower());
-                }
-                log.Debug("ReflectClassName:" + type.Name);
-                object instance = Activator.CreateInstance(type, new object[] { postStr });
-                if (instance != null)
-                {
-                    PubRecAbstract temp = (PubRecAbstract)instance;
-                    temp.DoProcess();
-                    log.Debug("ProcessMsg instance:" + instance.ToString());
-                }
+                return strReuslt;
             }
             catch (Exception e)
-            {  
-                log.Error("PubCore ProcessMsg:", e);
+            {
+                log.Error("PubCore EncryptMsg:", e);
+                return strReuslt;
             }
-            return sResult;
         }
+        #endregion
 
         #region 菜单管理
         /// <summary>

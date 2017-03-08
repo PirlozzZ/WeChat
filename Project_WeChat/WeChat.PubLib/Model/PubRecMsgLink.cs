@@ -32,12 +32,14 @@ namespace WeChat.PubLib.Model
         }
 
         public static event WechatEventHandler<PubRecMsgLink> OnMsgLink;        //声明事件
-        public override void DoProcess()
+        public override string DoProcess()
         {
+            string strResult = string.Empty;
             if (OnMsgLink != null)
             { //如果有对象注册 
-                OnMsgLink(this);  //调用所有注册对象的方法
+                strResult=OnMsgLink(this);  //调用所有注册对象的方法
             }
+            return strResult;
         }
 
         /// <summary>

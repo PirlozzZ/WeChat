@@ -111,22 +111,35 @@ namespace WeChat.WebApp
         }
 
         #region 业务逻辑
-        public void DoClick(PubRecEventClick instanse)
+        public string DoClick(PubRecEventClick instanse)
         {
+            string strResult = string.Empty;
             log.Info("DoClick");
+            if ("2".Equals(instanse.EventKey))
+            {
+                strResult = pubCore.TransferCustomerService(instanse);
+            }
+            return strResult;
         }
 
-        public void DoSubscribe(PubRecEventSubscribe instanse)
+        public string DoSubscribe(PubRecEventSubscribe instanse)
         {
             log.Info("DoSubscribe");
+            return "";
         }
 
-        public void DoMsgText(PubRecMsgText instanse)
+        public string DoMsgText(PubRecMsgText instanse)
         {
             if ("createmenu".Equals(instanse.Content.ToLower()))
             {
                 CreateMenu();
             }
+           
+            if ("kf".Equals(instanse.Content.ToLower()))
+            {
+                return  pubCore.TransferCustomerService(instanse);
+            }
+            return "";
         }
 
         public void CreateMenu()

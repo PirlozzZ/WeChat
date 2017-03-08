@@ -36,12 +36,14 @@ namespace WeChat.PubLib.Model
         }
 
         public static event WechatEventHandler<PubRecMsgVoice> OnMsgVoice;        //声明事件
-        public override void DoProcess()
+        public override string DoProcess()
         {
+            string strResult = string.Empty;
             if (OnMsgVoice != null)
             { //如果有对象注册 
-                OnMsgVoice(this);  //调用所有注册对象的方法
+                strResult=OnMsgVoice(this);  //调用所有注册对象的方法
             }
+            return strResult;
         }
 
         /// <summary>

@@ -35,12 +35,14 @@ namespace WeChat.PubLib.Model
         }
 
         public static event WechatEventHandler<PubRecMsgVideo> OnMsgVideo;        //声明事件
-        public override void DoProcess()
+        public override string DoProcess()
         {
+            string strResult = string.Empty;
             if (OnMsgVideo != null)
             { //如果有对象注册 
-                OnMsgVideo(this);  //调用所有注册对象的方法
+                strResult=OnMsgVideo(this);  //调用所有注册对象的方法
             }
+            return strResult;
         }
 
         /// <summary>

@@ -23,9 +23,9 @@ namespace WeChat.PubLib.Model
         //    return Core.XmlUtil.Serializer(this);
         //}
 
-        public override void DoProcess()
+        public override string DoProcess()
         {
-
+            return "";
         }
     }
 }

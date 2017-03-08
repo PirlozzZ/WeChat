@@ -27,9 +27,9 @@ namespace WeChat.PubLib.Model
         /// </summary>
         public string MsgType { get; protected set; }
 
-        public delegate void WechatEventHandler<in T>(T instanse);   //声明委托
+        public delegate string WechatEventHandler<in T>(T instanse);   //声明委托
 
-        public abstract void DoProcess();
+        public abstract string DoProcess();
 
         //public abstract string ToXML();
     }

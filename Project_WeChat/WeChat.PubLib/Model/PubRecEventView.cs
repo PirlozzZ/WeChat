@@ -36,12 +36,14 @@ namespace WeChat.PubLib.Model
             }
         }
 
-        public override void DoProcess()
+        public override string DoProcess()
         {
+            string strResult = string.Empty;
             if (OnEventView != null)
             { //如果有对象注册 
-                OnEventView(this);  //调用所有注册对象的方法
+                strResult=OnEventView(this);  //调用所有注册对象的方法
             }
+            return strResult;
         }
 
         /// <summary> 
