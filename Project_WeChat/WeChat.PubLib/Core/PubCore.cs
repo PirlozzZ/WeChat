@@ -146,7 +146,8 @@ namespace WeChat.PubLib.Core
             {
                 log.Error("PubCore ProcessMsg:", e);
             }
-            return sResult;
+
+            return EncryptMsg(pTimeStamp, pNonce, sResult);
         }
 
         /// <summary>
@@ -164,11 +165,14 @@ namespace WeChat.PubLib.Core
             return strResult;
         }
 
-        public string AutoResponse(PubResMsgBase model)
+        /// <summary>
+        /// 被动回复消息
+        /// </summary>
+        /// <param name="instanse"></param>
+        /// <returns></returns>
+        public string AutoResponse(PubResMsgBase instanse)
         {
-            string strResult = string.Empty;
-
-            return strResult;
+            return instanse.ToXML(); 
         }
 
         #region 信息加密解密
@@ -220,7 +224,7 @@ namespace WeChat.PubLib.Core
                 {
                     int ret = 0;
                     ret = wxcpt.EncryptMsg(postStr, sTimeStamp, sNonce,  ref strReuslt);
-                    log.Debug("DecryptMsg Msg:" + postStr);
+                    log.Debug("EncryptMsg Msg:" + postStr);
                     if (ret != 0)
                     {
                         log.Info("PubCore EncryptMsg failed");
