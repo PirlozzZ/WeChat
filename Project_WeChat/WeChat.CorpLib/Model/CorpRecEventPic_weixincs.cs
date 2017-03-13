@@ -49,12 +49,14 @@ namespace WeChat.CorpLib.Model
             }
         }
 
-        public override void DoProcess()
+        public override string DoProcess()
         {
+            string strResult = string.Empty;
             if (OnEventPic_weixin != null)
             { //如果有对象注册 
-                OnEventPic_weixin(this);  //调用所有注册对象的方法
+                strResult=OnEventPic_weixin(this);  //调用所有注册对象的方法
             }
+            return strResult;
         }
 
         /// <summary> 

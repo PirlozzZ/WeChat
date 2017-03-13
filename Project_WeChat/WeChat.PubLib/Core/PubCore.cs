@@ -42,8 +42,7 @@ namespace WeChat.PubLib.Core
         }
 
         public PubCore(string sign)
-        {
-            log.Info("PubCore refresh accesstoken!");
+        { 
             config = new Config(sign);
             sDateTime = DateTime.Now;
             if (isDES)
@@ -57,7 +56,7 @@ namespace WeChat.PubLib.Core
         {
             try
             {
-                log.Info("Refresh GetAccessToken!");
+                log.Info("PubCore Refresh GetAccessToken!");
                 string url = string.Format("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}", config.AppID, config.Secret);
                 string result = string.Empty;
                 result = HTTPHelper.GetRequest(url);
@@ -67,7 +66,7 @@ namespace WeChat.PubLib.Core
             }
             catch (Exception err)
             {
-                log.Error("GetAccessToken error!", err);
+                log.Error("PubCore GetAccessToken error!", err);
             }
         }
 
@@ -193,7 +192,7 @@ namespace WeChat.PubLib.Core
                 {
                     int ret = 0;
                     ret = wxcpt.DecryptMsg(sMsgSignature, sTimeStamp, sNonce, postStr, ref strReuslt);
-                    log.Debug("DecryptMsg Msg:" + postStr);
+                    log.Debug("PubCore DecryptMsg Msg:" + postStr);
                     if (ret != 0)
                     {
                         log.Info("PubCore DecryptMsg failed");
@@ -224,7 +223,7 @@ namespace WeChat.PubLib.Core
                 {
                     int ret = 0;
                     ret = wxcpt.EncryptMsg(postStr, sTimeStamp, sNonce,  ref strReuslt);
-                    log.Debug("EncryptMsg Msg:" + postStr);
+                    log.Debug("PubCore EncryptMsg Msg:" + postStr);
                     if (ret != 0)
                     {
                         log.Info("PubCore EncryptMsg failed");

@@ -44,12 +44,14 @@ namespace WeChat.CorpLib.Model
         /// </summary>
         public static event WechatEventHandler<CorpRecEventLocation_select> OnEventLocation_select;        //声明事件
 
-        public override void DoProcess()
+        public override string DoProcess()
         {
+            string strResult = string.Empty;
             if (OnEventLocation_select != null)
             { //如果有对象注册 
-                OnEventLocation_select(this);  //调用所有注册对象的方法
+                strResult = OnEventLocation_select(this);  //调用所有注册对象的方法
             }
+            return strResult;
         }
 
         /// <summary> 

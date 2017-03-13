@@ -1,13 +1,11 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Security;
 using Tencent;
+using System.Xml;
+using System.Reflection;
+using WeChat.CorpLib.Model;
 
 namespace WeChat.CorpLib.Core
 {
@@ -40,8 +38,7 @@ namespace WeChat.CorpLib.Core
         }
 
         public CorpCore(string sign)
-        {
-            log.Info("CorpCore refresh accesstoken!");
+        { 
             config = new Config(sign);
             sDateTime = DateTime.Now;
             if (isDES)
@@ -55,31 +52,30 @@ namespace WeChat.CorpLib.Core
         {
             try
             {
-                log.Info("Refresh GetAccessToken!");
+                log.Info("CorpCore Refresh GetAccessToken!");
                 string url = string.Format("https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid={0}&corpsecret={1}", config.AppID, config.Secret);
                 string result = string.Empty;
                 result = HTTPHelper.GetRequest(url);
-                log.Debug(string.Format("GetAccessToken result: {0} ", result + "--" + url));
+                log.Debug(string.Format("CorpCore GetAccessToken result: {0} ", result + "--" + url));
                 JObject o = (JObject)JsonConvert.DeserializeObject(result);
                 sAccessToken = o["access_token"].ToString();
             }
             catch (Exception err)
             {
-                log.Error("GetAccessToken error!", err);
+                log.Error("CorpCore GetAccessToken error!", err);
             }
         }
 
         public string CorpAuth(string sTimeStamp, string sNonce, string sEchoStr, string sMsgSignature)
         {
             string sReplyEchoStr = "";
-
             try
             {
                 int ret = 0;
                 ret = wxcpt.VerifyURL(sMsgSignature, sTimeStamp, sNonce, sEchoStr, ref sReplyEchoStr);
                 if (ret != 0)
                 {
-                    log.Info("Refresh GetAccessToken!");
+                    log.Info(string.Format("CorpAuth failed：{0} ",ret));
                 }
             }
             catch (Exception e)
@@ -89,5 +85,121 @@ namespace WeChat.CorpLib.Core
             return sReplyEchoStr;
         }
 
+        /// <summary>
+        /// 消息处理
+        /// </summary>
+        /// <param name="postStr"></param>
+        /// <param name="sMsgSignature"></param>
+        /// <param name="pTimeStamp"></param>
+        /// <param name="pNonce"></param>
+        /// <returns></returns>
+        public string ProcessMsg(string postStr, string sMsgSignature, string pTimeStamp, string pNonce)
+        {
+            string sMsgType = string.Empty;
+            string sEventType = string.Empty;
+            string sResult = string.Empty;
+            string sMsg = DecryptMsg(sMsgSignature, pTimeStamp, pNonce, postStr);  // 解析之后的明文
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.LoadXml(sMsg);
+                XmlNode root = doc.FirstChild;
+                sMsgType = root["MsgType"].InnerText;
+                Assembly assembly = Assembly.GetExecutingAssembly();
+                Type type;
+                if ("event".Equals(sMsgType))
+                {
+                    sEventType = root["Event"].InnerText;
+                    type = assembly.GetType("WeChat.PubLib.Model.PubRecEvent" + sEventType.Substring(0, 1).ToUpper() + sEventType.Substring(1).ToLower());
+                }
+                else
+                {
+                    type = assembly.GetType("WeChat.PubLib.Model.PubRecMsg" + sMsgType.Substring(0, 1).ToUpper() + sMsgType.Substring(1).ToLower());
+                }
+                log.Debug("ReflectClassName:" + type.Name);
+                object instance = Activator.CreateInstance(type, new object[] { postStr });
+                if (instance != null)
+                {
+                    CorpRecAbstract temp = (CorpRecAbstract)instance;
+                    sResult = temp.DoProcess();
+                    if (string.IsNullOrEmpty(sResult))
+                    {
+                        sResult = "success";
+                    }
+                    log.Debug("ProcessMsg instance:" + instance.ToString());
+                }
+            }
+            catch (Exception e)
+            {
+                log.Error("PubCore ProcessMsg:", e);
+            }
+
+            return EncryptMsg(pTimeStamp, pNonce, sResult);
+        }
+
+        #region 信息加密解密
+        /// <summary>
+        /// 解密信息
+        /// </summary>
+        /// <param name="sMsgSignature"></param>
+        /// <param name="sTimeStamp"></param>
+        /// <param name="sNonce"></param>
+        /// <param name="postStr"></param>
+        /// <returns></returns>
+        private string DecryptMsg(string sMsgSignature, string sTimeStamp, string sNonce, string postStr)
+        {
+            string strReuslt = postStr;
+            try
+            {
+                if (isDES)
+                {
+                    int ret = 0;
+                    ret = wxcpt.DecryptMsg(sMsgSignature, sTimeStamp, sNonce, postStr, ref strReuslt);
+                    log.Debug("CorpCore DecryptMsg Msg:" + postStr);
+                    if (ret != 0)
+                    {
+                        log.Info("CorpCore DecryptMsg failed");
+                    }
+                }
+                return strReuslt;
+            }
+            catch (Exception e)
+            {
+                log.Error("CorpCore DecryptMsg:", e);
+                return strReuslt;
+            }
+        }
+
+        /// <summary>
+        /// 加密信息
+        /// </summary> 
+        /// <param name="sTimeStamp"></param>
+        /// <param name="sNonce"></param>
+        /// <param name="postStr"></param>
+        /// <returns></returns>
+        private string EncryptMsg(string sTimeStamp, string sNonce, string postStr)
+        {
+            string strReuslt = postStr;
+            try
+            {
+                if (isDES)
+                {
+                    int ret = 0;
+                    ret = wxcpt.EncryptMsg(postStr, sTimeStamp, sNonce, ref strReuslt);
+                    log.Debug("CorpCore EncryptMsg Msg:" + postStr);
+                    if (ret != 0)
+                    {
+                        log.Info("CorpCore EncryptMsg failed");
+                    }
+                }
+                return strReuslt;
+            }
+            catch (Exception e)
+            {
+                log.Error("CorpCore EncryptMsg:", e);
+                return strReuslt;
+            }
+        }
+        #endregion
     }
 }

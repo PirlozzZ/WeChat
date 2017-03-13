@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using WeChat.PubLib.Core;
 using WeChat.PubLib.Menu;
 using WeChat.PubLib.Model;
+using System.IO;
+using System.Text;
 
 namespace WeChat.WebApp
 {

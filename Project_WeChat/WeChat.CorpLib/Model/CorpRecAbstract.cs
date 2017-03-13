@@ -33,9 +33,9 @@ namespace WeChat.CorpLib.Model
         /// </summary>
         public string AgentID { get; protected set; }
 
-        public delegate void WechatEventHandler<in T>(T instanse);   //声明委托
+        public delegate string WechatEventHandler<in T>(T instanse);   //声明委托
 
-        public abstract void DoProcess();
+        public abstract string DoProcess();
 
         public abstract string ToXML();
     }

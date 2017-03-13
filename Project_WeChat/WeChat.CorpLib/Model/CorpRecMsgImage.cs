@@ -32,12 +32,15 @@ namespace WeChat.CorpLib.Model
         }
 
         public static event WechatEventHandler<CorpRecMsgImage> OnMsgImage;        //声明事件
-        public override void DoProcess()
+        public override string DoProcess()
         {
+            string strResult = string.Empty;
             if (OnMsgImage != null)
             { //如果有对象注册 
-                OnMsgImage(this);  //调用所有注册对象的方法
+                strResult=OnMsgImage(this);  //调用所有注册对象的方法
             }
+            return strResult;
+            
         }
 
         /// <summary>
