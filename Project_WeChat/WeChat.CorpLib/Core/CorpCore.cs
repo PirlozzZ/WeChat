@@ -110,13 +110,13 @@ namespace WeChat.CorpLib.Core
                 if ("event".Equals(sMsgType))
                 {
                     sEventType = root["Event"].InnerText;
-                    type = assembly.GetType("WeChat.PubLib.Model.PubRecEvent" + sEventType.Substring(0, 1).ToUpper() + sEventType.Substring(1).ToLower());
+                    type = assembly.GetType("WeChat.CorpLib.Model.PubRecEvent" + sEventType.Substring(0, 1).ToUpper() + sEventType.Substring(1).ToLower());
                 }
                 else
                 {
-                    type = assembly.GetType("WeChat.PubLib.Model.PubRecMsg" + sMsgType.Substring(0, 1).ToUpper() + sMsgType.Substring(1).ToLower());
+                    type = assembly.GetType("WeChat.CorpLib.Model.PubRecMsg" + sMsgType.Substring(0, 1).ToUpper() + sMsgType.Substring(1).ToLower());
                 }
-                log.Debug("ReflectClassName:" + type.Name);
+                log.Debug("CorpCore ReflectClassName:" + type.Name);
                 object instance = Activator.CreateInstance(type, new object[] { postStr });
                 if (instance != null)
                 {
@@ -126,12 +126,12 @@ namespace WeChat.CorpLib.Core
                     {
                         sResult = "success";
                     }
-                    log.Debug("ProcessMsg instance:" + instance.ToString());
+                    log.Debug("CorpCore ProcessMsg instance:" + instance.ToString());
                 }
             }
             catch (Exception e)
             {
-                log.Error("PubCore ProcessMsg:", e);
+                log.Error("CorpCore ProcessMsg:", e);
             }
 
             return EncryptMsg(pTimeStamp, pNonce, sResult);

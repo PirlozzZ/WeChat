@@ -11,6 +11,8 @@ using System.Xml;
 using Tencent;
 using System.Configuration;
 using System.Web.Security;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace WeChat.PubLib.Core
 {
@@ -83,7 +85,18 @@ namespace WeChat.PubLib.Core
                 string tempStr = string.Empty;
                 foreach (string _s in tempList)
                     tempStr += _s;
-                tempStr = FormsAuthentication.HashPasswordForStoringInConfigFile(tempStr, "SHA1").ToLower();
+                //.Net 4.5版本后下列方法过时
+                //tempStr = FormsAuthentication.HashPasswordForStoringInConfigFile(tempStr, "SHA1").ToLower();
+
+                SHA1 sha1Hash = SHA1.Create();
+                byte[] data = sha1Hash.ComputeHash(Encoding.UTF8.GetBytes(tempStr));
+                StringBuilder sBuilder = new StringBuilder();
+                for (int i = 0; i < data.Length; i++)
+                {
+                    sBuilder.Append(data[i].ToString("x2"));
+                }
+                tempStr= sBuilder.ToString();
+
                 if (!tempStr.Equals(sMsgSignature))
                 {
                     sign = false;
@@ -128,7 +141,7 @@ namespace WeChat.PubLib.Core
                 {
                     type = assembly.GetType("WeChat.PubLib.Model.PubRecMsg" + sMsgType.Substring(0, 1).ToUpper() + sMsgType.Substring(1).ToLower());
                 }
-                log.Debug("ReflectClassName:" + type.Name);
+                log.Debug("PubCore ReflectClassName:" + type.Name);
                 object instance = Activator.CreateInstance(type, new object[] { postStr });
                 if (instance != null)
                 {
@@ -138,7 +151,7 @@ namespace WeChat.PubLib.Core
                     {
                         sResult = "success";
                     }
-                    log.Debug("ProcessMsg instance:" + instance.ToString());
+                    log.Debug("PubCore ProcessMsg instance:" + instance.ToString());
                 }
             }
             catch (Exception e)
