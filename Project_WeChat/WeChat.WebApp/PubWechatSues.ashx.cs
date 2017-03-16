@@ -18,7 +18,7 @@ namespace WeChat.WebApp
 
         public PubWeChatSues()
         {
-            pubCore = new PubCore(); 
+            pubCore = new PubCore("Sues"); 
 
             //PubRecEventClick.OnEventClick += DoClick;
             //PubRecEventSubscribe.OnEventSubscribe += DoSubscribe;
@@ -101,10 +101,14 @@ namespace WeChat.WebApp
         public string DoClick(PubRecEventClick instanse)
         {
             string strResult = string.Empty;
-            log.Info("DoClick");
             if ("2".Equals(instanse.EventKey))
             {
-                strResult = pubCore.TransferCustomerService(instanse);
+                PubResMsgText msg = new PubResMsgText();
+                msg.Content = "开发中，敬请期待！";
+                msg.CreateTime = instanse.CreateTime;
+                msg.FromUserName = instanse.ToUserName;
+                msg.ToUserName = instanse.FromUserName;
+                strResult = pubCore.AutoResponse(msg);
             }
             return strResult;
         }
@@ -122,29 +126,55 @@ namespace WeChat.WebApp
                 CreateMenu();
             }
 
-            if ("kf".Equals(instanse.Content.ToLower()))
-            {
-                return pubCore.TransferCustomerService(instanse);
-            }
+            //if ("kf".Equals(instanse.Content.ToLower()))
+            //{
+            //    return pubCore.TransferCustomerService(instanse);
+            //}
             return "";
         }
 
         public void CreateMenu()
         {
-            ConditionalRootMenu rootmenu = new ConditionalRootMenu();
-            ChildMenu menu1 = new ChildMenu("菜单女一");
-            ChildMenu menu2 = new ChildMenu("菜单二", ChildMenu.MenuTypeEnum.click, "2");
+            RootMenu rootmenu = new RootMenu();
+            ChildMenu menu1 = new ChildMenu("程财信息");
+            ChildMenu menu2 = new ChildMenu("程财服务");
+            ChildMenu menu3 = new ChildMenu("程财大厅");
 
-            ChildMenu menu11 = new ChildMenu("子菜单一", ChildMenu.MenuTypeEnum.click, "11");
-            ChildMenu menu12 = new ChildMenu("子菜单二", ChildMenu.MenuTypeEnum.view, "http://www.baidu.com");
+            ChildMenu menu11 = new ChildMenu("项目查询", ChildMenu.MenuTypeEnum.click, "11");
+            ChildMenu menu12 = new ChildMenu("薪资查询", ChildMenu.MenuTypeEnum.click, "12");
+            ChildMenu menu13 = new ChildMenu("来款查询", ChildMenu.MenuTypeEnum.click, "13");
+            ChildMenu menu14 = new ChildMenu("报销查询", ChildMenu.MenuTypeEnum.click, "14");
+            ChildMenu menu15 = new ChildMenu("学费查询", ChildMenu.MenuTypeEnum.click, "15");
 
             menu1.sub_button.Add(menu11);
             menu1.sub_button.Add(menu12);
+            menu1.sub_button.Add(menu13);
+            menu1.sub_button.Add(menu14);
+            menu1.sub_button.Add(menu15);
+
+            ChildMenu menu21 = new ChildMenu("报销事务", ChildMenu.MenuTypeEnum.click, "21");
+            ChildMenu menu22 = new ChildMenu("办税服务", ChildMenu.MenuTypeEnum.click, "22");
+            ChildMenu menu23 = new ChildMenu("薪资服务", ChildMenu.MenuTypeEnum.click, "23");
+            ChildMenu menu24 = new ChildMenu("学生事务", ChildMenu.MenuTypeEnum.click, "24");
+            ChildMenu menu25 = new ChildMenu("公积金事务", ChildMenu.MenuTypeEnum.click, "25");
+
+            menu2.sub_button.Add(menu21);
+            menu2.sub_button.Add(menu22);
+            menu2.sub_button.Add(menu23);
+            menu2.sub_button.Add(menu24);
+            menu2.sub_button.Add(menu25);
+
+            ChildMenu menu31 = new ChildMenu("解除绑定", ChildMenu.MenuTypeEnum.click, "31"); 
+            ChildMenu menu32 = new ChildMenu("在线咨询", ChildMenu.MenuTypeEnum.click, "32");
+            ChildMenu menu33 = new ChildMenu("学生缴费", ChildMenu.MenuTypeEnum.click, "33");
+
+            menu2.sub_button.Add(menu31);
+            menu2.sub_button.Add(menu32);
+            menu2.sub_button.Add(menu33);
+
             rootmenu.button.Add(menu1);
             rootmenu.button.Add(menu2);
-
-            rootmenu.matchrule.sex = "2";
-
+            rootmenu.button.Add(menu3);
             pubCore.CreateMenu(rootmenu);
         }
         #endregion

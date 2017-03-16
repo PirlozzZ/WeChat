@@ -34,8 +34,8 @@ namespace WeChat.PubLib.Core
         }
         private Config config;
         log4net.ILog log = log4net.LogManager.GetLogger("Log.Logging");
-        bool isDES = bool.Parse(ConfigurationManager.AppSettings["isDES"]);
-        bool isCustomerMsg = bool.Parse(ConfigurationManager.AppSettings["isCustomerMsg"]);
+        bool isDES ;
+        bool isCustomerMsg;
         WXBizMsgCrypt wxcpt;
 
         public PubCore() : this("")
@@ -47,6 +47,8 @@ namespace WeChat.PubLib.Core
         { 
             config = new Config(sign);
             sDateTime = DateTime.Now;
+            isDES = bool.Parse(ConfigurationManager.AppSettings[sign+"isDES"]);
+            isCustomerMsg = bool.Parse(ConfigurationManager.AppSettings[sign+"isCustomerMsg"]);
             if (isDES)
             {
                 wxcpt = new WXBizMsgCrypt(config.Token, config.EncodingAESKey, config.AppID);
