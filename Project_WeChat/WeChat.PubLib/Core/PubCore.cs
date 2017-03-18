@@ -19,18 +19,26 @@ namespace WeChat.PubLib.Core
     public class PubCore
     {
         public DateTime sDateTime { get; private set; }
+        private string _sAccessToken;
         public string sAccessToken
         {
-            get {
-                DateTime temp = DateTime.Now;
-                if (DateTime.Compare(sDateTime.AddMinutes(7000), temp) < 0)
-                {
-                    sDateTime = temp;
-                    GetAccessToken();
+            get { 
+                try {
+                    DateTime temp = DateTime.Now;
+                    TimeSpan timespan = temp - sDateTime; 
+                    if (timespan.TotalMilliseconds>=7000)
+                    {
+                        sDateTime = temp;
+                        GetAccessToken();
+                    }
                 }
-                return sAccessToken;
+                catch (Exception  e)
+                {
+                    log.Error("sAccessToken err:", e);
+                }
+                return _sAccessToken;
             }
-            private set { sAccessToken = value; }
+            private set { _sAccessToken = value; }
         }
         private Config config;
         log4net.ILog log = log4net.LogManager.GetLogger("Log.Logging");
@@ -144,16 +152,17 @@ namespace WeChat.PubLib.Core
                     type = assembly.GetType("WeChat.PubLib.Model.PubRecMsg" + sMsgType.Substring(0, 1).ToUpper() + sMsgType.Substring(1).ToLower());
                 }
                 log.Debug("PubCore ReflectClassName:" + type.Name);
-                object instance = Activator.CreateInstance(type, new object[] { postStr });
+                object instance = Activator.CreateInstance(type, new object[] { sMsg });
                 if (instance != null)
                 {
+                    log.Debug("PubCore ProcessMsg instance:" + instance.ToString());
                     PubRecAbstract temp = (PubRecAbstract)instance;
                     sResult = temp.DoProcess();
                     if (string.IsNullOrEmpty(sResult))
                     {
                         sResult = "success";
                     }
-                    log.Debug("PubCore ProcessMsg instance:" + instance.ToString());
+                    
                 }
             }
             catch (Exception e)
@@ -207,7 +216,7 @@ namespace WeChat.PubLib.Core
                 {
                     int ret = 0;
                     ret = wxcpt.DecryptMsg(sMsgSignature, sTimeStamp, sNonce, postStr, ref strReuslt);
-                    log.Debug("PubCore DecryptMsg Msg:" + postStr);
+                    log.Debug("PubCore DecryptMsg Msg:" + strReuslt);
                     if (ret != 0)
                     {
                         log.Info("PubCore DecryptMsg failed");
@@ -234,11 +243,11 @@ namespace WeChat.PubLib.Core
             string strReuslt = postStr;
             try
             {
-                if (isDES)
+                if (isDES&&(!"success".Equals(postStr)))
                 {
                     int ret = 0;
                     ret = wxcpt.EncryptMsg(postStr, sTimeStamp, sNonce,  ref strReuslt);
-                    log.Debug("PubCore EncryptMsg Msg:" + postStr);
+                    log.Debug("PubCore EncryptMsg Msg:" + strReuslt);
                     if (ret != 0)
                     {
                         log.Info("PubCore EncryptMsg failed");
@@ -265,12 +274,15 @@ namespace WeChat.PubLib.Core
             bool sign = false;
             string result = string.Empty;
             string strJson = JsonConvert.SerializeObject(root);
-            log.Debug("createMenu strjson:" + strJson);
+            log.Info("createMenu strjson:" + strJson);
             try
-            {
+            {  
                 string url = string.Format("https://api.weixin.qq.com/cgi-bin/menu/create?access_token={0}", sAccessToken);
                 result = HTTPHelper.PostRequest(url, DataTypeEnum.json, strJson);
+
+                log.Debug(string.Format("CreateMenu result: {0} ", result));
                 JObject jo = (JObject)JsonConvert.DeserializeObject(result);
+
                 if ("ok".Equals(jo["errmsg"].ToString()))
                 {
                     sign = true;

@@ -20,9 +20,9 @@ namespace WeChat.WebApp
         {
             pubCore = new PubCore("Sues"); 
 
-            //PubRecEventClick.OnEventClick += DoClick;
+            PubRecEventClick.OnEventClick += DoClick;
             //PubRecEventSubscribe.OnEventSubscribe += DoSubscribe;
-            //PubRecMsgText.OnMsgText += DoMsgText;
+            PubRecMsgText.OnMsgText += DoMsgText;
         }
 
         public bool IsReusable
@@ -38,14 +38,7 @@ namespace WeChat.WebApp
             string pMsgSignature = HttpContext.Current.Request.QueryString["signature"];
             string pTimeStamp = HttpContext.Current.Request.QueryString["timestamp"];
             string pNonce = HttpContext.Current.Request.QueryString["nonce"];
-            string sResult = "success";
-
-            #region for debug
-            //pTimeStamp = "1483334816";
-            //pNonce = "709329334";
-            //pMsgSignature = "7ebda6ce61cbd4f8fbbca69e195c2768e3c9e71e";
-            #endregion
-
+            string sResult = "success"; 
             if (HttpContext.Current.Request.HttpMethod.ToUpper() == "POST")
             {
                 string postStr = string.Empty;
@@ -55,10 +48,6 @@ namespace WeChat.WebApp
                     stream.Read(postBytes, 0, (Int32)stream.Length);
                     postStr = Encoding.UTF8.GetString(postBytes);
                 }
-
-                #region for debug 
-                //postStr = "<xml><ToUserName><![CDATA[gh_dc9f5aee123b]]></ToUserName><FromUserName><![CDATA[o6w0juLpCRYHJTqUTcG1L9hz-uh0]]></FromUserName><CreateTime>1484057461</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[6]]></Content><MsgId>6373978260806390997</MsgId><Encrypt><![CDATA[dK8jouN8itPoAPz+kN1ayvWSKlKQsyEOA2A9ja0Vnq/kdsHnQgWlKYt5HAqkUwWIs2B09BVUkZuvlYgsYar6VcjjuH2kPtFbfhHYmYDKASVDEq2y4/ZLiMhdYm9aWIoTlsYTPWEuD8MDYbWmDSfFKbC5N39XbO38yqifgkHWsA9f7/NuiWTczjw4CjsjpwjlciZwPWo52YiprcafwwtQcYia+jCAyhkaaezAqFcSIchYhBQQw0RfHFb0Ig6ved8Dxw/jWqZEjAonfOiPpZiRBz0y2OvjxSIWroHAqLk9qPESA2zAW09F+HM/gX/PAmmXAvnoGn95Cgku2gv+IcF0xE1d8o8UWneRrOTMspriI9Wg01fanLK+kUQK25cfMPLjF0EZlzEoSSzZIzarKc4KefBLWRpPbX07NQYfZxT5T6Q=]]></Encrypt></xml>";
-                #endregion
 
                 log.Debug("ProcessRequest Get:" + postStr);
                 if (!string.IsNullOrEmpty(postStr))
@@ -76,18 +65,11 @@ namespace WeChat.WebApp
                 string pEchoStr = HttpContext.Current.Request.QueryString["echostr"];
                 try
                 {
-                    #region for debug
-                    //pTimeStamp = "1483334816";
-                    //pNonce = "709329334";
-                    //pEchoStr = "6890308849856673530";
-                    //pMsgSignature = "7ebda6ce61cbd4f8fbbca69e195c2768e3c9e71e";
-                    #endregion
 
                     if (pubCore.PubAuth(pTimeStamp, pNonce, pEchoStr, pMsgSignature))
                     {
                         HttpContext.Current.Response.Write(pEchoStr);
                         HttpContext.Current.ApplicationInstance.CompleteRequest();
-                        //HttpContext.Current.Response.End(); 
                     }
                 }
                 catch (Exception e)
@@ -125,7 +107,7 @@ namespace WeChat.WebApp
             {
                 CreateMenu();
             }
-
+            log.Info("DoMsgText");
             //if ("kf".Equals(instanse.Content.ToLower()))
             //{
             //    return pubCore.TransferCustomerService(instanse);
@@ -168,9 +150,9 @@ namespace WeChat.WebApp
             ChildMenu menu32 = new ChildMenu("在线咨询", ChildMenu.MenuTypeEnum.click, "32");
             ChildMenu menu33 = new ChildMenu("学生缴费", ChildMenu.MenuTypeEnum.click, "33");
 
-            menu2.sub_button.Add(menu31);
-            menu2.sub_button.Add(menu32);
-            menu2.sub_button.Add(menu33);
+            menu3.sub_button.Add(menu31);
+            menu3.sub_button.Add(menu32);
+            menu3.sub_button.Add(menu33);
 
             rootmenu.button.Add(menu1);
             rootmenu.button.Add(menu2);

@@ -12,6 +12,7 @@ namespace WeChat.CorpLib.Core
     public class CorpCore
     {
         public DateTime sDateTime { get; private set; }
+        private string _sAccessToken;
         public string sAccessToken
         {
             get
@@ -22,9 +23,9 @@ namespace WeChat.CorpLib.Core
                     sDateTime = temp;
                     GetAccessToken();
                 }
-                return sAccessToken;
+                return _sAccessToken;
             }
-            private set { sAccessToken = value; }
+            private set { _sAccessToken = value; }
         }
         private Config config;
         log4net.ILog log = log4net.LogManager.GetLogger("Log.Logging");
@@ -117,7 +118,7 @@ namespace WeChat.CorpLib.Core
                     type = assembly.GetType("WeChat.CorpLib.Model.PubRecMsg" + sMsgType.Substring(0, 1).ToUpper() + sMsgType.Substring(1).ToLower());
                 }
                 log.Debug("CorpCore ReflectClassName:" + type.Name);
-                object instance = Activator.CreateInstance(type, new object[] { postStr });
+                object instance = Activator.CreateInstance(type, new object[] { sMsg });
                 if (instance != null)
                 {
                     CorpRecAbstract temp = (CorpRecAbstract)instance;
@@ -182,7 +183,7 @@ namespace WeChat.CorpLib.Core
             string strReuslt = postStr;
             try
             {
-                if (isDES)
+                if (isDES && (!"success".Equals(postStr)))
                 {
                     int ret = 0;
                     ret = wxcpt.EncryptMsg(postStr, sTimeStamp, sNonce, ref strReuslt);
