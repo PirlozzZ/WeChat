@@ -46,6 +46,7 @@ namespace WeChat.PubLib.Core
         bool isCustomerMsg;
         WXBizMsgCrypt wxcpt;
 
+        #region 构造方法
         public PubCore() : this("")
         {
 
@@ -62,8 +63,12 @@ namespace WeChat.PubLib.Core
                 wxcpt = new WXBizMsgCrypt(config.Token, config.EncodingAESKey, config.AppID);
             }
         }
+        #endregion
 
-
+        #region 核心方法
+        /// <summary>
+        /// 获取AccessToken 
+        /// </summary>
         public void GetAccessToken()
         {
             try
@@ -82,6 +87,14 @@ namespace WeChat.PubLib.Core
             }
         }
 
+        /// <summary>
+        /// 服务器验证
+        /// </summary>
+        /// <param name="sTimeStamp"></param>
+        /// <param name="sNonce"></param>
+        /// <param name="sMsgEncrypt"></param>
+        /// <param name="sMsgSignature"></param>
+        /// <returns></returns>
         public bool PubAuth(string sTimeStamp, string sNonce, string sMsgEncrypt, string sMsgSignature)
         {
             bool sign = true;
@@ -172,7 +185,9 @@ namespace WeChat.PubLib.Core
 
             return EncryptMsg(pTimeStamp, pNonce, sResult);
         }
+        #endregion
 
+        #region 消息处理
         /// <summary>
         /// 消息转发到客服
         /// </summary>
@@ -195,8 +210,9 @@ namespace WeChat.PubLib.Core
         /// <returns></returns>
         public string AutoResponse(PubResMsgBase instanse)
         {
-            return instanse.ToXML(); 
+            return instanse.ToJson(); 
         }
+        #endregion
 
         #region 信息加密解密
         /// <summary>
@@ -272,13 +288,12 @@ namespace WeChat.PubLib.Core
         public bool CreateMenu(RootMenu root)
         {
             bool sign = false;
-            string result = string.Empty;
-            string strJson = JsonConvert.SerializeObject(root);
-            log.Info("createMenu strjson:" + strJson);
+            string result = string.Empty; 
+            log.Info("createMenu strjson:" + root.ToJson());
             try
             {  
                 string url = string.Format("https://api.weixin.qq.com/cgi-bin/menu/create?access_token={0}", sAccessToken);
-                result = HTTPHelper.PostRequest(url, DataTypeEnum.json, strJson);
+                result = HTTPHelper.PostRequest(url, DataTypeEnum.json, root.ToJson());
 
                 log.Debug(string.Format("CreateMenu result: {0} ", result));
                 JObject jo = (JObject)JsonConvert.DeserializeObject(result);

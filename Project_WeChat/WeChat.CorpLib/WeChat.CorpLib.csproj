@@ -56,6 +56,7 @@
     <Compile Include="Core\HTTPHelper.cs" />
     <Compile Include="Core\WXBizMsgCrypt.cs" />
     <Compile Include="Core\XmlUtil.cs" />
+    <Compile Include="Model\CorpDepartment.cs" />
     <Compile Include="Model\CorpRecAbstract.cs" />
     <Compile Include="Model\CorpRecEventBase.cs" />
     <Compile Include="Model\CorpRecEventBatch_job_result.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="Model\CorpResMsgText.cs" />
     <Compile Include="Model\CorpResMsgVideo.cs" />
     <Compile Include="Model\CorpResMsgVoice.cs" />
+    <Compile Include="Model\CorpUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
