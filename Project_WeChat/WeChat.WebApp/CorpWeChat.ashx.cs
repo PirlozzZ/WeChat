@@ -19,8 +19,7 @@ namespace WeChat.WebApp
 
         public CorpWeChat()
         {
-            corpCore = new CorpCore();
-         corpCore.
+            corpCore = new CorpCore(); 
 
             //PubRecEventClick.OnEventClick += DoClick;
             //PubRecEventSubscribe.OnEventSubscribe += DoSubscribe;

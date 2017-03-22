@@ -1,10 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace WeChat.PubLib.Menu
+﻿namespace WeChat.PubLib.Menu
 {
     public class ConditionalRootMenu:RootMenu
     {
@@ -15,10 +9,7 @@ namespace WeChat.PubLib.Menu
 
         public Matchrule matchrule { get; set; }
 
-        public string ToJson()
-        {
-            return JsonConvert.SerializeObject(this);
-        }
+      
     }
 
     /// <summary>

@@ -40,4 +40,4 @@ namespace WeChat.PubLib.Model
         }
     }
 }
-}
+
