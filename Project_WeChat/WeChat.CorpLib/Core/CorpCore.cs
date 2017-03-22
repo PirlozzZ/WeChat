@@ -12,9 +12,9 @@ namespace WeChat.CorpLib.Core
 {
     public class CorpCore
     {
-        public DateTime sDateTime { get; private set; }
+        private DateTime sDateTime { get;  set; }
         private string _sAccessToken;
-        public string sAccessToken
+        private string sAccessToken
         {
             get
             {
@@ -26,7 +26,7 @@ namespace WeChat.CorpLib.Core
                 }
                 return _sAccessToken;
             }
-            private set { _sAccessToken = value; }
+            set { _sAccessToken = value; }
         }
         private Config config;
         log4net.ILog log = log4net.LogManager.GetLogger("Log.Logging");

@@ -19,6 +19,7 @@ namespace WeChat.WebApp
         public PubWeChatSues()
         {
             pubCore = new PubCore("Sues"); 
+             
 
             PubRecEventClick.OnEventClick += DoClick;
             //PubRecEventSubscribe.OnEventSubscribe += DoSubscribe;

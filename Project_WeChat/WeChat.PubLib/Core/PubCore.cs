@@ -18,9 +18,9 @@ namespace WeChat.PubLib.Core
 {
     public class PubCore
     {
-        public DateTime sDateTime { get; private set; }
+        private DateTime sDateTime { get; set; }
         private string _sAccessToken;
-        public string sAccessToken
+        private string sAccessToken
         {
             get { 
                 try {
@@ -38,7 +38,7 @@ namespace WeChat.PubLib.Core
                 }
                 return _sAccessToken;
             }
-            private set { _sAccessToken = value; }
+            set { _sAccessToken = value; }
         }
         private Config config;
         log4net.ILog log = log4net.LogManager.GetLogger("Log.Logging");
