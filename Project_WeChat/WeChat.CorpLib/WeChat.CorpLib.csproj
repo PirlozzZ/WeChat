@@ -35,9 +35,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Dll\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Dll\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Dll\Newtonsoft9.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -90,7 +89,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Dll\log4net.dll" />
-    <Content Include="Dll\Newtonsoft.Json.dll" />
+    <Content Include="Dll\Newtonsoft4.0\Newtonsoft.Json.dll" />
+    <Content Include="Dll\Newtonsoft9.0\Newtonsoft.Json.dll" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
