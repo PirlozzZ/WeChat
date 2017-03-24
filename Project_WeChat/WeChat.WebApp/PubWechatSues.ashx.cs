@@ -123,8 +123,8 @@ namespace WeChat.WebApp
             ChildMenu menu2 = new ChildMenu("程财服务");
             ChildMenu menu3 = new ChildMenu("程财大厅");
 
-            ChildMenu menu11 = new ChildMenu("项目查询", ChildMenu.MenuTypeEnum.click, "11");
-            ChildMenu menu12 = new ChildMenu("薪资查询", ChildMenu.MenuTypeEnum.click, "12");
+            ChildMenu menu11 = new ChildMenu("项目查询", ChildMenu.MenuTypeEnum.view, "http://cw.sues.edu.cn:8083/Login/Index?state=STA!fund");
+            ChildMenu menu12 = new ChildMenu("薪资查询", ChildMenu.MenuTypeEnum.view, "http://cw.sues.edu.cn:8083/Login/Index?state=STA!salary");
             ChildMenu menu13 = new ChildMenu("来款查询", ChildMenu.MenuTypeEnum.click, "13");
             ChildMenu menu14 = new ChildMenu("报销查询", ChildMenu.MenuTypeEnum.click, "14");
             ChildMenu menu15 = new ChildMenu("学费查询", ChildMenu.MenuTypeEnum.click, "15");
