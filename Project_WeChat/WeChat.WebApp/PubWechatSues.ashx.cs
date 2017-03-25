@@ -5,6 +5,7 @@ using WeChat.PubLib.Menu;
 using WeChat.PubLib.Model;
 using System.IO;
 using System.Text;
+using System.Configuration;
 
 namespace WeChat.WebApp
 {
@@ -15,6 +16,7 @@ namespace WeChat.WebApp
     {
         log4net.ILog log = log4net.LogManager.GetLogger("Log.Logging");//获取一个日志记录器 
         PubCore pubCore;
+        static string logoutURL= ConfigurationManager.AppSettings["SuesLogoutURL"];
 
         public PubWeChatSues()
         {
@@ -89,6 +91,26 @@ namespace WeChat.WebApp
                 
                 return pubCore.TransferCustomerService(instanse);
             }
+            else if ("31".Equals(instanse.EventKey))
+            { 
+                try
+                {
+                    PubResMsgText msg = new PubResMsgText();
+                    string flag = HTTPHelper.GetRequest(logoutURL + "?openid=" + instanse.FromUserName); 
+                    if (bool.Parse(flag))
+                    {
+                        msg.Content = "解除绑定成功！";
+                        msg.CreateTime = instanse.CreateTime;
+                        msg.FromUserName = instanse.ToUserName;
+                        msg.ToUserName = instanse.FromUserName;
+                        strResult = pubCore.AutoResponse(msg);
+                    }
+                }
+                catch(Exception e)
+                {
+                    log.Error("PubWeChatSues DoClick Logout Err:",e);
+                }
+            }
             else
             {
                 PubResMsgText msg = new PubResMsgText();
@@ -113,10 +135,11 @@ namespace WeChat.WebApp
             {
                 CreateMenu();
             }
-            //log.Info("DoMsgText");
-            
+            //log.Info("DoMsgText");        
             return "";
         }
+
+  
 
         public void CreateMenu()
         {
@@ -125,8 +148,8 @@ namespace WeChat.WebApp
             ChildMenu menu2 = new ChildMenu("程财服务");
             ChildMenu menu3 = new ChildMenu("程财大厅");
 
-            ChildMenu menu11 = new ChildMenu("项目查询", ChildMenu.MenuTypeEnum.view, "http://cw.sues.edu.cn:8083/Login/Index?state=STA!fund");
-            ChildMenu menu12 = new ChildMenu("薪资查询", ChildMenu.MenuTypeEnum.view, "http://cw.sues.edu.cn:8083/Login/Index?state=STA!salary");
+            ChildMenu menu11 = new ChildMenu("项目查询", ChildMenu.MenuTypeEnum.view, "http://cwpt.sues.edu.cn:80/Login/Index?state=SUES!fund");
+            ChildMenu menu12 = new ChildMenu("薪资查询", ChildMenu.MenuTypeEnum.view, "http://cwpt.sues.edu.cn:80/Login/Index?state=SUES!salary");
             ChildMenu menu13 = new ChildMenu("来款查询", ChildMenu.MenuTypeEnum.click, "13");
             ChildMenu menu14 = new ChildMenu("报销查询", ChildMenu.MenuTypeEnum.click, "14");
             ChildMenu menu15 = new ChildMenu("学费查询", ChildMenu.MenuTypeEnum.click, "15");

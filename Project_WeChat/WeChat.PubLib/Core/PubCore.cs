@@ -13,6 +13,7 @@ using System.Configuration;
 using System.Web.Security;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace WeChat.PubLib.Core
 {
@@ -210,8 +211,8 @@ namespace WeChat.PubLib.Core
         /// <param name="instanse"></param>
         /// <returns></returns>
         public string AutoResponse(PubResMsgBase instanse)
-        {
-            return instanse.ToJson(); 
+        {           
+            return "success!@!"+instanse.ToXML(); 
         }
         #endregion
 
@@ -258,9 +259,11 @@ namespace WeChat.PubLib.Core
         private string EncryptMsg(string sTimeStamp, string sNonce, string postStr)
         {
             string strReuslt = postStr;
+            string[] tempArray = Regex.Split(postStr,"!@!");
             try
             {
-                if (isDES&&(!"success".Equals(postStr)))
+                log.Debug("before EncryptMsg:" + strReuslt);
+                if (isDES&&(!"success".Equals(tempArray[0])))
                 {
                     int ret = 0;
                     ret = wxcpt.EncryptMsg(postStr, sTimeStamp, sNonce,  ref strReuslt);
@@ -269,6 +272,10 @@ namespace WeChat.PubLib.Core
                     {
                         log.Info("PubCore EncryptMsg failed");
                     }
+                }
+                if (tempArray.Length == 2)
+                {
+                    strReuslt = tempArray[1];
                 }
                 return strReuslt;
             }
