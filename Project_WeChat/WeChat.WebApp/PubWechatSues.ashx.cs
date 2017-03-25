@@ -84,7 +84,12 @@ namespace WeChat.WebApp
         public string DoClick(PubRecEventClick instanse)
         {
             string strResult = string.Empty;
-            if ("2".Equals(instanse.EventKey))
+            if ("32".Equals(instanse.EventKey))
+            {
+                
+                return pubCore.TransferCustomerService(instanse);
+            }
+            else
             {
                 PubResMsgText msg = new PubResMsgText();
                 msg.Content = "开发中，敬请期待！";
@@ -108,11 +113,8 @@ namespace WeChat.WebApp
             {
                 CreateMenu();
             }
-            log.Info("DoMsgText");
-            //if ("kf".Equals(instanse.Content.ToLower()))
-            //{
-            //    return pubCore.TransferCustomerService(instanse);
-            //}
+            //log.Info("DoMsgText");
+            
             return "";
         }
 
