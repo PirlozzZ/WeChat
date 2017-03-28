@@ -29,7 +29,7 @@ namespace WeChat.PubLib.Model
                 this.CreateTime = root["CreateTime"].InnerText;
                 this.MsgType = root["MsgType"].InnerText;
                 this.Event = root["Event"].InnerText;
-                if (root["EventKey"] != null)
+                if ("scan".Equals(this.Event.ToLower()))
                 {
                     this.EventKey = root["EventKey"].InnerText;
                     this.Ticket = root["Ticket"].InnerText;

@@ -202,7 +202,7 @@ namespace WeChat.PubLib.Core
             {
                 strResult = string.Format(@"<xml><ToUserName>{0}</ToUserName><FromUserName>{1}</FromUserName><CreateTime>1399197672</CreateTime><MsgType><![CDATA[transfer_customer_service]]></MsgType></xml>", instanse.FromUserName,instanse.ToUserName);
             }
-            return strResult;
+            return "success!@!" + strResult;
         }
 
         /// <summary>
