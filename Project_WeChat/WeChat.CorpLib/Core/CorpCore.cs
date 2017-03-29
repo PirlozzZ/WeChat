@@ -30,8 +30,8 @@ namespace WeChat.CorpLib.Core
         }
         private Config config;
         log4net.ILog log = log4net.LogManager.GetLogger("Log.Logging");
-        bool isDES = bool.Parse(ConfigurationManager.AppSettings["isDES"]);
-        bool isCustomerMsg = bool.Parse(ConfigurationManager.AppSettings["isCustomerMsg"]);
+        bool isDES ;
+        bool isCustomerMsg;
         WXBizMsgCrypt wxcpt;
 
         #region 构造方法
@@ -44,6 +44,8 @@ namespace WeChat.CorpLib.Core
         { 
             config = new Config(sign);
             sDateTime = DateTime.Now;
+            isDES = bool.Parse(ConfigurationManager.AppSettings[sign + "isDES"]);
+            isCustomerMsg = bool.Parse(ConfigurationManager.AppSettings[sign + "isCustomerMsg"]);
             if (isDES)
             {
                 wxcpt = new WXBizMsgCrypt(config.Token, config.EncodingAESKey, config.AppID);
@@ -152,7 +154,40 @@ namespace WeChat.CorpLib.Core
 
             return EncryptMsg(pTimeStamp, pNonce, sResult);
         }
-#endregion
+        #endregion
+
+        #region 消息发送
+        /// <summary>
+        /// 普通消息发送
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <returns></returns>
+        public bool SendMsg(CorpSendMsgBase msg)
+        {
+            bool sign = false;
+            try
+            {
+                string url = string.Format("https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token={0}", sAccessToken);
+                string result = string.Empty;
+                log.Debug("CorpCore SendMsg:"+msg.ToJson());
+                result = HTTPHelper.PostRequest(url, DataTypeEnum.json, msg.ToJson());
+                JObject jo = (JObject)JsonConvert.DeserializeObject(result);
+                if ("ok".Equals(jo["errmsg"].ToString()))
+                {
+                    sign = true;
+                }
+                else
+                {
+                    log.Info(string.Format("CorpCore SendMsg Failed: {0} ", result));
+                }
+            }
+            catch (Exception err)
+            {
+                log.Error("CorpCore SendMsg error!", err);
+            }
+            return sign;
+        }
+        #endregion
 
         #region 信息加密解密
         /// <summary>

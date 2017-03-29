@@ -17,6 +17,15 @@ namespace WeChat.PubLib.Model
             Articles = new ArticlesMain();
         }
 
+        public PubResMsgNews(PubRecMsgBase instanse)
+        {
+            this.MsgType = "news";
+            Articles = new ArticlesMain();
+            this.CreateTime = instanse.CreateTime;
+            this.FromUserName = instanse.ToUserName;
+            this.ToUserName = instanse.FromUserName;
+        }
+
         /// <summary>
         /// 多条图文消息信息，默认第一个item为大图,注意，如果图文数超过8，则将会无响应 
         /// </summary>

@@ -17,6 +17,14 @@ namespace WeChat.PubLib.Model
             this.MsgType = "voice";
         }
 
+        public PubResMsgVoice(PubRecMsgBase instanse)
+        {
+            this.MsgType = "voice";
+            this.CreateTime = instanse.CreateTime;
+            this.FromUserName = instanse.ToUserName;
+            this.ToUserName = instanse.FromUserName;
+        }
+
         /// <summary>
         /// 通过素材管理中的接口上传多媒体文件，得到的id
         /// </summary>

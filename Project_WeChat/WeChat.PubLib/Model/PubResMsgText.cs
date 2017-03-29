@@ -11,9 +11,18 @@ namespace WeChat.PubLib.Model
     /// </summary>
     public class PubResMsgText:PubResMsgBase
     {
+
         public PubResMsgText()
         {
             this.MsgType = "text";
+        }
+
+        public PubResMsgText(PubRecMsgBase instanse)
+        {
+            this.MsgType = "text";
+            this.CreateTime = instanse.CreateTime;
+            this.FromUserName = instanse.ToUserName;
+            this.ToUserName = instanse.FromUserName; 
         }
 
         /// <summary>

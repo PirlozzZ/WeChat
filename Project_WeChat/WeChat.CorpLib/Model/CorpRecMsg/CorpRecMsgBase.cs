@@ -6,19 +6,26 @@ using System.Threading.Tasks;
 
 namespace WeChat.CorpLib.Model
 {
-    public class CorpRecEventBase : CorpRecAbstract
+    /// <summary>
+    /// 接收消息父类
+    /// </summary>
+    public class CorpRecMsgBase:CorpRecAbstract
     {
         protected log4net.ILog log;
 
-        public CorpRecEventBase()
+        public CorpRecMsgBase()
         {
             log = log4net.LogManager.GetLogger("Log.Logging");//获取一个日志记录器 
         }
 
+        
+
         /// <summary>
-        /// 事件类型
+        /// 消息id，64位整型
         /// </summary>
-        public string Event { get; protected set; }
+        public string MsgId { get; protected set; }
+
+       
 
         public override string ToXML()
         {

@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace WeChat.CorpLib.Model
 {
+    /// <summary>
+    /// 自动回复消息父类
+    /// </summary>
     public class CorpResMsgBase
     {
         /// <summary>
@@ -34,9 +37,9 @@ namespace WeChat.CorpLib.Model
             return Core.XmlUtil.Serializer(this);
         }
 
-        public string ToJson()
-        {
-            return JsonConvert.SerializeObject(this);
-        }
+        //public string ToJson()
+        //{
+        //    return JsonConvert.SerializeObject(this);
+        //}
     }
 }

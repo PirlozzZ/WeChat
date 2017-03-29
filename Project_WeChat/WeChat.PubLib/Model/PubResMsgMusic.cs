@@ -16,6 +16,14 @@ namespace WeChat.PubLib.Model
             this.MsgType = "music";
         }
 
+        public PubResMsgMusic(PubRecMsgBase instanse)
+        {
+            this.MsgType = "music";
+            this.CreateTime = instanse.CreateTime;
+            this.FromUserName = instanse.ToUserName;
+            this.ToUserName = instanse.FromUserName;
+        }
+
         /// <summary>
         /// 视频消息的标题
         /// </summary>

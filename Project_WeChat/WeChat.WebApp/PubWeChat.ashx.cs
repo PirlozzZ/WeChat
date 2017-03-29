@@ -138,6 +138,12 @@ namespace WeChat.WebApp
             {
                 return  pubCore.TransferCustomerService(instanse);
             }
+            if ("zdhf".Equals(instanse.Content.ToLower()))
+            {
+                PubResMsgText msg = new PubResMsgText(instanse);
+                msg.Content = "开发中，敬请期待！";
+                return pubCore.AutoResponse(msg);
+            }
             return "";
         }
 
