@@ -9,15 +9,15 @@ namespace WeChat.PubLib.Model
     /// <summary>
     /// 关注/取消关注事件类
     /// </summary>
-    public class PubRecEventSubscribe:PubRecEventBase
+    public class PubRecEventUnsubscribe : PubRecEventBase
     {
 
         /// <summary>
         /// 关注/取消关注事件
         /// </summary>
-        public static event WechatEventHandler<PubRecEventSubscribe> OnEventSubscribe;        //声明事件
+        public static event WechatEventHandler<PubRecEventUnsubscribe> OnEventUnsubscribe;        //声明事件
 
-        public PubRecEventSubscribe(string sMsg)
+        public PubRecEventUnsubscribe(string sMsg)
         {
             try
             {
@@ -38,7 +38,7 @@ namespace WeChat.PubLib.Model
             }
             catch (Exception e)
             {
-                log.Error("PubRecEventSubscribe", e);
+                log.Error("PubRecEventUnsubscribe", e);
             }
         }
          
@@ -57,9 +57,9 @@ namespace WeChat.PubLib.Model
         public override string DoProcess()
         {          
             string strResult = string.Empty;
-            if (OnEventSubscribe != null)
+            if (OnEventUnsubscribe != null)
             { //如果有对象注册 
-                strResult = OnEventSubscribe(this);  //调用所有注册对象的方法
+                strResult = OnEventUnsubscribe(this);  //调用所有注册对象的方法
             }
             return strResult;
         }

@@ -17,7 +17,7 @@ namespace WeChat.PubLib.Model
             this.MsgType = "text";
         }
 
-        public PubResMsgText(PubRecMsgBase instanse)
+        public PubResMsgText(PubRecAbstract instanse)
         {
             this.MsgType = "text";
             this.CreateTime = instanse.CreateTime;

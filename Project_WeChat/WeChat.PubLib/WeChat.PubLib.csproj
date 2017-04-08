@@ -64,6 +64,8 @@
     <Compile Include="Model\PubRecEventBase.cs" />
     <Compile Include="Model\PubRecEventClick.cs" />
     <Compile Include="Model\PubRecEventLocation.cs" />
+    <Compile Include="Model\PubRecEventScan.cs" />
+    <Compile Include="Model\PubRecEventUnsubscribe.cs" />
     <Compile Include="Model\PubRecEventSubscribe.cs" />
     <Compile Include="Model\PubRecEventView.cs" />
     <Compile Include="Model\PubRecMsgBase.cs" />

@@ -75,7 +75,7 @@ namespace WeChat.PubLib.Core
         {
             try
             {
-                log.Info("PubCore Refresh GetAccessToken!");
+                log.Info("PubCore Refresh GetAccessToken!——sDateTime："+ sDateTime.ToString());
                 string url = string.Format("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}", config.AppID, config.Secret);
                 string result = string.Empty;
                 result = HTTPHelper.GetRequest(url);

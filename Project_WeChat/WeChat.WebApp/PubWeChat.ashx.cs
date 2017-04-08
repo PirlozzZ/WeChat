@@ -27,7 +27,7 @@ namespace WeChat.WebApp
 
             PubRecEventClick.OnEventClick += DoClick;
             PubRecEventSubscribe.OnEventSubscribe += DoSubscribe;
-            PubRecMsgText.OnMsgText += DoMsgText;
+            PubRecMsgText.OnMsgText += DoMsgText; 
         }
 
         //private void AutoRefreshAccessToken(object source, System.Timers.ElapsedEventArgs e)
@@ -123,9 +123,12 @@ namespace WeChat.WebApp
 
         public string DoSubscribe(PubRecEventSubscribe instanse)
         {
-            log.Info("DoSubscribe");
-            return "";
+            PubResMsgText msg = new PubResMsgText(instanse);
+            msg.Content = "测试1</br>测试2\n测试3";
+            return pubCore.AutoResponse(msg);
+            
         }
+         
 
         public string DoMsgText(PubRecMsgText instanse)
         {
