@@ -123,9 +123,9 @@ namespace WeChat.WebApp
 
         public string DoSubscribe(PubRecEventSubscribe instanse)
         {
-            PubResMsgText msg = new PubResMsgText(instanse);
-            msg.Content = "测试1</br>测试2\n测试3";
-            return pubCore.AutoResponse(msg);
+            PubSendMsgText msg = new PubSendMsgText("test1\ntest2",instanse.FromUserName);
+            pubCore.SendMsg(msg);
+            return "success";
             
         }
          

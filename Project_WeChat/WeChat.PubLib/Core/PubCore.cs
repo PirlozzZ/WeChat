@@ -206,6 +206,38 @@ namespace WeChat.PubLib.Core
         }
 
         /// <summary>
+        /// 客服接口-发消息
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <returns></returns>
+        public bool SendMsg(PubSendMsgBase msg)
+        {
+            bool sign = false;
+            try
+            {
+                string url = string.Format("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token={0}", sAccessToken);
+                string result = string.Empty;
+                log.Debug("PubCore SendMsg:" + msg.ToJson());
+                result = HTTPHelper.PostRequest(url, DataTypeEnum.json, msg.ToJson());
+                JObject jo = (JObject)JsonConvert.DeserializeObject(result);
+                if ("ok".Equals(jo["errmsg"].ToString()))
+                {
+                    sign = true;
+                }
+                else
+                {
+                    log.Info(string.Format("PubCore SendMsg Failed: {0} ", result));
+                }
+            }
+            catch (Exception err)
+            {
+                log.Error("PubCore SendMsg error!", err);
+            }
+            return sign;
+        }
+
+
+        /// <summary>
         /// 被动回复消息
         /// </summary>
         /// <param name="instanse"></param>
@@ -512,7 +544,7 @@ namespace WeChat.PubLib.Core
         /// 获取模版ID
         /// </summary>
         /// <returns></returns>
-        public string getTemplateID()
+        public string GetTemplateID()
         {
             string result = string.Empty;
             try
@@ -532,7 +564,7 @@ namespace WeChat.PubLib.Core
         /// </summary>
         /// <param name="template"></param>
         /// <returns></returns>
-        public bool sendTemplate(PubRecMsgTemplate template)
+        public bool SsendTemplate(PubRecMsgTemplate template)
         {
             bool sign = false;
             string result = string.Empty;
