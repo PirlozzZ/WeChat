@@ -125,7 +125,7 @@ namespace WeChat.WebApp
 
         public string DoSubscribe(PubRecEventSubscribe instanse)
         {
-            PubSendMsgText msg = new PubSendMsgText("欢迎您关注\n上海工程技术大学财务处公众号\n我们将秉承构建服务型窗口的一贯宗旨\n将更便捷更高效的服务\n带入您的掌上生活\n在这里，您可以\n便捷的查询薪资信息、项目信息\n同时我们也将陆续开通更多人性化功能\n程财小天使愿随时随地为您服务", instanse.FromUserName);
+            PubSendMsgText msg = new PubSendMsgText("欢迎您关注\n上海工程技术大学财务处公众号\n我们将秉承\n构建服务型窗口的一贯宗旨\n将便捷的服务带入您的掌上生活\n在这里，您可以\n便捷的查询薪资信息、项目信息\n我们也将陆续开通更多人性化功能\n程财小天使愿随时随地为您服务", instanse.FromUserName);
             pubCore.SendMsg(msg);
             return "success";
         }
