@@ -125,8 +125,7 @@ namespace WeChat.WebApp
         {
             PubSendMsgText msg = new PubSendMsgText("test1\ntest2",instanse.FromUserName);
             pubCore.SendMsg(msg);
-            return "success";
-            
+            return "success";   
         }
          
 
