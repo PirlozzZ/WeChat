@@ -382,9 +382,9 @@ namespace WeChat.CorpLib.Core
         /// </summary>
         /// <param name="user"></param>
         /// <returns>创建结果</returns>
-        public bool CreateUser(CorpUser user)
+        public string CreateUser(CorpUser user)
         {
-            bool sign = false;
+            string sign = string.Empty;
             try
             {
                 string url = string.Format("https://qyapi.weixin.qq.com/cgi-bin/user/create?access_token={0}", sAccessToken);
@@ -393,11 +393,12 @@ namespace WeChat.CorpLib.Core
                 JObject jo = (JObject)JsonConvert.DeserializeObject(result);
                 if ("created".Equals(jo["errmsg"].ToString()))
                 {
-                    sign = true;
+                    sign = "success";
                 }
                 else
                 {
                     log.Info(string.Format("CorpCore CreateUser Failed: {0} ", result));
+                    sign = jo["errcode"].ToString();
                 }
             }
             catch (Exception err)
