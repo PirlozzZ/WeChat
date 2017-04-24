@@ -50,7 +50,8 @@ namespace WeChat.CorpLib.Core
             {
                 wxcpt = new WXBizMsgCrypt(config.Token, config.EncodingAESKey, config.AppID);
             }
-            GetAccessToken();
+            if (sAccessToken == null)
+                GetAccessToken();
         }
         #endregion
 

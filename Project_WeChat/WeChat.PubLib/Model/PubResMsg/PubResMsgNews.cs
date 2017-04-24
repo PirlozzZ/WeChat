@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace WeChat.PubLib.Model
 {
     /// <summary>
-    /// 回复音乐消息
+    /// 回复图文消息
     /// </summary>
     public class PubResMsgNews : PubResMsgBase
     {

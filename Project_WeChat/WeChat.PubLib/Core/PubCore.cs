@@ -26,9 +26,11 @@ namespace WeChat.PubLib.Core
             get { 
                 try {
                     DateTime temp = DateTime.Now;
-                    TimeSpan timespan = temp - sDateTime; 
+                    TimeSpan timespan = temp - sDateTime;
+                    log.Info("sAccessToken timespan：" + timespan.ToString());
                     if (timespan.TotalMilliseconds>=7000)
                     {
+                        log.Info("PubCore Refresh sAccessToken!——sDateTime：" + sDateTime.ToString());
                         sDateTime = temp;
                         GetAccessToken();
                     }
@@ -54,7 +56,7 @@ namespace WeChat.PubLib.Core
         }
 
         public PubCore(string sign)
-        { 
+        {  
             config = new Config(sign);
             sDateTime = DateTime.Now;
             isDES = bool.Parse(ConfigurationManager.AppSettings[sign+"isDES"]);
@@ -63,6 +65,7 @@ namespace WeChat.PubLib.Core
             {
                 wxcpt = new WXBizMsgCrypt(config.Token, config.EncodingAESKey, config.AppID);
             }
+            if(sAccessToken==null)
             GetAccessToken();
         }
         #endregion
@@ -75,7 +78,7 @@ namespace WeChat.PubLib.Core
         {
             try
             {
-                log.Info("PubCore Refresh GetAccessToken!——sDateTime："+ sDateTime.ToString());
+                log.Info("PubCore Refresh GetAccessToken!——sDateTime：" + sDateTime.ToString());
                 string url = string.Format("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}", config.AppID, config.Secret);
                 string result = string.Empty;
                 result = HTTPHelper.GetRequest(url);
@@ -732,6 +735,29 @@ namespace WeChat.PubLib.Core
             snsapi_base,
             snsapi_userinfo
         }
+        #endregion
+
+        #region 素材管理
+        public string batchget_material(MaterialCondition condition)
+        { 
+            string result = string.Empty;
+
+            log.Info("batchget_material strjson:" + condition.ToJson());
+            try
+            {
+                string url = string.Format("https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token={0}", sAccessToken);
+                result = HTTPHelper.PostRequest(url, DataTypeEnum.json, condition.ToJson() );
+                log.Info(string.Format("batchget_material result: {0} ", result));
+                JObject jo = (JObject)JsonConvert.DeserializeObject(result);
+            }
+            catch (Exception e)
+            {
+                log.Error("batchget_material Error", e);
+            }
+            return result;
+        }
+
+        
         #endregion
 
         #region 其他处理

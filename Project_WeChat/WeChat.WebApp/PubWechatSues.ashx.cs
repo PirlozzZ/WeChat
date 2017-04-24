@@ -15,14 +15,14 @@ namespace WeChat.WebApp
     public class PubWeChatSues : IHttpHandler
     {
         log4net.ILog log = log4net.LogManager.GetLogger("Log.Logging");//获取一个日志记录器 
-        PubCore pubCore;
+        static PubCore pubCore;
         static string logoutURL= ConfigurationManager.AppSettings["SuesLogoutURL"];
+        private static DateTime sDateTime { get; set; }
+        private static string _sAccessToken;
 
         public PubWeChatSues()
         {
             pubCore = new PubCore("Sues"); 
-             
-
             PubRecEventClick.OnEventClick += DoClick;
             PubRecEventSubscribe.OnEventSubscribe += DoSubscribe;
             PubRecMsgText.OnMsgText += DoMsgText;
@@ -125,19 +125,92 @@ namespace WeChat.WebApp
 
         public string DoSubscribe(PubRecEventSubscribe instanse)
         {
-            PubSendMsgText msg = new PubSendMsgText("欢迎您关注\n上海工程技术大学财务处公众号\n我们将秉承\n构建服务型窗口的一贯宗旨\n将便捷的服务带入您的掌上生活\n在这里，您可以\n便捷的查询薪资信息、项目信息\n我们也将陆续开通更多人性化功能\n程财小天使愿随时随地为您服务", instanse.FromUserName);
+            //PubSendMsgText msg = new PubSendMsgText("欢迎您关注\n上海工程技术大学财务处公众号\n我们将秉承\n构建服务型窗口的一贯宗旨\n将便捷的服务带入您的掌上生活\n在这里，您可以\n便捷的查询薪资信息、项目信息\n我们也将陆续开通更多人性化功能\n程财小天使愿随时随地为您服务", instanse.FromUserName);
+            PubSendMsgText msg = new PubSendMsgText("回复：\n 1、输入关键字“个人所得税”即可出现个税税率计算表等内容；\n2、输入关键字“学校账号”即可出现学校基本开户行信息；\n3、输入关键字“纳税人识别号”即可出现学校纳税人识别号；\n4、输入关键字“教师报销”即可出现教师报销业务常见问题；\n5、输入关键字“学生报销”即可出现学生报销业务常见问题；\n6、输入“银行服务”即可查阅具体各银行上门服务时间；\n7、再次感谢关注上海工程技术大学财务处官方微信平台，如有任何疑问或者建议请直接联系我们财务处。", instanse.FromUserName);
             pubCore.SendMsg(msg);
             return "success";
         }
 
         public string DoMsgText(PubRecMsgText instanse)
         {
+            PubResMsgText msg = new PubResMsgText();
+            string strResult = string.Empty;
             if ("createmenu".Equals(instanse.Content.ToLower()))
             {
                 CreateMenu();
             }
+            else if ("materialcondition".Equals(instanse.Content.ToLower()))
+            {
+                MaterialCondition condition = new MaterialCondition(MaterialTypeEnum.news,0,20);
+                pubCore.batchget_material(condition);
+            }
+            else if ("个人所得税".Equals(instanse.Content))
+            {
+                PubSendMsgMpnews mpnews = new PubSendMsgMpnews();
+                mpnews.touser = instanse.FromUserName;
+                mpnews.mpnews.media_id = "SitB_ly1YP7cYE4v-8ZkxWXl9PSzK3OMUIc8_fERI8c";
+                pubCore.SendMsg(mpnews);
+                strResult = "success";
+            }
+            else if ("学校账户".Equals(instanse.Content)|| "账号".Equals(instanse.Content)|| "学校账号".Equals(instanse.Content)|| "银行账号".Equals(instanse.Content)|| "学校帐户".Equals(instanse.Content) || "帐号".Equals(instanse.Content) || "学校帐号".Equals(instanse.Content) || "银行帐号".Equals(instanse.Content))
+            {
+                msg.Content = "上海工程技术大学\n31982603001717943\n上海银行松江支行";
+                msg.CreateTime = instanse.CreateTime;
+                msg.FromUserName = instanse.ToUserName;
+                msg.ToUserName = instanse.FromUserName;
+                strResult = pubCore.AutoResponse(msg);
+            }
+            else if ("纳税人识别号".Equals(instanse.Content) || "税号".Equals(instanse.Content) || "学校税号".Equals(instanse.Content) || "开票信息".Equals(instanse.Content))
+            {
+                msg.Content = "名称：上海工程技术大学\n纳税人识别号：310105425022547\n地址 ：上海市松江区龙腾路333号\n开户行及账号：上海银行松江支行：31982603001717943";
+                msg.CreateTime = instanse.CreateTime;
+                msg.FromUserName = instanse.ToUserName;
+                msg.ToUserName = instanse.FromUserName;
+                strResult = pubCore.AutoResponse(msg);
+            }
+            else if ("报销业务常见问题".Equals(instanse.Content)|| "教师报销".Equals(instanse.Content))
+            {
+                PubSendMsgMpnews mpnews = new PubSendMsgMpnews();
+                mpnews.touser = instanse.FromUserName;
+                mpnews.mpnews.media_id = "SitB_ly1YP7cYE4v-8ZkxeR3-nQaOnRQUBA8gsjsy_8";
+                pubCore.SendMsg(mpnews);
+                strResult = "success";
+            }
+            else if ("大学生创新项目".Equals(instanse.Content) || "学生报销".Equals(instanse.Content) || "学生".Equals(instanse.Content))
+            {
+                PubSendMsgMpnews mpnews = new PubSendMsgMpnews();
+                mpnews.touser = instanse.FromUserName;
+                mpnews.mpnews.media_id = "SitB_ly1YP7cYE4v-8ZkxfcscwdzfvQWZxxukBEV2uA";
+                pubCore.SendMsg(mpnews);
+                strResult = "success";
+            }
+            else if ("银行上门服务时间".Equals(instanse.Content) || "上门服务".Equals(instanse.Content) || "银行服务".Equals(instanse.Content))
+            {
+                PubSendMsgMpnews mpnews = new PubSendMsgMpnews();
+                mpnews.touser = instanse.FromUserName;
+                mpnews.mpnews.media_id = "SitB_ly1YP7cYE4v-8ZkxUnsUDjLYgmEVUmEVcyibQQ";
+                pubCore.SendMsg(mpnews);
+                strResult= "success";
+            }
+            else if ("帮助".Equals(instanse.Content) )
+            {
+                msg.Content = "回复：\n 1、输入关键字“个人所得税”即可出现个税税率计算表等内容；\n2、输入关键字“学校账号”即可出现学校基本开户行信息；\n3、输入关键字“纳税人识别号”即可出现学校纳税人识别号；\n4、输入关键字“教师报销”即可出现教师报销业务常见问题；\n5、输入关键字“学生报销”即可出现学生报销业务常见问题；\n6、输入“银行服务”即可查阅具体各银行上门服务时间；\n7、再次感谢关注上海工程技术大学财务处官方微信平台，如有任何疑问或者建议请直接联系我们财务处。";
+                msg.CreateTime = instanse.CreateTime;
+                msg.FromUserName = instanse.ToUserName;
+                msg.ToUserName = instanse.FromUserName;
+                strResult = pubCore.AutoResponse(msg);
+            }
+            else
+            {
+                msg.Content = "回复：\n 1、输入关键字“个人所得税”即可出现个税税率计算表等内容；\n2、输入关键字“学校账号”即可出现学校基本开户行信息；\n3、输入关键字“纳税人识别号”即可出现学校纳税人识别号；\n4、输入关键字“教师报销”即可出现教师报销业务常见问题；\n5、输入关键字“学生报销”即可出现学生报销业务常见问题；\n6、输入“银行服务”即可查阅具体各银行上门服务时间；\n7、再次感谢关注上海工程技术大学财务处官方微信平台，如有任何疑问或者建议请直接联系我们财务处。";
+                msg.CreateTime = instanse.CreateTime;
+                msg.FromUserName = instanse.ToUserName;
+                msg.ToUserName = instanse.FromUserName;
+                strResult = pubCore.AutoResponse(msg);
+
+            }
             //log.Info("DoMsgText");        
-            return "";
+            return strResult;
         }
 
   

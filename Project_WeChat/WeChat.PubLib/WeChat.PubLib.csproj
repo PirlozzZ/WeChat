@@ -59,6 +59,7 @@
     <Compile Include="Menu\ConditionalRootMenu.cs" />
     <Compile Include="Menu\Menu.cs" />
     <Compile Include="Menu\RootMenu.cs" />
+    <Compile Include="Model\Material\MaterialCondition.cs" />
     <Compile Include="Model\PubSendMsg\PubSendMsgMpnews.cs" />
     <Compile Include="Model\PubSendMsg\PubSendMsgBase.cs" />
     <Compile Include="Model\PubSendMsg\PubSendMsgImage.cs" />
