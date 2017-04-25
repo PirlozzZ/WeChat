@@ -14,18 +14,16 @@ namespace WeChat.WebApp
     /// </summary>
     public class PubWeChatSues : IHttpHandler
     {
-        log4net.ILog log = log4net.LogManager.GetLogger("Log.Logging");//获取一个日志记录器 
+        static log4net.ILog log = log4net.LogManager.GetLogger("Log.Logging");//获取一个日志记录器 
         static PubCore pubCore;
-        static string logoutURL= ConfigurationManager.AppSettings["SuesLogoutURL"];
-        private static DateTime sDateTime { get; set; }
-        private static string _sAccessToken;
+        static string logoutURL= ConfigurationManager.AppSettings["SuesLogoutURL"]; 
 
-        public PubWeChatSues()
-        {
-            pubCore = new PubCore("Sues"); 
+        static PubWeChatSues()
+        {  
+            pubCore = new PubCore("Sues");            
             PubRecEventClick.OnEventClick += DoClick;
-            PubRecEventSubscribe.OnEventSubscribe += DoSubscribe;
-            PubRecMsgText.OnMsgText += DoMsgText;
+            PubRecEventSubscribe.OnEventSubscribe += DoSubscribe;        
+            PubRecMsgText.OnMsgText += DoMsgText;     
         }
 
         public bool IsReusable
@@ -83,7 +81,7 @@ namespace WeChat.WebApp
         }
 
         #region 业务逻辑
-        public string DoClick(PubRecEventClick instanse)
+        public static string DoClick(PubRecEventClick instanse)
         {
             string strResult = string.Empty;
             if ("32".Equals(instanse.EventKey))
@@ -123,7 +121,7 @@ namespace WeChat.WebApp
             return strResult;
         }
 
-        public string DoSubscribe(PubRecEventSubscribe instanse)
+        public static string DoSubscribe(PubRecEventSubscribe instanse)
         {
             //PubSendMsgText msg = new PubSendMsgText("欢迎您关注\n上海工程技术大学财务处公众号\n我们将秉承\n构建服务型窗口的一贯宗旨\n将便捷的服务带入您的掌上生活\n在这里，您可以\n便捷的查询薪资信息、项目信息\n我们也将陆续开通更多人性化功能\n程财小天使愿随时随地为您服务", instanse.FromUserName);
             PubSendMsgText msg = new PubSendMsgText("回复：\n 1、输入关键字“个人所得税”即可出现个税税率计算表等内容；\n2、输入关键字“学校账号”即可出现学校基本开户行信息；\n3、输入关键字“纳税人识别号”即可出现学校纳税人识别号；\n4、输入关键字“教师报销”即可出现教师报销业务常见问题；\n5、输入关键字“学生报销”即可出现学生报销业务常见问题；\n6、输入“银行服务”即可查阅具体各银行上门服务时间；\n7、再次感谢关注上海工程技术大学财务处官方微信平台，如有任何疑问或者建议请直接联系我们财务处。", instanse.FromUserName);
@@ -131,7 +129,7 @@ namespace WeChat.WebApp
             return "success";
         }
 
-        public string DoMsgText(PubRecMsgText instanse)
+        public static string DoMsgText(PubRecMsgText instanse)
         {
             PubResMsgText msg = new PubResMsgText();
             string strResult = string.Empty;
@@ -215,7 +213,7 @@ namespace WeChat.WebApp
 
   
 
-        public void CreateMenu()
+        public static void CreateMenu()
         {
             RootMenu rootmenu = new RootMenu();
             ChildMenu menu1 = new ChildMenu("程财信息");

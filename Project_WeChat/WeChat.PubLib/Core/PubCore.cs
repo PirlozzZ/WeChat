@@ -21,14 +21,14 @@ namespace WeChat.PubLib.Core
     {
         private DateTime sDateTime { get; set; }
         private string _sAccessToken;
+
         private string sAccessToken
         {
             get { 
                 try {
                     DateTime temp = DateTime.Now;
-                    TimeSpan timespan = temp - sDateTime;
-                    log.Info("sAccessToken timespan：" + timespan.ToString());
-                    if (timespan.TotalMilliseconds>=7000)
+                    TimeSpan timespan = temp - sDateTime; 
+                    if (timespan.TotalMilliseconds>= config.expires_in)
                     {
                         log.Info("PubCore Refresh sAccessToken!——sDateTime：" + sDateTime.ToString());
                         sDateTime = temp;
