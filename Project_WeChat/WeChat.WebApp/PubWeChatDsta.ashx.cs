@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Text;
 using System.Web;
@@ -11,31 +12,18 @@ namespace WeChat.WebApp
     /// <summary>
     /// PubWeChat 的摘要说明
     /// </summary>
-    public class PubWeChat : IHttpHandler
+    public class PubWeChatDsta : IHttpHandler
     {
         static log4net.ILog log = log4net.LogManager.GetLogger("Log.Logging");//获取一个日志记录器 
         static PubCore pubCore;
+        static string logoutURL = ConfigurationManager.AppSettings["SuesLogoutURL"];
 
-        static PubWeChat()
+        static PubWeChatDsta()
         {
             pubCore = new PubCore();
-            //int expires_in = Int32.Parse(ConfigurationManager.AppSettings["expires_in"]);
-            //System.Timers.Timer t = new System.Timers.Timer(expires_in);//实例化Timer类，设置间隔时间；
-            //t.Elapsed += new System.Timers.ElapsedEventHandler(AutoRefreshAccessToken);//到达时间的时候执行事件；
-            //t.AutoReset = true;//设置是执行一次（false）还是一直执行(true)；
-            //t.Enabled = true;//是否执行System.Timers.Timer.Elapsed事件； 
-
-            PubRecEventClick.OnEventClick += DoClick;
-            PubRecEventSubscribe.OnEventSubscribe += DoSubscribe;
+            PubRecEventClick.OnEventClick += DoClick; 
             PubRecMsgText.OnMsgText += DoMsgText; 
         }
-
-        //private void AutoRefreshAccessToken(object source, System.Timers.ElapsedEventArgs e)
-        //{
-        //    log.Debug(string.Format("AutoRefreshAccessToken before: {0} ", pubCore.sAccessToken));
-        //    pubCore.GetAccessToken();
-        //    log.Debug(string.Format("AutoRefreshAccessToken after: {0} ", pubCore.sAccessToken));
-        //}
 
         public bool IsReusable
         {
@@ -113,21 +101,41 @@ namespace WeChat.WebApp
         public static string DoClick(PubRecEventClick instanse)
         {
             string strResult = string.Empty;
-            log.Info("DoClick");
             if ("2".Equals(instanse.EventKey))
             {
-                strResult = pubCore.TransferCustomerService(instanse);
+                try
+                {
+                    PubResMsgText msg = new PubResMsgText();
+                    string flag = HTTPHelper.GetRequest(logoutURL + "?openid=" + instanse.FromUserName);
+                    if (bool.Parse(flag))
+                    {
+                        msg.Content = "解除绑定成功！";
+                        msg.CreateTime = instanse.CreateTime;
+                        msg.FromUserName = instanse.ToUserName;
+                        msg.ToUserName = instanse.FromUserName;
+                        strResult = pubCore.AutoResponse(msg);
+                    }
+                }
+                catch (Exception e)
+                {
+                    log.Error("PubWeChatSues DoClick Logout Err:", e);
+                }
+            }
+            else
+            {
+                PubResMsgText msg = new PubResMsgText();
+                msg.Content = "开发中，敬请期待！";
+                msg.CreateTime = instanse.CreateTime;
+                msg.FromUserName = instanse.ToUserName;
+                msg.ToUserName = instanse.FromUserName;
+                strResult = pubCore.AutoResponse(msg);
             }
             return strResult;
         }
 
-        public static string DoSubscribe(PubRecEventSubscribe instanse)
-        {
-            PubSendMsgText msg = new PubSendMsgText("test1\ntest2",instanse.FromUserName);
-            pubCore.SendMsg(msg);
-            return "success";   
-        }
-         
+
+
+
 
         public static string DoMsgText(PubRecMsgText instanse)
         {
@@ -135,35 +143,24 @@ namespace WeChat.WebApp
             {
                 CreateMenu();
             }
-           
-            if ("kf".Equals(instanse.Content.ToLower()))
-            {
-                return  pubCore.TransferCustomerService(instanse);
-            }
-            if ("zdhf".Equals(instanse.Content.ToLower()))
-            {
-                PubResMsgText msg = new PubResMsgText(instanse);
-                msg.Content = "开发中，敬请期待！";
-                return pubCore.AutoResponse(msg);
-            }
             return "";
         }
 
         public static void CreateMenu()
         {
-            ConditionalRootMenu rootmenu = new ConditionalRootMenu();
-            ChildMenu menu1 = new ChildMenu("菜单女一");
-            ChildMenu menu2 = new ChildMenu("菜单二", ChildMenu.MenuTypeEnum.click, "2");
+            RootMenu rootmenu = new RootMenu();
+            ChildMenu menu1 = new ChildMenu("信息查询");
+            ChildMenu menu2 = new ChildMenu("接触绑定", ChildMenu.MenuTypeEnum.click, "2");
 
-            ChildMenu menu11 = new ChildMenu("子菜单一", ChildMenu.MenuTypeEnum.click, "11");
-            ChildMenu menu12 = new ChildMenu("子菜单二", ChildMenu.MenuTypeEnum.view, "http://www.baidu.com");
+            ChildMenu menu11 = new ChildMenu("项目查询", ChildMenu.MenuTypeEnum.view, "http://wxcw.sta.edu.cn:80/Login/Index?state=SUES!fund");
+            ChildMenu menu12 = new ChildMenu("薪资查询", ChildMenu.MenuTypeEnum.view, "http://wxcw.sta.edu.cn:80/Login/Index?state=SUES!salary");
+
 
             menu1.sub_button.Add(menu11);
             menu1.sub_button.Add(menu12);
             rootmenu.button.Add(menu1);
             rootmenu.button.Add(menu2);
-
-            rootmenu.matchrule.sex = "2";
+             
 
             pubCore.CreateMenu(rootmenu);
         }
