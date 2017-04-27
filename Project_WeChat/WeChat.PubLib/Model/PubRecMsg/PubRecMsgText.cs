@@ -36,7 +36,7 @@ namespace WeChat.PubLib.Model
             string strResult = string.Empty;
             if (OnMsgText != null)
             { //如果有对象注册 
-                log.Debug("PubRecMsgText OnMsgText" + OnMsgText);
+                //log.Debug("PubRecMsgText OnMsgText" + OnMsgText);
                 strResult =OnMsgText(this);  //调用所有注册对象的方法
                 
             }

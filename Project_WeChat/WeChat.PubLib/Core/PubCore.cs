@@ -56,7 +56,7 @@ namespace WeChat.PubLib.Core
         }
 
         public PubCore(string sign)
-        {  
+        { 
             config = new Config(sign);
             sDateTime = DateTime.Now;
             isDES = bool.Parse(ConfigurationManager.AppSettings[sign+"isDES"]);
