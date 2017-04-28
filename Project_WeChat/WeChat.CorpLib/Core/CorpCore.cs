@@ -19,10 +19,11 @@ namespace WeChat.CorpLib.Core
             get
             {
                 DateTime temp = DateTime.Now;
-                if (DateTime.Compare(sDateTime.AddMinutes(7000), temp) < 0)
+                TimeSpan timespan = temp - sDateTime;
+                if (timespan.TotalMilliseconds >= config.expires_in)
                 {
-                    sDateTime = temp;
                     GetAccessToken();
+                    sDateTime = temp;
                 }
                 return _sAccessToken;
             }

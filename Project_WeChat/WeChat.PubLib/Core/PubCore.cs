@@ -29,10 +29,9 @@ namespace WeChat.PubLib.Core
                     DateTime temp = DateTime.Now;
                     TimeSpan timespan = temp - sDateTime; 
                     if (timespan.TotalMilliseconds>= config.expires_in)
-                    {
-                        log.Info("PubCore Refresh sAccessToken!——sDateTime：" + sDateTime.ToString());
-                        sDateTime = temp;
+                    {                   
                         GetAccessToken();
+                        sDateTime = temp;
                     }
                 }
                 catch (Exception  e)
