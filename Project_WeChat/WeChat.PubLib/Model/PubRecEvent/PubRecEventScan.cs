@@ -7,13 +7,13 @@ using System.Xml;
 namespace WeChat.PubLib.Model
 {
     /// <summary>
-    /// 关注/取消关注事件类
+    /// 扫描带参数二维码事件类
     /// </summary>
     public class PubRecEventScan : PubRecEventBase
     {
 
         /// <summary>
-        /// 关注/取消关注事件
+        /// 扫描带参数二维码事件
         /// </summary>
         public static event WechatEventHandler<PubRecEventScan> OnEventScan;        //声明事件
 
@@ -38,11 +38,10 @@ namespace WeChat.PubLib.Model
                 log.Error("PubRecEventScan", e);
             }
         }
-         
+
 
         /// <summary>
-        /// 1. 用户未关注时，进行关注后的事件推送：事件KEY值，qrscene_为前缀，后面为二维码的参数值
-        /// 2. 用户已关注时的事件推送：事件KEY值，是一个32位无符号整数，即创建二维码时的二维码scene_id
+        /// 事件KEY值，是一个32位无符号整数，即创建二维码时的二维码scene_id
         /// </summary>
         public string EventKey { get; private set; }
 

@@ -210,9 +210,7 @@ namespace WeChat.WebApp
             //log.Info("DoMsgText");        
             return strResult;
         }
-
-  
-
+ 
         public static void CreateMenu()
         {
             RootMenu rootmenu = new RootMenu();

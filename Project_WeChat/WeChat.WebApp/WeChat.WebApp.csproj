@@ -106,6 +106,7 @@
     <None Include="Properties\PublishProfiles\Project_WeChat.pubxml" />
     <Content Include="PubWeChatSues.ashx" />
     <Content Include="PubWeChatDsta.ashx" />
+    <Content Include="PubWeChatSta.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -135,6 +136,9 @@
     </Compile>
     <Compile Include="PubWeChat.ashx.cs">
       <DependentUpon>PubWeChat.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="PubWeChatSta.ashx.cs">
+      <DependentUpon>PubWeChatSta.ashx</DependentUpon>
     </Compile>
     <Compile Include="PubWeChatSues.ashx.cs">
       <DependentUpon>PubWeChatSues.ashx</DependentUpon>
