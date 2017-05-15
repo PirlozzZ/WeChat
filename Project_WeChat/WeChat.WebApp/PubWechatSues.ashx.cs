@@ -124,7 +124,7 @@ namespace WeChat.WebApp
         public static string DoSubscribe(PubRecEventSubscribe instanse)
         {
             //PubSendMsgText msg = new PubSendMsgText("欢迎您关注\n上海工程技术大学财务处公众号\n我们将秉承\n构建服务型窗口的一贯宗旨\n将便捷的服务带入您的掌上生活\n在这里，您可以\n便捷的查询薪资信息、项目信息\n我们也将陆续开通更多人性化功能\n程财小天使愿随时随地为您服务", instanse.FromUserName);
-            PubSendMsgText msg = new PubSendMsgText("回复：\n 1、输入关键字“个人所得税”即可出现个税税率计算表等内容；\n2、输入关键字“学校账号”即可出现学校基本开户行信息；\n3、输入关键字“纳税人识别号”即可出现学校纳税人识别号；\n4、输入关键字“教师报销”即可出现教师报销业务常见问题；\n5、输入关键字“学生报销”即可出现学生报销业务常见问题；\n6、输入“银行服务”即可查阅具体各银行上门服务时间；\n7、再次感谢关注上海工程技术大学财务处官方微信平台，如有任何疑问或者建议请直接联系我们财务处。", instanse.FromUserName);
+            PubSendMsgText msg = new PubSendMsgText("回复：\n 1、输入关键字“个人所得税”即可出现个税税率计算表等内容；\n2、输入关键字“学校账号”即可出现学校基本开户行信息；\n3、输入关键字“纳税人识别号”即可出现学校纳税人识别号；\n4、输入关键字“教师报销”即可出现教师报销业务常见问题；\n5、输入关键字“学生报销”即可出现学生报销业务常见问题；\n6、输入“银行服务”即可查阅具体各银行上门服务时间；\n7、输入“差旅费”即可查询差旅费报销规定；\n8、再次感谢关注上海工程技术大学财务处官方微信平台，如有任何疑问或者建议请直接联系我们财务处。", instanse.FromUserName);
             pubCore.SendMsg(msg);
             return "success";
         }
