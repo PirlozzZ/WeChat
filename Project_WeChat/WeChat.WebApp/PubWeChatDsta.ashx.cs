@@ -149,11 +149,11 @@ namespace WeChat.WebApp
             ChildMenu menu1 = new ChildMenu("信息查询");
             ChildMenu menu2 = new ChildMenu("解除绑定", ChildMenu.MenuTypeEnum.click, "2");
 
-            //ChildMenu menu11 = new ChildMenu("项目查询", ChildMenu.MenuTypeEnum.view, "http://wxcw.sta.edu.cn:80/Login/Index?state=DSTA!fund");
+            ChildMenu menu11 = new ChildMenu("项目查询", ChildMenu.MenuTypeEnum.view, "http://wxcw.sta.edu.cn:80/Login/Index?state=DSTA!fund");
             ChildMenu menu12 = new ChildMenu("薪资查询", ChildMenu.MenuTypeEnum.view, "http://wxcw.sta.edu.cn:80/Login/Index?state=DSTA!salary");
 
 
-            //menu1.sub_button.Add(menu11);
+            menu1.sub_button.Add(menu11);
             menu1.sub_button.Add(menu12);
             rootmenu.button.Add(menu1);
             rootmenu.button.Add(menu2);
