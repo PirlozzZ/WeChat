@@ -18,7 +18,7 @@ namespace WeChat.WebApp
 
         static log4net.ILog log = log4net.LogManager.GetLogger("Log.Logging");//获取一个日志记录器 
         static CorpCore corpCore;
-        static string logoutURL = ConfigurationManager.AppSettings["DstaLogoutURL"];
+        static string logoutURL = ConfigurationManager.AppSettings["ShsmuLogoutURL"];
         static string agentid = ConfigurationManager.AppSettings["ShsmuAgentid"]; 
 
         static CorpWeChatShsmu()
@@ -38,7 +38,7 @@ namespace WeChat.WebApp
 
         public void ProcessRequest(HttpContext context)
         {
-            string pMsgSignature = HttpContext.Current.Request.QueryString["signature"];
+            string pMsgSignature = HttpContext.Current.Request.QueryString["msg_signature"];
             string pTimeStamp = HttpContext.Current.Request.QueryString["timestamp"];
             string pNonce = HttpContext.Current.Request.QueryString["nonce"];
             string sResult = "success";

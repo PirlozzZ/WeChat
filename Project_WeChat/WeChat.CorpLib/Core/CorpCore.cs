@@ -100,7 +100,7 @@ namespace WeChat.CorpLib.Core
             }
             catch (Exception e)
             {              
-                log.Error("CorpAuth error:", e); 
+                log.Error("CorpAuth error:"+sTimeStamp+"--"+sNonce + "--" +sEchoStr + "--" +sMsgSignature, e); 
             }
             return sReplyEchoStr;
         }
@@ -123,6 +123,8 @@ namespace WeChat.CorpLib.Core
             {
                 XmlDocument doc = new XmlDocument();
                 doc.LoadXml(sMsg);
+                
+
                 XmlNode root = doc.FirstChild;
                 sMsgType = root["MsgType"].InnerText;
                 Assembly assembly = Assembly.GetExecutingAssembly();
@@ -130,14 +132,14 @@ namespace WeChat.CorpLib.Core
                 if ("event".Equals(sMsgType))
                 {
                     sEventType = root["Event"].InnerText;
-                    type = assembly.GetType("WeChat.CorpLib.Model.PubRecEvent" + sEventType.Substring(0, 1).ToUpper() + sEventType.Substring(1).ToLower());
+                    type = assembly.GetType("WeChat.CorpLib.Model.CorpRecEvent" + sEventType.Substring(0, 1).ToUpper() + sEventType.Substring(1).ToLower());
                 }
                 else
                 {
-                    type = assembly.GetType("WeChat.CorpLib.Model.PubRecMsg" + sMsgType.Substring(0, 1).ToUpper() + sMsgType.Substring(1).ToLower());
-                }
+                    type = assembly.GetType("WeChat.CorpLib.Model.CorpRecMsg" + sMsgType.Substring(0, 1).ToUpper() + sMsgType.Substring(1).ToLower());
+                } 
                 log.Debug("CorpCore ReflectClassName:" + type.Name);
-                object instance = Activator.CreateInstance(type, new object[] { sMsg });
+                object instance = Activator.CreateInstance(type, new object[] { sMsg }); 
                 if (instance != null)
                 {
                     CorpRecAbstract temp = (CorpRecAbstract)instance;
@@ -147,7 +149,7 @@ namespace WeChat.CorpLib.Core
                         sResult = "success";
                     }
                     log.Debug("CorpCore ProcessMsg instance:" + instance.ToString());
-                }
+                } 
             }
             catch (Exception e)
             {
@@ -209,7 +211,7 @@ namespace WeChat.CorpLib.Core
                 {
                     int ret = 0;
                     ret = wxcpt.DecryptMsg(sMsgSignature, sTimeStamp, sNonce, postStr, ref strReuslt);
-                    log.Debug("CorpCore DecryptMsg Msg:" + postStr);
+                    log.Debug("CorpCore DecryptMsg Msg:" + strReuslt);
                     if (ret != 0)
                     {
                         log.Info("CorpCore DecryptMsg failed");
