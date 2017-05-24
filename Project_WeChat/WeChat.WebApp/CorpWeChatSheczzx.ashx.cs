@@ -70,8 +70,7 @@ namespace WeChat.WebApp
             {
                 string pEchoStr = HttpContext.Current.Request.QueryString["echostr"];
                 try
-                {
-                    log.Debug("CorpWeChatSheczzx ProcessRequest before pEchoStr:" + pEchoStr);
+                { 
                     pEchoStr = corpCore.CorpAuth(pTimeStamp, pNonce, pEchoStr, pMsgSignature);
                     log.Debug("CorpWeChatSheczzx ProcessRequest after pEchoStr:" + pEchoStr);
                     HttpContext.Current.Response.Write(pEchoStr);

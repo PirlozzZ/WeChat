@@ -104,6 +104,7 @@
     <Content Include="CorpWeChat.ashx" />
     <Content Include="CorpWeChatShsmu.ashx" />
     <Content Include="CorpWeChatSheczzx.ashx" />
+    <Content Include="CorpWeChatShtvu.ashx" />
     <None Include="Properties\PublishProfiles\Project_WeChat.pubxml" />
     <Content Include="PubWeChatSues.ashx" />
     <Content Include="PubWeChatDsta.ashx" />
@@ -130,6 +131,9 @@
     </Compile>
     <Compile Include="CorpWeChatShsmu.ashx.cs">
       <DependentUpon>CorpWeChatShsmu.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="CorpWeChatShtvu.ashx.cs">
+      <DependentUpon>CorpWeChatShtvu.ashx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
