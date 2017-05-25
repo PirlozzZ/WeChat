@@ -37,7 +37,7 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Dll\Newtonsoft.Json.dll</HintPath>
+      <HintPath>Dll\Newtonsoft4.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Config.cs" />
+    <Compile Include="Core\CookieHelper.cs" />
     <Compile Include="Core\Cryptography.cs" />
     <Compile Include="Core\HTTPHelper.cs" />
     <Compile Include="Core\PubCore.cs" />
@@ -97,10 +98,12 @@
     <Compile Include="Model\Others\QRCodeTemp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Dll\Newtonsoft4.0\" />
+    <Folder Include="Dll\Newtonsoft9.0\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Dll\log4net.dll" />
-    <Content Include="Dll\Newtonsoft.Json.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
