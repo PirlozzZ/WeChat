@@ -230,7 +230,7 @@ namespace WeChat.WebApp
             ChildMenu menu12 = new ChildMenu("薪资查询", ChildMenu.MenuTypeEnum.view, "http://cwpt.sues.edu.cn:80/Login/Index?state=SUES!salary");
             ChildMenu menu13 = new ChildMenu("来款查询", ChildMenu.MenuTypeEnum.click, "13");
             ChildMenu menu14 = new ChildMenu("报销查询", ChildMenu.MenuTypeEnum.click, "14");
-            ChildMenu menu15 = new ChildMenu("学费查询", ChildMenu.MenuTypeEnum.click, "15");
+            ChildMenu menu15 = new ChildMenu("学费查询", ChildMenu.MenuTypeEnum.view, "http://cwpt.sues.edu.cn:8080/SFP_slogin");
 
             menu1.sub_button.Add(menu11);
             menu1.sub_button.Add(menu12);
