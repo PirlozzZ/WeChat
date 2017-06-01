@@ -111,12 +111,15 @@ namespace WeChat.WebApp
             }
             else
             {
-                PubResMsgText msg = new PubResMsgText();
-                msg.Content = "开发中，敬请期待！";
-                msg.CreateTime = instanse.CreateTime;
-                msg.FromUserName = instanse.ToUserName;
-                msg.ToUserName = instanse.FromUserName;
-                strResult = pubCore.AutoResponse(msg);
+                //PubResMsgText msg = new PubResMsgText();
+                //msg.Content = "开发中，敬请期待！";
+                //msg.CreateTime = instanse.CreateTime;
+                //msg.FromUserName = instanse.ToUserName;
+                //msg.ToUserName = instanse.FromUserName;
+                //strResult = pubCore.AutoResponse(msg);
+                PubSendMsgText msg = new PubSendMsgText("开发中，敬请期待！", instanse.FromUserName);
+                pubCore.SendMsg(msg);
+                return "success";
             }
             return strResult;
         }
@@ -131,7 +134,7 @@ namespace WeChat.WebApp
 
         public static string DoMsgText(PubRecMsgText instanse)
         {
-            PubResMsgText msg = new PubResMsgText();
+            //PubResMsgText msg = new PubResMsgText();
             string strResult = string.Empty;
             if ("createmenu".Equals(instanse.Content.ToLower()))
             {
@@ -152,19 +155,25 @@ namespace WeChat.WebApp
             }
             else if ("学校账户".Equals(instanse.Content)|| "账号".Equals(instanse.Content)|| "学校账号".Equals(instanse.Content)|| "银行账号".Equals(instanse.Content)|| "学校帐户".Equals(instanse.Content) || "帐号".Equals(instanse.Content) || "学校帐号".Equals(instanse.Content) || "银行帐号".Equals(instanse.Content))
             {
-                msg.Content = "上海工程技术大学\n31982603001717943\n上海银行松江支行";
-                msg.CreateTime = instanse.CreateTime;
-                msg.FromUserName = instanse.ToUserName;
-                msg.ToUserName = instanse.FromUserName;
-                strResult = pubCore.AutoResponse(msg);
+                //msg.Content = "上海工程技术大学\n31982603001717943\n上海银行松江支行";
+                //msg.CreateTime = instanse.CreateTime;
+                //msg.FromUserName = instanse.ToUserName;
+                //msg.ToUserName = instanse.FromUserName;
+                //strResult = pubCore.AutoResponse(msg);
+                PubSendMsgText msg = new PubSendMsgText("上海工程技术大学\n31982603001717943\n上海银行松江支行", instanse.FromUserName);
+                pubCore.SendMsg(msg);
+                return "success";
             }
             else if ("纳税人识别号".Equals(instanse.Content) || "税号".Equals(instanse.Content) || "学校税号".Equals(instanse.Content) || "开票信息".Equals(instanse.Content))
             {
-                msg.Content = "名称：上海工程技术大学\n纳税人识别号：310105425022547\n地址 ：上海市松江区龙腾路333号\n开户行及账号：上海银行松江支行：31982603001717943";
-                msg.CreateTime = instanse.CreateTime;
-                msg.FromUserName = instanse.ToUserName;
-                msg.ToUserName = instanse.FromUserName;
-                strResult = pubCore.AutoResponse(msg);
+                //msg.Content = "名称：上海工程技术大学\n纳税人识别号：310105425022547\n地址 ：上海市松江区龙腾路333号\n开户行及账号：上海银行松江支行：31982603001717943";
+                //msg.CreateTime = instanse.CreateTime;
+                //msg.FromUserName = instanse.ToUserName;
+                //msg.ToUserName = instanse.FromUserName;
+                //strResult = pubCore.AutoResponse(msg);
+                PubSendMsgText msg = new PubSendMsgText("名称：上海工程技术大学\n纳税人识别号：310105425022547\n地址 ：上海市松江区龙腾路333号\n开户行及账号：上海银行松江支行：31982603001717943", instanse.FromUserName);
+                pubCore.SendMsg(msg);
+                return "success";
             }
             else if ("报销业务常见问题".Equals(instanse.Content)|| "教师报销".Equals(instanse.Content))
             {
@@ -200,19 +209,25 @@ namespace WeChat.WebApp
             }
             else if ("帮助".Equals(instanse.Content) )
             {
-                msg.Content = "回复：\n 1、输入关键字“个人所得税”即可出现个税税率计算表等内容；\n2、输入关键字“学校账号”即可出现学校基本开户行信息；\n3、输入关键字“纳税人识别号”即可出现学校纳税人识别号；\n4、输入关键字“教师报销”即可出现教师报销业务常见问题；\n5、输入关键字“学生报销”即可出现学生报销业务常见问题；\n6、输入“银行服务”即可查阅具体各银行上门服务时间；\n7、输入“差旅费”即可查询差旅费报销规定；\n8、再次感谢关注上海工程技术大学财务处官方微信平台，如有任何疑问或者建议请直接联系我们财务处。";
-                msg.CreateTime = instanse.CreateTime;
-                msg.FromUserName = instanse.ToUserName;
-                msg.ToUserName = instanse.FromUserName;
-                strResult = pubCore.AutoResponse(msg);
+                //msg.Content = "回复：\n 1、输入关键字“个人所得税”即可出现个税税率计算表等内容；\n2、输入关键字“学校账号”即可出现学校基本开户行信息；\n3、输入关键字“纳税人识别号”即可出现学校纳税人识别号；\n4、输入关键字“教师报销”即可出现教师报销业务常见问题；\n5、输入关键字“学生报销”即可出现学生报销业务常见问题；\n6、输入“银行服务”即可查阅具体各银行上门服务时间；\n7、输入“差旅费”即可查询差旅费报销规定；\n8、再次感谢关注上海工程技术大学财务处官方微信平台，如有任何疑问或者建议请直接联系我们财务处。";
+                //msg.CreateTime = instanse.CreateTime;
+                //msg.FromUserName = instanse.ToUserName;
+                //msg.ToUserName = instanse.FromUserName;
+                //strResult = pubCore.AutoResponse(msg);
+                PubSendMsgText msg = new PubSendMsgText("回复：\n 1、输入关键字“个人所得税”即可出现个税税率计算表等内容；\n2、输入关键字“学校账号”即可出现学校基本开户行信息；\n3、输入关键字“纳税人识别号”即可出现学校纳税人识别号；\n4、输入关键字“教师报销”即可出现教师报销业务常见问题；\n5、输入关键字“学生报销”即可出现学生报销业务常见问题；\n6、输入“银行服务”即可查阅具体各银行上门服务时间；\n7、输入“差旅费”即可查询差旅费报销规定；\n8、再次感谢关注上海工程技术大学财务处官方微信平台，如有任何疑问或者建议请直接联系我们财务处。", instanse.FromUserName);
+                pubCore.SendMsg(msg);
+                return "success";
             }
             else
             {
-                msg.Content = "回复：\n 1、输入关键字“个人所得税”即可出现个税税率计算表等内容；\n2、输入关键字“学校账号”即可出现学校基本开户行信息；\n3、输入关键字“纳税人识别号”即可出现学校纳税人识别号；\n4、输入关键字“教师报销”即可出现教师报销业务常见问题；\n5、输入关键字“学生报销”即可出现学生报销业务常见问题；\n6、输入“银行服务”即可查阅具体各银行上门服务时间；\n7、输入“差旅费”即可查询差旅费报销规定；\n8、再次感谢关注上海工程技术大学财务处官方微信平台，如有任何疑问或者建议请直接联系我们财务处。";
-                msg.CreateTime = instanse.CreateTime;
-                msg.FromUserName = instanse.ToUserName;
-                msg.ToUserName = instanse.FromUserName;
-                strResult = pubCore.AutoResponse(msg);
+                //msg.Content = "回复：\n 1、输入关键字“个人所得税”即可出现个税税率计算表等内容；\n2、输入关键字“学校账号”即可出现学校基本开户行信息；\n3、输入关键字“纳税人识别号”即可出现学校纳税人识别号；\n4、输入关键字“教师报销”即可出现教师报销业务常见问题；\n5、输入关键字“学生报销”即可出现学生报销业务常见问题；\n6、输入“银行服务”即可查阅具体各银行上门服务时间；\n7、输入“差旅费”即可查询差旅费报销规定；\n8、再次感谢关注上海工程技术大学财务处官方微信平台，如有任何疑问或者建议请直接联系我们财务处。";
+                //msg.CreateTime = instanse.CreateTime;
+                //msg.FromUserName = instanse.ToUserName;
+                //msg.ToUserName = instanse.FromUserName;
+                //strResult = pubCore.AutoResponse(msg);
+                PubSendMsgText msg = new PubSendMsgText("回复：\n 1、输入关键字“个人所得税”即可出现个税税率计算表等内容；\n2、输入关键字“学校账号”即可出现学校基本开户行信息；\n3、输入关键字“纳税人识别号”即可出现学校纳税人识别号；\n4、输入关键字“教师报销”即可出现教师报销业务常见问题；\n5、输入关键字“学生报销”即可出现学生报销业务常见问题；\n6、输入“银行服务”即可查阅具体各银行上门服务时间；\n7、输入“差旅费”即可查询差旅费报销规定；\n8、再次感谢关注上海工程技术大学财务处官方微信平台，如有任何疑问或者建议请直接联系我们财务处。", instanse.FromUserName);
+                pubCore.SendMsg(msg);
+                return "success";
 
             }
             //log.Info("DoMsgText");        
