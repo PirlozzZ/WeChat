@@ -93,6 +93,8 @@
     <Compile Include="Model\CorpResMsg\CorpResMsgVoice.cs" />
     <Compile Include="Model\CorpSendMsg\CorpSendMsgBase.cs" />
     <Compile Include="Model\CorpSendMsg\CorpSendMsgText.cs" />
+    <Compile Include="Model\Others\CorpOAuth_UserDetail.cs" />
+    <Compile Include="Model\Others\CorpOAuth_UserInfo.cs" />
     <Compile Include="Model\Others\CorpUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

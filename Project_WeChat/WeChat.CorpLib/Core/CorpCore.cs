@@ -98,33 +98,35 @@ namespace WeChat.CorpLib.Core
         /// <param name="code"></param>
         /// <param name="agentid"></param>
         /// <returns></returns>
-        public string OAuth_getUserInfo(string code, string agentid)
+        public CorpOAuth_UserInfo OAuth_getUserInfo(string code)
         {
+            CorpOAuth_UserInfo instance = null;
             string result = string.Empty;
             if (!string.IsNullOrEmpty(code))
             {
                 try
-                { 
+                {
                     string url = string.Format("https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo?access_token={0}&code={1}", sAccessToken, code);
-                    result = HTTPHelper.WechatRequest(url, MethodTypeEnum.Get, DataTypeEnum.json);
-                    if (result.Contains("\"errmsg\":\"ok\""))
+                    result = HTTPHelper.GetRequest(url);
+                    instance = JsonConvert.DeserializeObject<CorpOAuth_UserInfo>(result);
+                    if (instance != null)
                     {
-                        JObject jo = (JObject)JsonConvert.DeserializeObject(result);
-                        result = jo["UserId"].ToString();
+                        if (!"0".Equals(instance.errcode))
+                        {
+                            log.Info(string.Format("Corp OAuth_getUserInfo Failed:{0}", instance.errcode + instance.errmsg));
+                        }
                     }
                     else
                     {
-                        MyLog.WriteLog(string.Format("Corp OAuth_getCode Failed: {0} ", url + result));
-                        result = "error";
+                        log.Info(string.Format("Corp OAuth_getUserInfo JsonConvert Failed!"));
                     }
-
                 }
                 catch (Exception e)
                 {
-                    MyLog.WriteLog(string.Format("Corp OAuth_getCode ERR: {0} ", e.Message));
+                    log.Error(string.Format("Corp OAuth_getUserInfo ERR!"), e);
                 }
             }
-            return result;
+            return instance;
         }
 
         /// <summary>
@@ -132,22 +134,21 @@ namespace WeChat.CorpLib.Core
         /// </summary>
         /// <param name="Employeecode">微信帐号号码</param>
         /// <returns>用户信息</returns>
-        public CorpReqPersonInfo getPersonInfo(string Employeecode)
+        public CorpOAuth_UserDetail OAuth_getUserDetail(string user_ticket)
         {
-            CorpReqPersonInfo reqPersonInfo = null;
+            CorpOAuth_UserDetail instance = null;
             string result = string.Empty;
             try
-            {
-                string accessToken = config.getCorpAccessToken();
-                string url = string.Format("https://qyapi.weixin.qq.com/cgi-bin/user/get?access_token={0}&userid={1}", accessToken, Employeecode);
-                result = HTTPHelper.WechatRequest(url, MethodTypeEnum.Get, DataTypeEnum.json);
-                reqPersonInfo = new CorpReqPersonInfo(result);
+            { 
+                string url = string.Format("https://qyapi.weixin.qq.com/cgi-bin/user/getuserdetail?access_token={0}", sAccessToken);
+                result = HTTPHelper.PostRequest(url, DataTypeEnum.json, string.Format("{\"user_ticket\": \"{0}\"}", user_ticket));
+                instance = JsonConvert.DeserializeObject<CorpOAuth_UserDetail>(result);
             }
             catch (Exception e)
             {
-                MyLog.WriteLog(string.Format("getPersonInfo ERR: {0} ", e.Message));
+                log.Error(string.Format("Corp OAuth_getUserDetail ERR!"), e);
             }
-            return reqPersonInfo;
+            return instance;
         }
         #endregion
 
