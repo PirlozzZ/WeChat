@@ -56,6 +56,101 @@ namespace WeChat.CorpLib.Core
         }
         #endregion
 
+        #region OAuth2.0相关处理
+
+        /// <summary>
+        /// 应用授权作用域。
+        ///snsapi_base：静默授权，可获取成员的基础信息；
+        ///snsapi_userinfo：静默授权，可获取成员的详细信息，但不包含手机、邮箱；
+        ///snsapi_privateinfo：手动授权，可获取成员的详细信息，包含手机、邮箱。
+        /// </summary>
+        public enum ScopeTypeEnum
+        {
+            snsapi_base,
+            snsapi_userinfo,
+            snsapi_privateinfo
+        }
+
+        /// <summary>
+        /// 生成OAuth相关的URL
+        /// </summary>
+        /// <param name="para_URL"></param>
+        /// <param name="scope">应用授权作用域
+        /// <param name="state">重定向后会带上state参数，开发者可以填写a-zA-Z0-9的参数值，最多128字节</param>
+        /// <returns></returns>
+        public string OAuth_getURL(string para_URL, ScopeTypeEnum scope, string state)
+        {
+            string OAuth_URL = string.Empty;
+            try
+            { 
+                OAuth_URL = string.Format("https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope={2}&state={3}#wechat_redirect", config.AppID, System.Web.HttpUtility.UrlEncode(para_URL),scope.ToString(), state);
+            }
+            catch (Exception e)
+            {
+                log.Error(string.Format("Corp getOAuth_URL:"),e);
+            }
+            return OAuth_URL;
+        }
+
+        /// <summary>
+        /// OAuth根据Code获取用户code
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="agentid"></param>
+        /// <returns></returns>
+        public string OAuth_getUserInfo(string code, string agentid)
+        {
+            string result = string.Empty;
+            if (!string.IsNullOrEmpty(code))
+            {
+                try
+                { 
+                    string url = string.Format("https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo?access_token={0}&code={1}", sAccessToken, code);
+                    result = HTTPHelper.WechatRequest(url, MethodTypeEnum.Get, DataTypeEnum.json);
+                    if (result.Contains("\"errmsg\":\"ok\""))
+                    {
+                        JObject jo = (JObject)JsonConvert.DeserializeObject(result);
+                        result = jo["UserId"].ToString();
+                    }
+                    else
+                    {
+                        MyLog.WriteLog(string.Format("Corp OAuth_getCode Failed: {0} ", url + result));
+                        result = "error";
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    MyLog.WriteLog(string.Format("Corp OAuth_getCode ERR: {0} ", e.Message));
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 获取用户信息
+        /// </summary>
+        /// <param name="Employeecode">微信帐号号码</param>
+        /// <returns>用户信息</returns>
+        public CorpReqPersonInfo getPersonInfo(string Employeecode)
+        {
+            CorpReqPersonInfo reqPersonInfo = null;
+            string result = string.Empty;
+            try
+            {
+                string accessToken = config.getCorpAccessToken();
+                string url = string.Format("https://qyapi.weixin.qq.com/cgi-bin/user/get?access_token={0}&userid={1}", accessToken, Employeecode);
+                result = HTTPHelper.WechatRequest(url, MethodTypeEnum.Get, DataTypeEnum.json);
+                reqPersonInfo = new CorpReqPersonInfo(result);
+            }
+            catch (Exception e)
+            {
+                MyLog.WriteLog(string.Format("getPersonInfo ERR: {0} ", e.Message));
+            }
+            return reqPersonInfo;
+        }
+        #endregion
+
         #region 核心方法
         /// <summary>
         /// 获取AccessToken
