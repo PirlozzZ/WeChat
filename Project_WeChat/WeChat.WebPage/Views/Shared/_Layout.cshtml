@@ -1,0 +1,13 @@
+﻿<!DOCTYPE html>
+@using System.Web.Optimization;
+<html>
+@Styles.Render("~/Css/weui.css")
+@Scripts.Render("~/Scripts/jquery-1.7.1.js") 
+    <head>
+        <title>@Page.Title</title>
+        @RenderSection("head", required: false)
+    </head>
+    <body>
+        @RenderBody()
+    </body>
+</html>
