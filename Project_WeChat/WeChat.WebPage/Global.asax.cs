@@ -14,7 +14,8 @@ namespace WeChat.WebPage
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-            BundleConfig.RegisterBundles(BundleTable.Bundles); 
+            BundleConfig.RegisterBundles(BundleTable.Bundles);
+            log4net.Config.XmlConfigurator.Configure();
         }
     }
 }

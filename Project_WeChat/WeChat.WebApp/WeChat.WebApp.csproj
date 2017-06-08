@@ -99,6 +99,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Dll\log4net.dll" />
     <Content Include="packages.config" />
     <Content Include="PubWeChat.ashx" />
     <Content Include="CorpWeChat.ashx" />
@@ -152,9 +153,7 @@
       <DependentUpon>PubWeChatSues.ashx</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Dll\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\WeChat.CorpLib\WeChat.CorpLib.csproj">
       <Project>{1d5ba145-f585-40c9-ab77-0aff7642219c}</Project>
