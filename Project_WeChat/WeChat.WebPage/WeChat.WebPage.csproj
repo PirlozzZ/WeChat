@@ -133,6 +133,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Corp\Index.cshtml" />
     <Content Include="Views\Pub\Index.cshtml" />
+    <None Include="Properties\PublishProfiles\WebPage.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

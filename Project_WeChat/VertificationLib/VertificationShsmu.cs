@@ -51,6 +51,7 @@ namespace VertificationLib
                 WebClient webClient = new WebClient();
                 webClient.Proxy = null;
                 webClient.Encoding = System.Text.Encoding.UTF8;
+                log.Debug("VertificationShsmu VertifyMethod result value:" + webClient.DownloadString(url));
                 if ("2".Equals(webClient.DownloadString(url)))
                 {
                     result = true;
