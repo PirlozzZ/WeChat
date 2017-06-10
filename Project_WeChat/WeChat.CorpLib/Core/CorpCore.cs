@@ -269,6 +269,7 @@ namespace WeChat.CorpLib.Core
             {
                 string url = string.Format("https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token={0}", sAccessToken);
                 string result = string.Empty;
+                msg.agentid = config.agientID;
                 log.Debug("CorpCore SendMsg:"+msg.ToJson());
                 result = HTTPHelper.PostRequest(url, DataTypeEnum.json, msg.ToJson());
                 JObject jo = (JObject)JsonConvert.DeserializeObject(result);

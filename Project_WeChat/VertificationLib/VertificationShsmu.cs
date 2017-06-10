@@ -57,9 +57,9 @@ namespace VertificationLib
                     result = true;
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-
+                log.Error("VertificationShsmu VertifyMethod error!", e);
             }
             return result;
         }

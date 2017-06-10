@@ -99,7 +99,7 @@ namespace WeChat.WebApp
                     string flag = HTTPHelper.GetRequest(logoutURL + "?openid=" + instanse.FromUserName);
                     if (bool.Parse(flag))
                     {
-                        CorpSendMsgText msg = new CorpSendMsgText("解除绑定成功！", instanse.ToUserName,agentid); 
+                        CorpSendMsgText msg = new CorpSendMsgText("解除绑定成功！", instanse.ToUserName); 
                         corpCore.SendMsg(msg);
                     }
                 }
@@ -110,7 +110,7 @@ namespace WeChat.WebApp
             }
             else
             { 
-                CorpSendMsgText msg = new CorpSendMsgText("开发中，敬请期待！", instanse.ToUserName, agentid);
+                CorpSendMsgText msg = new CorpSendMsgText("开发中，敬请期待！", instanse.ToUserName);
                 corpCore.SendMsg(msg);
             }
             return strResult;

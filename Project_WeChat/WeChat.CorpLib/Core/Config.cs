@@ -16,8 +16,9 @@ namespace WeChat.CorpLib.Core
             AppID = ConfigurationManager.AppSettings[sign + "corpAppID"];
             Secret = ConfigurationManager.AppSettings[sign + "corpAppSecret"];
             Token = ConfigurationManager.AppSettings[sign + "corpToken"];
-            EncodingAESKey = ConfigurationManager.AppSettings[sign + "corpEncodingAESKey"];
+            EncodingAESKey = ConfigurationManager.AppSettings[sign + "corpEncodingAESKey"];           
             expires_in = Int32.Parse(ConfigurationManager.AppSettings["expires_in"]);
+            agientID = ConfigurationManager.AppSettings[sign + "agientID"];
         }
 
         public string AppID { get; private set; }
@@ -25,6 +26,7 @@ namespace WeChat.CorpLib.Core
         public string Token { get; private set; }
         public string EncodingAESKey { get; private set; }
         public int expires_in { get; private set; }
+        public string agientID { get; private set; }
 
 
     }
