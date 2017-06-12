@@ -18,7 +18,7 @@ namespace WeChat.WebPage.Controllers
         static CookieHelper cookieHelper=new CookieHelper();
         static BasicMethod basicMethod = new BasicMethod();
 
-        string fr_baseURL = ConfigurationManager.AppSettings["baseURL"].ToString();
+        string fr_baseURL = ConfigurationManager.AppSettings["fr_baseURL"].ToString();
         string adunit = ConfigurationManager.AppSettings["adunit"].ToString();
         static bool needLogin = bool.Parse(ConfigurationManager.AppSettings["needLogin"].ToString());
 
@@ -30,6 +30,8 @@ namespace WeChat.WebPage.Controllers
         public ActionResult Index(string code, string state)
         {
             //判断state是否为空，初始化CorpCore
+            //code = "dZWVZ42Irn0DesLh2IKa_Sdd2KLSnLRE35a8hFFWP4M"; 
+            try { 
             if (string.IsNullOrEmpty(state))
             {
                 log.Error("Corp/Index error:Lacking of state!");
@@ -62,7 +64,7 @@ namespace WeChat.WebPage.Controllers
             {
                 userId = core.OAuth_getUserInfo(code).UserId;
             }
-
+                //userId = "183725";
             if (string.IsNullOrEmpty(userId))
             {
                 log.Error("Corp/Index error:Lacking of userId!");
@@ -82,14 +84,31 @@ namespace WeChat.WebPage.Controllers
                     return RedirectToAction("Login", new { userId = userId, password = "", state = state });
                 }
             }
+            }
+            catch(Exception e)
+            {
+                log.Error("Corp/Index error", e);
+            }
             return View();
         }
 
         public ActionResult Login(string userId,string password,string state)
         {
             bool sign = false;
+            if (string.IsNullOrEmpty(state))
+            {
+                log.Error("Corp/Login error:Lacking of state!");
+                Response.Redirect("http://" + Request.Url.Authority.ToString() + "/Error.htm");
+            }
+            else
+            {
+                string[] temp = state.Split('!');
+                signComp = temp[0].ToString();
+                signMenu = temp[1].ToString(); 
+            }
             if (!string.IsNullOrEmpty(userId) && !string.IsNullOrEmpty(password)){
                 sign = basicMethod.vertify(userId, password);
+                //sign = true;
                 if (sign)
                 {
                     string url = string.Empty;
@@ -120,7 +139,7 @@ namespace WeChat.WebPage.Controllers
                 {
                     ViewData["userId"] = userId;
                     ViewData["state"] = state;
-                    ViewData["IsValid"] = "False";
+                    ViewData["IsValid"] = "false";
                     return View("Index");
                 }
             }

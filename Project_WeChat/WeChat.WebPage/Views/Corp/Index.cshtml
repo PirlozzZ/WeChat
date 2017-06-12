@@ -2,16 +2,17 @@
 @{
     ViewBag.Title = "登陆";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    string openID = ViewData["openID"] as string;
+    string userId = ViewData["userId"] as string;
     string state = ViewData["state"] as string;
-    string IsTrue = ViewData["IsTrue"] as string;
+    string IsValid = ViewData["IsValid"] as string;
 }
+
 
 <div style="padding-top:100px">
     <div class="weui_cell">
         <div class="weui_cell_hd"><label class="weui_label">帐号</label></div>
         <div class="weui_cell_bd weui_cell_primary">
-            <input id="usercode" class="weui_input" value="@ViewData[" loginno"]"  type="text"  placeholder="请输入帐号"/>
+            <input id="usercode" class="weui_input" value="@userId"  type="text"  placeholder="请输入帐号"/>
         </div>
     </div>
     <div class="weui_cell">
@@ -21,9 +22,9 @@
         </div>
     </div>
     <div class="weui_cell"> 
-        @Html.Hidden("openID", openID)
+        @Html.Hidden("userId", userId)
         @Html.Hidden("state", state)
-        @Html.Hidden("IsValid", IsTrue)
+        @Html.Hidden("IsValid", IsValid)
         <div style="text-align:left;">
             <div id="msg_alert" class="MessageErr" style="visibility: hidden; color:red">用户名或密码不能为空！</div>
             <div id="msg_err" class="MessageErr" style="visibility: hidden; color:red">用户名或密码错误,请输入正确的信息!</div>
@@ -35,11 +36,12 @@
 </div>
 
 <script type="text/javascript" language="javascript">
-    $(function () {
+   
+    $(function () { 
         $("#msg_err").css("visibility", "hidden");
         $("#msg_alert").css("visibility", "hidden");
-        var isTrue = @ViewData["IsTrue"];
-        //console.log(isTrue);
+        var isTrue = "@IsValid";
+          
         if (isTrue == "false") {
             //alert("用户名或密码错误,请输入正确的信息!");
             $("#msg_err").css("visibility", "visible");
@@ -52,10 +54,10 @@
             check();
         }
     };
-    function check() {
+    function check() { 
         $("#msg_err").css("visibility","hidden");
         $("#msg_alert").css("visibility","hidden");
-        var usercode = $("#usercode").val();
+        var userId = $("#userId").val();
         var password = $("#password").val();
         var state = $("#state").val();
         var openid = $("#openID").val();
@@ -66,7 +68,8 @@
         }
         else {
 
-            window.location.href = "/Corp/Login?usercode=" + usercode + "&password=" + password + "&state=" + state + "&openid=" + openid;
+            window.location.href = "/Corp/Login?userId=" + userId + "&password=" + password + "&state=" + state ;
         }
     }
+
 </script>

@@ -31,8 +31,7 @@ namespace WeChat.CorpLib.Core
         }
         private Config config;
         log4net.ILog log = log4net.LogManager.GetLogger("Log.Logging");
-        bool isDES ;
-        bool isCustomerMsg;
+        bool isDES ; 
         WXBizMsgCrypt wxcpt;
 
         #region 构造方法
@@ -46,7 +45,7 @@ namespace WeChat.CorpLib.Core
             config = new Config(sign);
             sDateTime = DateTime.Now;
             isDES = bool.Parse(ConfigurationManager.AppSettings[sign + "isDES"]);
-            isCustomerMsg = bool.Parse(ConfigurationManager.AppSettings[sign + "isCustomerMsg"]);
+            //isCustomerMsg = bool.Parse(ConfigurationManager.AppSettings[sign + "isCustomerMsg"]);
             if (isDES)
             {
                 wxcpt = new WXBizMsgCrypt(config.Token, config.EncodingAESKey, config.AppID);
@@ -104,26 +103,30 @@ namespace WeChat.CorpLib.Core
             string result = string.Empty;
             if (!string.IsNullOrEmpty(code))
             {
+                string url = string.Format("https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo?access_token={0}&code={1}", sAccessToken, code);   
                 try
                 {
-                    string url = string.Format("https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo?access_token={0}&code={1}", sAccessToken, code);
                     result = HTTPHelper.GetRequest(url);
                     instance = JsonConvert.DeserializeObject<CorpOAuth_UserInfo>(result);
                     if (instance != null)
                     {
                         if (!"0".Equals(instance.errcode))
                         {
-                            log.Info(string.Format("Corp OAuth_getUserInfo Failed:{0}", instance.errcode + instance.errmsg));
+                            log.Info(string.Format("Corp OAuth_getUserInfo Failed:{0}", instance.errcode + instance.errmsg+"--"+url));
+                        }
+                        else
+                        {
+                            log.Debug(string.Format("Corp OAuth_getUserInfo success", instance.UserId));
                         }
                     }
                     else
                     {
-                        log.Info(string.Format("Corp OAuth_getUserInfo JsonConvert Failed!"));
+                        log.Info(string.Format("Corp OAuth_getUserInfo JsonConvert Failed:{0}", result));
                     }
                 }
                 catch (Exception e)
                 {
-                    log.Error(string.Format("Corp OAuth_getUserInfo ERR!"), e);
+                    log.Error(string.Format("Corp OAuth_getUserInfo ERR:{0}",url), e);
                 }
             }
             return instance;
