@@ -98,12 +98,11 @@
     <Compile Include="Model\Others\QRCodeTemp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Dll\Newtonsoft4.0\" />
-    <Folder Include="Dll\Newtonsoft9.0\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Dll\log4net.dll" />
+    <Content Include="Dll\Newtonsoft4.0\Newtonsoft.Json.dll" />
+    <Content Include="Dll\Newtonsoft9.0\Newtonsoft.Json.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

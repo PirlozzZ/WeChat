@@ -18,7 +18,7 @@ namespace VertificationLib
             bool result = false;
             log.Debug("VertificationShsmu VertifyMethod para value:" + loginno + "----" + password);
             //时间戳，为1970-1-1后流逝的Milliseconds，长整形字符串
-            string timeStamp = ((long)((DateTime.Now - DateTime.Parse("1970-1-1")).TotalMilliseconds)).ToString();
+            string timeStamp = ((long)((DateTime.Now.AddHours(-8) - DateTime.Parse("1970-1-1")).TotalMilliseconds)).ToString();
             //公钥，由管理员指定
             string publicKey = "98985AA5E";
 
@@ -45,7 +45,7 @@ namespace VertificationLib
             }
             string token = sBuilder.ToString().ToUpper();
 
-            string url = "http://202.120.143.81/WCF/Services/Authenticate/" + account + "/" + password + "/" + timeStamp + "/" + token;
+            string url = "http://202.120.143.81/WCF/Services/Authenticate/" + account + "/" + _password + "/" + timeStamp + "/" + token;
             try
             {
                 WebClient webClient = new WebClient();
