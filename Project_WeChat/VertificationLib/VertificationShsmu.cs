@@ -22,7 +22,7 @@ namespace VertificationLib
             //公钥，由管理员指定
             string publicKey = "98985AA5E";
 
-            string account = "183426";
+            string account = "182446";
 
             //desKey仅在加密密码时使用
             string desKey = "&(*D9sdE";

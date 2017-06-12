@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeChat.WebPage", "WeChat.We
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VertificationLib", "VertificationLib\VertificationLib.csproj", "{BF760B02-FB11-4384-B7D3-D9F98DE75889}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeChat.FormTest", "WeChat.FormTest\WeChat.FormTest.csproj", "{B42A0237-56BD-40DC-B0DF-79D39A7ADEA9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{BF760B02-FB11-4384-B7D3-D9F98DE75889}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF760B02-FB11-4384-B7D3-D9F98DE75889}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF760B02-FB11-4384-B7D3-D9F98DE75889}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B42A0237-56BD-40DC-B0DF-79D39A7ADEA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B42A0237-56BD-40DC-B0DF-79D39A7ADEA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B42A0237-56BD-40DC-B0DF-79D39A7ADEA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B42A0237-56BD-40DC-B0DF-79D39A7ADEA9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
