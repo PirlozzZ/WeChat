@@ -32,8 +32,8 @@ namespace VertificationLib
             //发起Web请求的ip地址，如果为内网服务器，则为本机地址            
             //string ip = "202.120.143.78";
             //string ip = "202.120.143.246";
-            string strHostName = System.Net.Dns.GetHostName();
-            string ip = System.Net.Dns.GetHostAddresses(strHostName).GetValue(0).ToString();
+            string strHostName = Dns.GetHostName();
+            string ip = Dns.GetHostAddresses(strHostName).GetValue(0).ToString();
 
             string privateKey = account + _password + ip;
 
