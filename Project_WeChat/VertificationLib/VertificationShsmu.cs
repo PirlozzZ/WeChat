@@ -20,17 +20,21 @@ namespace VertificationLib
             //时间戳，为1970-1-1后流逝的Milliseconds，长整形字符串
             string timeStamp = ((long)((DateTime.Now.AddHours(-8) - DateTime.Parse("1970-1-1")).TotalMilliseconds)).ToString();
             //公钥，由管理员指定
-            string publicKey = "98985AA5E";
+            //string publicKey = "98985AA5E";
+            string publicKey = "CaiWuCHu@SHSMU";
 
-            string account = "182446";
+            string account = loginno;
 
             //desKey仅在加密密码时使用
             string desKey = "&(*D9sdE";
-            string _password = DESEnCode("Pass@word", desKey);
+            string _password = DESEnCode(password, desKey);
 
-            //发起Web请求的ip地址，如果为内网服务器，则为本机地址
-            string ip = "202.120.143.246";
+            //发起Web请求的ip地址，如果为内网服务器，则为本机地址            
             //string ip = "202.120.143.78";
+            //string ip = "202.120.143.246";
+            string strHostName = System.Net.Dns.GetHostName();
+            string ip = System.Net.Dns.GetHostAddresses(strHostName).GetValue(0).ToString();
+
             string privateKey = account + _password + ip;
 
             //Token 加密方法为md5(privateKey + timeStamp + publicKey)
@@ -45,7 +49,7 @@ namespace VertificationLib
             }
             string token = sBuilder.ToString().ToUpper();
 
-            string url = "http://202.120.143.81/WCF/Services/Authenticate/" + account + "/" + _password + "/" + timeStamp + "/" + token;
+            string url = "http://portal.shsmu.edu.cn/WCF/Services/Authenticate/" + account + "/" + _password + "/" + timeStamp + "/" + token;
             try
             {
                 WebClient webClient = new WebClient();
