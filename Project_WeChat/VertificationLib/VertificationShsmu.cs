@@ -21,7 +21,7 @@ namespace VertificationLib
             string timeStamp = ((long)((DateTime.Now.AddHours(-8) - DateTime.Parse("1970-1-1")).TotalMilliseconds)).ToString();
             //公钥，由管理员指定
             //string publicKey = "98985AA5E";
-            string publicKey = "CaiWuCHu@SHSMU";
+            string publicKey = "98985AA5E";
 
             string account = loginno;
 
@@ -33,21 +33,30 @@ namespace VertificationLib
             //string ip = "202.120.143.78";
             //string ip = "202.120.143.246";
             string strHostName = Dns.GetHostName();
-            string ip = Dns.GetHostAddresses(strHostName).GetValue(0).ToString();
+            //string ip = Dns.GetHostAddresses(strHostName).GetValue(0).ToString();
+
+            IPHostEntry me = Dns.GetHostByName(strHostName);
+
+            string ip = string.Empty;
+
+            if (me != null && me.AddressList.Length > 0)
+            {
+                ip = me.AddressList[0].ToString();
+            }
 
             string privateKey = account + _password + ip;
 
             //Token 加密方法为md5(privateKey + timeStamp + publicKey)
-            //string token = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(privateKey + timeStamp + publicKey, "MD5");
+            string token = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(privateKey + timeStamp + publicKey, "MD5");
 
-            MD5 sha1Hash = MD5.Create();
-            byte[] data = sha1Hash.ComputeHash(Encoding.UTF8.GetBytes(privateKey + timeStamp + publicKey));
-            StringBuilder sBuilder = new StringBuilder();
-            for (int i = 0; i < data.Length; i++)
-            {
-                sBuilder.Append(data[i].ToString("x2"));
-            }
-            string token = sBuilder.ToString().ToUpper();
+            //MD5 sha1Hash = MD5.Create();
+            //byte[] data = sha1Hash.ComputeHash(Encoding.UTF8.GetBytes(privateKey + timeStamp + publicKey));
+            //StringBuilder sBuilder = new StringBuilder();
+            //for (int i = 0; i < data.Length; i++)
+            //{
+            //    sBuilder.Append(data[i].ToString("x2"));
+            //}
+            //string token = sBuilder.ToString().ToUpper();
 
             string url = "http://portal.shsmu.edu.cn/WCF/Services/Authenticate/" + account + "/" + _password + "/" + timeStamp + "/" + token;
             try
@@ -55,8 +64,9 @@ namespace VertificationLib
                 WebClient webClient = new WebClient();
                 webClient.Proxy = null;
                 webClient.Encoding = System.Text.Encoding.UTF8;
-                log.Debug("VertificationShsmu VertifyMethod result value:" + webClient.DownloadString(url));
-                if ("2".Equals(webClient.DownloadString(url)))
+                string tempStr = webClient.DownloadString(url);
+                log.Debug("VertificationShsmu VertifyMethod result value:" + tempStr);
+                if (tempStr.Contains("2"))
                 {
                     result = true;
                 }

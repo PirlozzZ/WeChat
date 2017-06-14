@@ -37,6 +37,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,6 +49,7 @@
     <Compile Include="IVertification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VertificationShsmu.cs" />
+    <Compile Include="VertificationTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Dll\log4net.dll" />

@@ -122,7 +122,7 @@ namespace WeChat.WebPage.Base
                 string[] param = new string[] { loginno, password };
                 Object obj = Activator.CreateInstance(type);
                 MethodInfo mi = type.GetMethod("VertifyMethod");
-                bool flag = (bool)mi.Invoke(obj, param);
+                result = (bool)mi.Invoke(obj, param); 
                 #endregion
             }
             catch (Exception e)

@@ -109,6 +109,7 @@ namespace WeChat.WebPage.Controllers
             if (!string.IsNullOrEmpty(userId) && !string.IsNullOrEmpty(password)){
                 sign = basicMethod.vertify(userId, password);
                 //sign = true;
+                log.Debug("vertify result:" + sign);
                 if (sign)
                 {
                     string url = string.Empty;
