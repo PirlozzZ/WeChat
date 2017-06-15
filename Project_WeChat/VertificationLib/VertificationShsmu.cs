@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text; 
 
 namespace VertificationLib
 {
@@ -47,29 +48,30 @@ namespace VertificationLib
             string privateKey = account + _password + ip;
 
             //Token 加密方法为md5(privateKey + timeStamp + publicKey)
-            string token = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(privateKey + timeStamp + publicKey, "MD5");
+            //string token = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(privateKey + timeStamp + publicKey, "MD5");
 
-            //MD5 sha1Hash = MD5.Create();
-            //byte[] data = sha1Hash.ComputeHash(Encoding.UTF8.GetBytes(privateKey + timeStamp + publicKey));
-            //StringBuilder sBuilder = new StringBuilder();
-            //for (int i = 0; i < data.Length; i++)
-            //{
-            //    sBuilder.Append(data[i].ToString("x2"));
-            //}
-            //string token = sBuilder.ToString().ToUpper();
+            MD5 sha1Hash = MD5.Create();
+            byte[] data = sha1Hash.ComputeHash(Encoding.UTF8.GetBytes(privateKey + timeStamp + publicKey));
+            StringBuilder sBuilder = new StringBuilder();
+            for (int i = 0; i < data.Length; i++)
+            {
+                sBuilder.Append(data[i].ToString("x2"));
+            }
+            string token = sBuilder.ToString().ToUpper();
 
             string url = "http://portal.shsmu.edu.cn/WCF/Services/Authenticate/" + account + "/" + _password + "/" + timeStamp + "/" + token;
             try
             {
                 WebClient webClient = new WebClient();
                 webClient.Proxy = null;
-                webClient.Encoding = System.Text.Encoding.UTF8;
+                webClient.Encoding = Encoding.UTF8;
                 string tempStr = webClient.DownloadString(url);
                 log.Debug("VertificationShsmu VertifyMethod result value:" + tempStr);
-                if (tempStr.Contains("2"))
-                {
-                    result = true;
-                }
+                JObject o = (JObject)JsonConvert.DeserializeObject(tempStr);
+
+                result = bool.Parse(o["Body"].ToString());
+
+
             }
             catch (Exception e)
             {

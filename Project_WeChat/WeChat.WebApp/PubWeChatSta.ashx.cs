@@ -88,16 +88,12 @@ namespace WeChat.WebApp
             if ("31".Equals(instanse.EventKey))
             {
                 try
-                {
-                    PubResMsgText msg = new PubResMsgText();
+                { 
                     string flag = HTTPHelper.GetRequest(logoutURL + "?openid=" + instanse.FromUserName);
                     if (bool.Parse(flag))
-                    {
-                        msg.Content = "解除绑定成功！";
-                        msg.CreateTime = instanse.CreateTime;
-                        msg.FromUserName = instanse.ToUserName;
-                        msg.ToUserName = instanse.FromUserName;
-                        strResult = pubCore.AutoResponse(msg);
+                    { 
+                        PubSendMsgText msg = new PubSendMsgText("解除绑定成功！", instanse.FromUserName);
+                        pubCore.SendMsg(msg);
                     }
                 }
                 catch (Exception e)
@@ -106,13 +102,9 @@ namespace WeChat.WebApp
                 }
             }
             else
-            {
-                PubResMsgText msg = new PubResMsgText();
-                msg.Content = "功能正在开发，敬请期待！";
-                msg.CreateTime = instanse.CreateTime;
-                msg.FromUserName = instanse.ToUserName;
-                msg.ToUserName = instanse.FromUserName;
-                strResult = pubCore.AutoResponse(msg);
+            { 
+                PubSendMsgText msg = new PubSendMsgText("开发中，敬请期待！！", instanse.FromUserName);
+                pubCore.SendMsg(msg);
             }
             return strResult;
         }
