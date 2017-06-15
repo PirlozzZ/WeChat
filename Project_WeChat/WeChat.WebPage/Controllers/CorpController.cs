@@ -112,8 +112,12 @@ namespace WeChat.WebPage.Controllers
                 log.Debug("vertify result:" + sign);
                 if (sign)
                 {
+                    
                     string url = string.Empty;
                     string key = userId + "SeaskyHR" + DateTime.Now.ToString("yyyyMMddHHmm");
+
+                    cookieHelper.delCookie("CorpWechat" + signComp);
+                    cookieHelper.setCookie("CorpWechat" + signComp, cookieHelper.EncryptString(userId), 2);
 
                     //key = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(key, "MD5");
                     MD5 sha1Hash = MD5.Create();
