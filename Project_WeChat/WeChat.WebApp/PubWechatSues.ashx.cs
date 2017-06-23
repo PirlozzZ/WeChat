@@ -183,7 +183,7 @@ namespace WeChat.WebApp
                 //msg.FromUserName = instanse.ToUserName;
                 //msg.ToUserName = instanse.FromUserName;
                 //strResult = pubCore.AutoResponse(msg);
-                PubSendMsgText msg = new PubSendMsgText("名称：上海工程技术大学\n纳税人识别号：310105425022547\n地址 ：上海市松江区龙腾路333号\n开户行及账号：上海银行松江支行：31982603001717943", instanse.FromUserName);
+                PubSendMsgText msg = new PubSendMsgText("名称：上海工程技术大学\n纳税人识别号：310105425022547\n地址 ：上海市松江区龙腾路333号\n开户行及账号：上海银行松江支行：31982603001717943\n联系电话：021-67791159", instanse.FromUserName);
                 pubCore.SendMsg(msg);
                 return "success";
             }
