@@ -81,7 +81,7 @@ namespace WeChat.WebPage.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("Login", new { userId = userId, password = "seaskyP@ssw0rd", state = state });
+                    return RedirectToAction("Login", new { userId = userId, password = "htP@ssw0rd", state = state });
                 }
             }
             }
@@ -107,7 +107,7 @@ namespace WeChat.WebPage.Controllers
                 signMenu = temp[1].ToString(); 
             }
             if (!string.IsNullOrEmpty(userId) && !string.IsNullOrEmpty(password)){
-                password = "seaskyP@ssw0rd".Equals(password) ? "":password;
+                password = "htP@ssw0rd".Equals(password) ? "":password;
                 sign = basicMethod.vertify(userId, password);
                 //sign = true;
                 log.Debug("vertify result:" + sign);
