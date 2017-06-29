@@ -31,61 +31,65 @@ namespace WeChat.WebPage.Controllers
         {
             //判断state是否为空，初始化CorpCore
             //code = "dZWVZ42Irn0DesLh2IKa_Sdd2KLSnLRE35a8hFFWP4M"; 
-            try { 
-            if (string.IsNullOrEmpty(state))
+            try
             {
-                log.Error("Corp/Index error:Lacking of state!");
-                Response.Redirect("http://" + Request.Url.Authority.ToString() + "/Error.htm");
-            }
-            else
-            {
-                string[] temp = state.Split('!');
-                signComp = temp[0].ToString();
-                signMenu = temp[1].ToString();
-                core = new CorpCore(signComp);
-            }
+                if (string.IsNullOrEmpty(state))
+                {
+                    log.Error("Corp/Index error:Lacking of state!");
+                    Response.Redirect("http://" + Request.Url.Authority.ToString() + "/Error.htm");
+                }
+                else
+                {
+                    string[] temp = state.Split('!');
+                    signComp = temp[0].ToString();
+                    signMenu = temp[1].ToString();
+                    core = new CorpCore(signComp);
+                }
 
-            //获取userId
-            if (string.IsNullOrEmpty(code))
-            {
-                //获取Cookie,减少OAuth2验证频率
-                string cookieStr = cookieHelper.getCookie("CorpWechat" + signComp);
-                if (string.IsNullOrEmpty(cookieStr))
+                //获取userId
+                if (string.IsNullOrEmpty(code))
                 {
-                    string RedirectURL = core.OAuth_getURL("http://" + Request.Url.Authority.ToString() + "/Corp/Index", CorpCore.ScopeTypeEnum.snsapi_base, state);
-                    Response.Redirect(RedirectURL);
+                    //获取Cookie,减少OAuth2验证频率
+                    string cookieStr = cookieHelper.getCookie("CorpWechat" + signComp);
+                    if (string.IsNullOrEmpty(cookieStr))
+                    {
+                        string RedirectURL = core.OAuth_getURL("http://" + Request.Url.Authority.ToString() + "/Corp/Index", CorpCore.ScopeTypeEnum.snsapi_base, state);
+                        log.Debug("#debug1" + RedirectURL);
+                        Response.Redirect(RedirectURL);
+                    }
+                    else
+                    {
+                        userId = cookieHelper.DecryptString(cookieStr);
+                    }
                 }
                 else
                 {
-                    userId = cookieHelper.DecryptString(cookieStr);
+                    log.Debug("#debug2" + code);
+                    userId = core.OAuth_getUserInfo(code).UserId;
+                    log.Debug("#debug3" + userId);
                 }
-            }
-            else
-            {
-                userId = core.OAuth_getUserInfo(code).UserId;
-            }
                 //userId = "183725";
-            if (string.IsNullOrEmpty(userId))
-            {
-                log.Error("Corp/Index error:Lacking of userId!");
-                Response.Redirect("http://" + Request.Url.Authority.ToString() + "/Error.htm");
-            }
-            else
-            {
-                if (needLogin)
+                if (string.IsNullOrEmpty(userId))
                 {
-                    ViewData["userId"] = userId;
-                    ViewData["state"] = state;
-                    ViewData["IsValid"] = "True";
-                    return View();
+                    log.Error("Corp/Index error:Lacking of userId!");
+                    Response.Redirect("http://" + Request.Url.Authority.ToString() + "/Error.htm");
                 }
                 else
                 {
-                    return RedirectToAction("Login", new { userId = userId, password = "htP@ssw0rd", state = state });
+                    if (needLogin)
+                    {
+                        ViewData["userId"] = userId;
+                        ViewData["state"] = state;
+                        ViewData["IsValid"] = "True";
+                        return View();
+                    }
+                    else
+                    {
+                        return RedirectToAction("Login", new { userId = userId, password = "htP@ssw0rd", state = state });
+                    }
                 }
             }
-            }
-            catch(Exception e)
+            catch (Exception e)
             {
                 log.Error("Corp/Index error", e);
             }
@@ -108,6 +112,8 @@ namespace WeChat.WebPage.Controllers
             }
             if (!string.IsNullOrEmpty(userId) && !string.IsNullOrEmpty(password)){
                 password = "htP@ssw0rd".Equals(password) ? "":password;
+                //for debug
+                userId = "arogornl".Equals(userId.ToLower()) ? "2000900301" : userId;
                 sign = basicMethod.vertify(userId, password);
                 //sign = true;
                 log.Debug("vertify result:" + sign);
