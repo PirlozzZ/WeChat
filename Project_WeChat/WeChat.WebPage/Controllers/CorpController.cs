@@ -139,6 +139,9 @@ namespace WeChat.WebPage.Controllers
                     if ("salary".Equals(signMenu))
                     {
                         url = string.Format(fr_baseURL, "Salary.cpt&peoplecode=" + userId + "&SalaryYear1=" + DateTime.Now.AddMonths(-5).ToString("yyyy-MM-dd") + "&SalaryYear2=" + DateTime.Now.ToString("yyyy-MM-dd") + "&key=" + key);
+
+                        //for shxj
+                        //url = string.Format(fr_baseURL, "Salary.cpt&peoplecode=" + userId + "&SalaryYear1=" + DateTime.Now.Year+"-01-01" + "&SalaryYear2=" + DateTime.Now.ToString("yyyy-MM-dd") + "&key=" + key);
                     }
                     else if ("salaryyear".Equals(signMenu))
                     {
