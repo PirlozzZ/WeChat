@@ -90,6 +90,8 @@ namespace WeChat.PubLib.Core
                 log.Error("PubCore GetAccessToken error!", err);
             }
         }
+       
+
 
         /// <summary>
         /// 服务器验证
@@ -599,7 +601,7 @@ namespace WeChat.PubLib.Core
         /// <param name="scope">应用授权作用域，snsapi_base （不弹出授权页面，直接跳转，只能获取用户openid），snsapi_userinfo （弹出授权页面，可通过openid拿到昵称、性别、所在地。并且，即使在未关注的情况下，只要用户授权，也能获取其信息）</param>
         /// <param name="state">重定向后会带上state参数，开发者可以填写a-zA-Z0-9的参数值，最多128字节</param>
         /// <returns></returns>
-        public string getOAuth_URL(string para_URL, ScopeType scope, string state)
+        public string GetOAuth_URL(string para_URL, ScopeTypeEnum scope, string state)
         {
             return string.Format("https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope={2}&state={3}#wechat_redirect", config.AppID, System.Web.HttpUtility.UrlEncode(para_URL), scope, state);
         }
@@ -611,9 +613,9 @@ namespace WeChat.PubLib.Core
         /// <param name="code"></param>
         /// <param name="agentid"></param>
         /// <returns></returns>
-        public OAuth_AccessToken getOAuth_access_token(string code)
+        public PubOAuth_AccessToken GetOAuth_access_token(string code)
         {
-            OAuth_AccessToken robject = null;
+            PubOAuth_AccessToken robject = null;
             if (!string.IsNullOrEmpty(code))
             {
                 string result = string.Empty;
@@ -623,7 +625,7 @@ namespace WeChat.PubLib.Core
                     result = HTTPHelper.GetRequest(url);
                     if (!result.Contains("errcode"))
                     {
-                        robject = new OAuth_AccessToken(result);
+                        robject = new PubOAuth_AccessToken(result);
                     }
                     else
                     {
@@ -644,15 +646,15 @@ namespace WeChat.PubLib.Core
         /// </summary>
         /// <param name="refresh_token"></param>
         /// <returns></returns>
-        public OAuth_AccessToken refreshOAuth_access_token(string refresh_token)
+        public PubOAuth_AccessToken RrefreshOAuth_access_token(string refresh_token)
         {
-            OAuth_AccessToken robject = null;
+            PubOAuth_AccessToken robject = null;
             string result = string.Empty;
             try
             { 
                 string url = string.Format("https://api.weixin.qq.com/sns/oauth2/refresh_token?appid={0}&grant_type=refresh_token&refresh_token={1}", config.AppID, refresh_token);
                 result = HTTPHelper.GetRequest(url);
-                robject = new OAuth_AccessToken(result);
+                robject = new PubOAuth_AccessToken(result);
             }
             catch (Exception e)
             {
@@ -666,7 +668,7 @@ namespace WeChat.PubLib.Core
         /// </summary>
         /// <param name="oauth_accesstoken"></param>
         /// <returns></returns>
-        public bool checkOAuth_access_token(OAuth_AccessToken oauth_accesstoken)
+        public bool CheckOAuth_access_token(PubOAuth_AccessToken oauth_accesstoken)
         {
             bool sign = false;
             string result = string.Empty;
@@ -698,9 +700,9 @@ namespace WeChat.PubLib.Core
         /// </summary>
         /// <param name="oauth_accesstoken"></param>
         /// <returns></returns>
-        public PubRecPersonInfo getUserInfo(OAuth_AccessToken oauth_accesstoken)
+        public PubOAuth_UserInfo GetOAuth_UserInfo(PubOAuth_AccessToken oauth_accesstoken)
         {
-            PubRecPersonInfo temp = null;
+            PubOAuth_UserInfo temp = null;
             try
             {
                 if ("snsapi_userinfo".Equals(oauth_accesstoken.scope.ToLower()))
@@ -710,7 +712,7 @@ namespace WeChat.PubLib.Core
                     result = HTTPHelper.GetRequest(url);
                     if (!result.Contains("errcode"))
                     {
-                        temp = new PubRecPersonInfo(result);
+                        temp = new PubOAuth_UserInfo(result);
                     }
                 }
                 if (temp == null)
@@ -729,7 +731,7 @@ namespace WeChat.PubLib.Core
         /// <summary>
         /// 应用授权作用域，snsapi_base （不弹出授权页面，直接跳转，只能获取用户openid），snsapi_userinfo （弹出授权页面，可通过openid拿到昵称、性别、所在地。并且，即使在未关注的情况下，只要用户授权，也能获取其信息）
         /// </summary>
-        public enum ScopeType
+        public enum ScopeTypeEnum
         {
             snsapi_base,
             snsapi_userinfo

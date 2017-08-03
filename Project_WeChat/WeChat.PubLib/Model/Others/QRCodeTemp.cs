@@ -10,8 +10,8 @@ namespace WeChat.PubLib.Model
         /// <summary>
         /// 默认有效期7天
         /// </summary>
-        /// <param name="scene_id"></param>
-        public QRCodeTemp(int scene_id):this(604800, scene_id)
+        /// <param name="scene_str"></param>
+        public QRCodeTemp(int scene_id) :this(604800, scene_id)
         {
 
         }
@@ -19,9 +19,17 @@ namespace WeChat.PubLib.Model
         public QRCodeTemp(int expire_seconds, int scene_id)
         {
             this.expire_seconds = expire_seconds;
-            this.action_name = "QR_SCENE";
+            this.action_name = "QR_STR_SCENE";
             this.action_info.scene.scene_id = scene_id;
         }
+
+        public QRCodeTemp(int expire_seconds, string scene_str)
+        {
+            this.expire_seconds = expire_seconds;
+            this.action_name = "QR_STR_SCENE";
+            this.action_info.scene.scene_str = scene_str;
+        }
+
         /// <summary>
         /// 该二维码有效时间，以秒为单位。 最大不超过2592000（即30天），此字段如果不填，则默认有效期为30秒。
         /// </summary>

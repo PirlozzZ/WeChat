@@ -7,11 +7,11 @@ using System.Web;
 
 namespace WeChat.PubLib.Model
 {
-    public class OAuth_AccessToken
+    public class PubOAuth_AccessToken
     {
         protected log4net.ILog log;
 
-        public OAuth_AccessToken(string sMsg)
+        public PubOAuth_AccessToken(string sMsg)
         {
             try
             {

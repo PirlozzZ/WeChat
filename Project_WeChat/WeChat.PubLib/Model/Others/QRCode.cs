@@ -25,6 +25,14 @@ namespace WeChat.PubLib.Model
             this.action_info.scene.scene_id = scene_id;
             this.action_name = "QR_LIMIT_SCENE";
         }
+
+        public QRCode(string scene_str)
+        {
+            this.action_info = new Action_Info();
+            this.action_info.scene = new Scene();
+            this.action_info.scene.scene_str = scene_str;
+            this.action_name = "QR_LIMIT_STR_SCENE";
+        }
         /// <summary>
         /// 二维码类型，QR_SCENE为临时,QR_LIMIT_SCENE为永久,QR_LIMIT_STR_SCENE为永久的字符串参数值
         /// </summary>
@@ -45,5 +53,12 @@ namespace WeChat.PubLib.Model
         /// 场景值ID，临时二维码时为32位非0整型，永久二维码时最大值为100000（目前参数只支持1--100000）
         /// </summary>
         public int scene_id { get; set; }
+
+        /// <summary>
+        /// 数据创建字符串形式的二维码参数
+        /// </summary>
+        public string scene_str { get; set; }
     }
+
+ 
 }

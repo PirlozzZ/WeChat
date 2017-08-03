@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "登陆";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    string userId = ViewData["userId"] as string;
+    string userID = ViewData["userID"] as string;
     string state = ViewData["state"] as string;
     string IsValid = ViewData["IsValid"] as string;
 }
@@ -12,7 +12,7 @@
     <div class="weui_cell">
         <div class="weui_cell_hd"><label class="weui_label">帐号</label></div>
         <div class="weui_cell_bd weui_cell_primary">
-            <input id="usercode" class="weui_input" value="@userId"  type="text"  placeholder="请输入帐号"/>
+            <input id="usercode" class="weui_input" value="@userID"  type="text"  placeholder="请输入帐号"/>
         </div>
     </div>
     <div class="weui_cell">
@@ -22,7 +22,7 @@
         </div>
     </div>
     <div class="weui_cell"> 
-        @Html.Hidden("userId", userId)
+        @Html.Hidden("userID", userID)
         @Html.Hidden("state", state)
         @Html.Hidden("IsValid", IsValid)
         <div style="text-align:left;">
@@ -57,10 +57,9 @@
     function check() { 
         $("#msg_err").css("visibility","hidden");
         $("#msg_alert").css("visibility","hidden");
-        var userId = $("#userId").val();
+        var userID = $("#usercode").val();
         var password = $("#password").val();
-        var state = $("#state").val();
-        var openid = $("#openID").val();
+        var state = $("#state").val(); 
         if (usercode == "" || password == "") {
             //alert("用户名或密码不能为空！");
             $("#msg_alert").css("visibility", "visible");
@@ -68,7 +67,7 @@
         }
         else {
 
-            window.location.href = "/Corp/Login?userId=" + userId + "&password=" + password + "&state=" + state ;
+            window.location.href = "/Corp/Login?userID=" + userID + "&password=" + password + "&state=" + state;
         }
     }
 

@@ -69,7 +69,7 @@
     <Compile Include="Model\PubSendMsg\PubSendMsgMusic.cs" />
     <Compile Include="Model\PubSendMsg\PubSendMsgVideo.cs" />
     <Compile Include="Model\PubSendMsg\PubSendMsgVoice.cs" />
-    <Compile Include="Model\Others\OAuth_AccessToken.cs" />
+    <Compile Include="Model\Others\PubOAuth_AccessToken.cs" />
     <Compile Include="Model\PubRecMsg\PubRecAbstract.cs" />
     <Compile Include="Model\PubRecEvent\PubRecEventBase.cs" />
     <Compile Include="Model\PubRecEvent\PubRecEventClick.cs" />
@@ -86,7 +86,7 @@
     <Compile Include="Model\PubRecMsg\PubRecMsgText.cs" />
     <Compile Include="Model\PubRecMsg\PubRecMsgVideo.cs" />
     <Compile Include="Model\PubRecMsg\PubRecMsgVoice.cs" />
-    <Compile Include="Model\Others\PubRecPersonInfo.cs" />
+    <Compile Include="Model\Others\PubOAuth_UserInfo.cs" />
     <Compile Include="Model\PubResMsg\PubResMsgBase.cs" />
     <Compile Include="Model\PubResMsg\PubResMsgImage.cs" />
     <Compile Include="Model\PubResMsg\PubResMsgMusic.cs" />

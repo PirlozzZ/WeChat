@@ -263,7 +263,8 @@ namespace WeChat.WebApp
 
             ChildMenu menu11 = new ChildMenu("项目查询", ChildMenu.MenuTypeEnum.view, "http://cwpt.sues.edu.cn:80/Login/Index?state=SUES!fund");
             ChildMenu menu12 = new ChildMenu("薪资查询", ChildMenu.MenuTypeEnum.view, "http://cwpt.sues.edu.cn:80/Login/Index?state=SUES!salary");
-            ChildMenu menu13 = new ChildMenu("来款查询", ChildMenu.MenuTypeEnum.view, "http://cwpt.sues.edu.cn:8075/WebReport/ReportServer?reportlet=SUES/CurrentAccount.cpt&adunit=1&op=h5&__bypagesize__=false");
+            //ChildMenu menu13 = new ChildMenu("来款查询", ChildMenu.MenuTypeEnum.view, "http://cwpt.sues.edu.cn:8075/WebReport/ReportServer?reportlet=SUES/CurrentAccount.cpt&adunit=1&op=h5&__bypagesize__=false");
+            ChildMenu menu13= new ChildMenu("来款查询", ChildMenu.MenuTypeEnum.click, "13");
             ChildMenu menu14 = new ChildMenu("报销查询", ChildMenu.MenuTypeEnum.click, "14");
             ChildMenu menu15 = new ChildMenu("学费查询", ChildMenu.MenuTypeEnum.view, "http://cwpt.sues.edu.cn:80/Login/Index?state=SUES!studenttuition");
 
@@ -286,13 +287,13 @@ namespace WeChat.WebApp
             menu2.sub_button.Add(menu25);
 
             ChildMenu menu31 = new ChildMenu("解除绑定", ChildMenu.MenuTypeEnum.click, "31"); 
-            ChildMenu menu32 = new ChildMenu("在线咨询", ChildMenu.MenuTypeEnum.click, "32");
+            //ChildMenu menu32 = new ChildMenu("在线咨询", ChildMenu.MenuTypeEnum.click, "32");
             ChildMenu menu33 = new ChildMenu("学生缴费", ChildMenu.MenuTypeEnum.click, "33");
             ChildMenu menu34 = new ChildMenu("政策法规", ChildMenu.MenuTypeEnum.click, "34");
             ChildMenu menu35 = new ChildMenu("学生补办登记", ChildMenu.MenuTypeEnum.click, "35");
 
             menu3.sub_button.Add(menu31);
-            menu3.sub_button.Add(menu32);
+            //menu3.sub_button.Add(menu32);
             menu3.sub_button.Add(menu33);
             menu3.sub_button.Add(menu34);
             menu3.sub_button.Add(menu35);

@@ -1,8 +1,77 @@
 ﻿
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "登陆";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string userID = ViewData["userID"] as string;
+    string openID = ViewData["openID"] as string;
+    string state = ViewData["state"] as string;
+    string IsValid = ViewData["IsValid"] as string;
 }
 
-<h2>Index</h2>
 
+<div style="padding-top:100px">
+    <div class="weui_cell">
+        <div class="weui_cell_hd"><label class="weui_label">帐号</label></div>
+        <div class="weui_cell_bd weui_cell_primary">
+            <input id="usercode" class="weui_input" value="@userID" type="text" placeholder="请输入帐号" />
+        </div>
+    </div>
+    <div class="weui_cell">
+        <div class="weui_cell_hd"><label class="weui_label">密码</label></div>
+        <div class="weui_cell_bd weui_cell_primary">
+            <input id="password" class="weui_input" type="password" placeholder="请输入密码" />
+        </div>
+    </div>
+    <div class="weui_cell">
+        @Html.Hidden("userID", userID)
+        @Html.Hidden("openID", openID)
+        @Html.Hidden("state", state)
+        @Html.Hidden("IsValid", IsValid)
+        <div style="text-align:left;">
+            <div id="msg_alert" class="MessageErr" style="visibility: hidden; color:red">用户名或密码不能为空！</div>
+            <div id="msg_err" class="MessageErr" style="visibility: hidden; color:red">用户名或密码错误,请输入正确的信息!</div>
+        </div>
+    </div>
+    <div class="button_sp_area" style="width:90%; margin-left: auto;margin-right:auto; padding-top:10px">
+        <a href="javascript:;" class="weui_btn weui_btn_primary" onclick="check();">登陆</a>
+    </div>
+</div>
+
+<script type="text/javascript" language="javascript">
+
+    $(function () {
+        $("#msg_err").css("visibility", "hidden");
+        $("#msg_alert").css("visibility", "hidden");
+        var isTrue = "@IsValid";
+
+        if (isTrue == "false") {
+            //alert("用户名或密码错误,请输入正确的信息!");
+            $("#msg_err").css("visibility", "visible");
+        }
+    });
+    document.onkeydown = function (event) {
+        var e = event || window.event || arguments.callee.caller.arguments[0];
+
+        if (e && e.keyCode == 13) {
+            check();
+        }
+    };
+    function check() {
+        $("#msg_err").css("visibility","hidden");
+        $("#msg_alert").css("visibility","hidden");
+        var userID = $("#usercode").val();
+        var password = $("#password").val();
+        var state = $("#state").val();
+        var openID = $("#openID").val();
+        if (usercode == "" || password == "") {
+            //alert("用户名或密码不能为空！");
+            $("#msg_alert").css("visibility", "visible");
+            //                        return;
+        }
+        else {
+
+            window.location.href = "/Pub/Login?userID=" + userID + "&password=" + password + "&state=" + state + "&openID=" + openID;
+        }
+    }
+
+</script>

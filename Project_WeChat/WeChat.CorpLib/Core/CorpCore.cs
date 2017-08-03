@@ -77,7 +77,7 @@ namespace WeChat.CorpLib.Core
         /// <param name="scope">应用授权作用域
         /// <param name="state">重定向后会带上state参数，开发者可以填写a-zA-Z0-9的参数值，最多128字节</param>
         /// <returns></returns>
-        public string OAuth_getURL(string para_URL, ScopeTypeEnum scope, string state)
+        public string GetOAuth_URL(string para_URL, ScopeTypeEnum scope, string state)
         {
             string OAuth_URL = string.Empty;
             try
@@ -97,7 +97,7 @@ namespace WeChat.CorpLib.Core
         /// <param name="code"></param>
         /// <param name="agentid"></param>
         /// <returns></returns>
-        public CorpOAuth_UserInfo OAuth_getUserInfo(string code)
+        public CorpOAuth_UserInfo GetOAuth_UserInfo(string code)
         {
             CorpOAuth_UserInfo instance = null;
             string result = string.Empty;
@@ -112,21 +112,21 @@ namespace WeChat.CorpLib.Core
                     {
                         if (!"0".Equals(instance.errcode))
                         {
-                            log.Info(string.Format("Corp OAuth_getUserInfo Failed:{0}", instance.errcode + instance.errmsg+"--"+url));
+                            log.Info(string.Format("CorpOAuth_getUserInfo Failed:{0}", instance.errcode + instance.errmsg+"--"+url));
                         }
                         else
                         {
-                            log.Debug(string.Format("Corp OAuth_getUserInfo success", instance.UserId));
+                            log.Debug(string.Format("CorpOAuth_getUserInfo success", instance.UserId));
                         }
                     }
                     else
                     {
-                        log.Info(string.Format("Corp OAuth_getUserInfo JsonConvert Failed:{0}", result));
+                        log.Info(string.Format("CorpOAuth_getUserInfo JsonConvert Failed:{0}", result));
                     }
                 }
                 catch (Exception e)
                 {
-                    log.Error(string.Format("Corp OAuth_getUserInfo ERR:{0}",url), e);
+                    log.Error(string.Format("CorpOAuth_getUserInfo ERR:{0}",url), e);
                 }
             }
             return instance;
@@ -137,7 +137,7 @@ namespace WeChat.CorpLib.Core
         /// </summary>
         /// <param name="Employeecode">微信帐号号码</param>
         /// <returns>用户信息</returns>
-        public CorpOAuth_UserDetail OAuth_getUserDetail(string user_ticket)
+        public CorpOAuth_UserDetail GetOAuth_UserDetail(string user_ticket)
         {
             CorpOAuth_UserDetail instance = null;
             string result = string.Empty;

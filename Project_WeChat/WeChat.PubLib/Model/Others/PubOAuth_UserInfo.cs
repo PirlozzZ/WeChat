@@ -7,11 +7,11 @@ using System.Web;
 
 namespace WeChat.PubLib.Model
 {
-    public class PubRecPersonInfo
+    public class PubOAuth_UserInfo
     {
         protected log4net.ILog log;
 
-        public PubRecPersonInfo(string sMsg)
+        public PubOAuth_UserInfo(string sMsg)
         {
             try
             {
@@ -28,11 +28,11 @@ namespace WeChat.PubLib.Model
             }
             catch (Exception e)
             {
-                log.Error ("ReqPersonInfo is error", e);
+                log.Error ("PubOAuth_UserInfo is error", e);
             }
         }
 
-        public PubRecPersonInfo()
+        public PubOAuth_UserInfo()
         {
         }
 

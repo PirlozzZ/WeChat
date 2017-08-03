@@ -24,7 +24,7 @@ namespace WeChat.WebPage.Controllers
 
         string signMenu = string.Empty;
         string signComp = string.Empty;
-        string userId = string.Empty;
+        string userID = string.Empty;
 
         // GET: Corp
         public ActionResult Index(string code, string state)
@@ -53,23 +53,23 @@ namespace WeChat.WebPage.Controllers
                     string cookieStr = cookieHelper.getCookie("CorpWechat" + signComp);
                     if (string.IsNullOrEmpty(cookieStr))
                     {
-                        string RedirectURL = core.OAuth_getURL("http://" + Request.Url.Authority.ToString() + "/Corp/Index", CorpCore.ScopeTypeEnum.snsapi_base, state);
-                        log.Debug("#debug1" + RedirectURL);
+                        string RedirectURL = core.GetOAuth_URL("http://" + Request.Url.Authority.ToString() + "/Corp/Index", CorpCore.ScopeTypeEnum.snsapi_base, state);
+                         
                         Response.Redirect(RedirectURL);
                     }
                     else
                     {
-                        userId = cookieHelper.DecryptString(cookieStr);
+                        userID = cookieHelper.DecryptString(cookieStr);
                     }
                 }
                 else
                 {
-                    log.Debug("#debug2" + code);
-                    userId = core.OAuth_getUserInfo(code).UserId;
-                    log.Debug("#debug3" + userId);
+                    
+                    userID = core.GetOAuth_UserInfo(code).UserId;
+                  
                 }
                 //userId = "183725";
-                if (string.IsNullOrEmpty(userId))
+                if (string.IsNullOrEmpty(userID))
                 {
                     log.Error("Corp/Index error:Lacking of userId!");
                     Response.Redirect("http://" + Request.Url.Authority.ToString() + "/Error.htm");
@@ -78,14 +78,14 @@ namespace WeChat.WebPage.Controllers
                 {
                     if (needLogin)
                     {
-                        ViewData["userId"] = userId;
+                        ViewData["userID"] = userID;
                         ViewData["state"] = state;
                         ViewData["IsValid"] = "True";
                         return View();
                     }
                     else
                     {
-                        return RedirectToAction("Login", new { userId = userId, password = "htP@ssw0rd", state = state });
+                        return RedirectToAction("Login", new { userID = userID, password = "htP@ssw0rd", state = state });
                     }
                 }
             }
@@ -96,7 +96,7 @@ namespace WeChat.WebPage.Controllers
             return View();
         }
 
-        public ActionResult Login(string userId,string password,string state)
+        public ActionResult Login(string userID,string password,string state)
         {
             bool sign = false;
             if (string.IsNullOrEmpty(state))
@@ -110,21 +110,21 @@ namespace WeChat.WebPage.Controllers
                 signComp = temp[0].ToString();
                 signMenu = temp[1].ToString(); 
             }
-            if (!string.IsNullOrEmpty(userId) && !string.IsNullOrEmpty(password)){
+            if (!string.IsNullOrEmpty(userID) && !string.IsNullOrEmpty(password)){
                 password = "htP@ssw0rd".Equals(password) ? "":password;
                 //for debug
-                userId = "arogornl".Equals(userId.ToLower()) ? "2000900301" : userId;
-                sign = basicMethod.vertify(userId, password);
+                //userId = "arogornl".Equals(userId.ToLower()) ? "2000900301" : userId;
+                sign = basicMethod.vertify(userID, password);
                 //sign = true;
                 log.Debug("vertify result:" + sign);
                 if (sign)
                 {
                     
                     string url = string.Empty;
-                    string key = userId + "SeaskyHR" + DateTime.Now.ToString("yyyyMMddHHmm");
+                    string key = userID + "SeaskyHR" + DateTime.Now.ToString("yyyyMMddHHmm");
 
                     cookieHelper.delCookie("CorpWechat" + signComp);
-                    cookieHelper.setCookie("CorpWechat" + signComp, cookieHelper.EncryptString(userId), 2);
+                    cookieHelper.setCookie("CorpWechat" + signComp, cookieHelper.EncryptString(userID), 2);
 
                     //key = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(key, "MD5");
                     MD5 sha1Hash = MD5.Create();
@@ -138,21 +138,21 @@ namespace WeChat.WebPage.Controllers
 
                     if ("salary".Equals(signMenu))
                     {
-                        url = string.Format(fr_baseURL, "Salary.cpt&peoplecode=" + userId + "&SalaryYear1=" + DateTime.Now.AddMonths(-5).ToString("yyyy-MM-dd") + "&SalaryYear2=" + DateTime.Now.ToString("yyyy-MM-dd") + "&key=" + key);
+                        url = string.Format(fr_baseURL, "Salary.cpt&peoplecode=" + userID + "&SalaryYear1=" + DateTime.Now.AddMonths(-5).ToString("yyyy-MM-dd") + "&SalaryYear2=" + DateTime.Now.ToString("yyyy-MM-dd") + "&key=" + key);
 
                         //for shxj
                         //url = string.Format(fr_baseURL, "Salary.cpt&peoplecode=" + userId + "&SalaryYear1=" + DateTime.Now.Year+"-01-01" + "&SalaryYear2=" + DateTime.Now.ToString("yyyy-MM-dd") + "&key=" + key);
                     }
                     else if ("salaryyear".Equals(signMenu))
                     {
-                        url = string.Format(fr_baseURL, "Salary_year.cpt&peoplecode=" + userId + "&SalaryYear1=" + DateTime.Now.AddYears(-3).ToString("yyyy") + "&SalaryYear2=" + DateTime.Now.ToString("yyyy-MM-dd") + "&key=" + key);
+                        url = string.Format(fr_baseURL, "Salary_year.cpt&peoplecode=" + userID + "&SalaryYear1=" + DateTime.Now.AddYears(-3).ToString("yyyy") + "&SalaryYear2=" + DateTime.Now.ToString("yyyy-MM-dd") + "&key=" + key);
                     }
                     //MyLog.WriteLog(url);
                     Response.Redirect(url);
                 }
                 else
                 {
-                    ViewData["userId"] = userId;
+                    ViewData["userId"] = userID;
                     ViewData["state"] = state;
                     ViewData["IsValid"] = "false";
                     return View("Index");

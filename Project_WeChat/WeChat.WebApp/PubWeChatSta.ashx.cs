@@ -133,9 +133,9 @@ namespace WeChat.WebApp
             ChildMenu menu2 = new ChildMenu("业务查询");
             ChildMenu menu3 = new ChildMenu("用户信息");
 
-            ChildMenu menu11 = new ChildMenu("薪资查询", ChildMenu.MenuTypeEnum.view, "http://Cwcw.sta.edu.cn:8003/Login/Index?state=STA!salary");
-            ChildMenu menu12 = new ChildMenu("项目查询", ChildMenu.MenuTypeEnum.view, "http://Cwcw.sta.edu.cn:8003/Login/Index?state=STA!fund");
-            ChildMenu menu13 = new ChildMenu("学费查询", ChildMenu.MenuTypeEnum.view, "http://Cwcw.sta.edu.cn:8003/Login/Index?state=STA!charge");
+            ChildMenu menu11 = new ChildMenu("薪资查询", ChildMenu.MenuTypeEnum.view, "http://Cwcw.sta.edu.cn:8003/Pub/Index?state=STA!salary");
+            ChildMenu menu12 = new ChildMenu("项目查询", ChildMenu.MenuTypeEnum.view, "http://Cwcw.sta.edu.cn:8003/Pub/Index?state=STA!fund");
+            ChildMenu menu13 = new ChildMenu("学费查询", ChildMenu.MenuTypeEnum.view, "http://Cwcw.sta.edu.cn:8003/Pub/Index?state=STA!charge");
             ChildMenu menu14 = new ChildMenu("来款查询", ChildMenu.MenuTypeEnum.click, "14");
             ChildMenu menu15 = new ChildMenu("通知公告", ChildMenu.MenuTypeEnum.view, "http://cwcw.sta.edu.cn:8001/Home/Articles?m=0c356049-28f7-475f-98fa-152d51737ed5");
 
