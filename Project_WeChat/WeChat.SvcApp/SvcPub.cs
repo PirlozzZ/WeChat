@@ -36,7 +36,8 @@ namespace WeChat.SvcApp
 
         private void timerOverDayHourFroze_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-
+            string connStr = ConfigurationManager.AppSettings["sqlConn"].ToString();
+            string startDay = ConfigurationManager.AppSettings["startDate"].ToString(); 
         }
     }
 }
