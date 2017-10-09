@@ -288,7 +288,7 @@ namespace WeChat.WebApp
 
             ChildMenu menu31 = new ChildMenu("解除绑定", ChildMenu.MenuTypeEnum.click, "31"); 
             //ChildMenu menu32 = new ChildMenu("在线咨询", ChildMenu.MenuTypeEnum.click, "32");
-            ChildMenu menu33 = new ChildMenu("学生缴费", ChildMenu.MenuTypeEnum.click, "33");
+            ChildMenu menu33 = new ChildMenu("学生缴费", ChildMenu.MenuTypeEnum.view, "http://payment.cloud.ccb.com/index_u.jhtml?param=4C4A647F371B43F11DBA91BA7799EE58C59D79B9E834A07D7CE6C5522E5A9F46670849626106C5714D562A556E153CFFD15776F0B17D91BE65EC5221B4A931F1C1F6331EE5E1ED11232A46AA1E196B49DC7901A2E97F9D32C9472BFD4CA567687AC7760BB7E6CB52E11236DC3E5F61C1D1B21F50E66048EA47A4526B703C5C90546B9B12CB61C99D9264D07D287F5EC8");
             ChildMenu menu34 = new ChildMenu("政策法规", ChildMenu.MenuTypeEnum.click, "34");
             ChildMenu menu35 = new ChildMenu("学生补办登记", ChildMenu.MenuTypeEnum.click, "35");
 
