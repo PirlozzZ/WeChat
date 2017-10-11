@@ -17,13 +17,13 @@ namespace WeChat.WebApp
     public class PubWeChatSta : IHttpHandler
     {
         static log4net.ILog log = log4net.LogManager.GetLogger("Log.Logging");//获取一个日志记录器 
-        static PubCore pubCore;
+        static PubCore pubCoreSta;
         static string logoutURL = ConfigurationManager.AppSettings["StaLogoutURL"];
 
         static PubWeChatSta()
         {
-            pubCore = new PubCore("Sta");
-            PubRecEventClick.OnEventClick += DoClick; 
+            pubCoreSta = new PubCore("Sta");
+            PubRecEventClick.OnEventClick += DoClick;
             PubRecMsgText.OnMsgText += DoMsgText;
         }
 
@@ -54,7 +54,7 @@ namespace WeChat.WebApp
                 log.Debug("ProcessRequest Get:" + postStr);
                 if (!string.IsNullOrEmpty(postStr))
                 {
-                    sResult = pubCore.ProcessMsg(postStr, pMsgSignature, pTimeStamp, pNonce);
+                    sResult = pubCoreSta.ProcessMsg(postStr, pMsgSignature, pTimeStamp, pNonce);
                     log.Debug("ProcessRequest sResult:" + sResult);
                 }
                 HttpContext.Current.Response.Write(sResult);
@@ -68,7 +68,7 @@ namespace WeChat.WebApp
                 try
                 {
 
-                    if (pubCore.PubAuth(pTimeStamp, pNonce, pEchoStr, pMsgSignature))
+                    if (pubCoreSta.PubAuth(pTimeStamp, pNonce, pEchoStr, pMsgSignature))
                     {
                         HttpContext.Current.Response.Write(pEchoStr);
                         HttpContext.Current.ApplicationInstance.CompleteRequest();
@@ -88,12 +88,12 @@ namespace WeChat.WebApp
             if ("31".Equals(instanse.EventKey))
             {
                 try
-                { 
+                {
                     string flag = HTTPHelper.GetRequest(logoutURL + "?openid=" + instanse.FromUserName);
                     if (bool.Parse(flag))
-                    { 
+                    {
                         PubSendMsgText msg = new PubSendMsgText("解除绑定成功！", instanse.FromUserName);
-                        pubCore.SendMsg(msg);
+                        pubCoreSta.SendMsg(msg);
                     }
                 }
                 catch (Exception e)
@@ -102,14 +102,14 @@ namespace WeChat.WebApp
                 }
             }
             else
-            { 
+            {
                 PubSendMsgText msg = new PubSendMsgText("开发中，敬请期待！！", instanse.FromUserName);
-                pubCore.SendMsg(msg);
+                pubCoreSta.SendMsg(msg);
             }
             return strResult;
         }
 
-        
+
 
         public static string DoMsgText(PubRecMsgText instanse)
         {
@@ -133,9 +133,9 @@ namespace WeChat.WebApp
             ChildMenu menu2 = new ChildMenu("业务查询");
             ChildMenu menu3 = new ChildMenu("用户信息");
 
-            ChildMenu menu11 = new ChildMenu("薪资查询", ChildMenu.MenuTypeEnum.view, "http://Cwcw.sta.edu.cn:8003/Pub/Index?state=STA!salary");
-            ChildMenu menu12 = new ChildMenu("项目查询", ChildMenu.MenuTypeEnum.view, "http://Cwcw.sta.edu.cn:8003/Pub/Index?state=STA!fund");
-            ChildMenu menu13 = new ChildMenu("学费查询", ChildMenu.MenuTypeEnum.view, "http://Cwcw.sta.edu.cn:8003/Pub/Index?state=STA!charge");
+            ChildMenu menu11 = new ChildMenu("薪资查询", ChildMenu.MenuTypeEnum.view, "http://Cwcw.sta.edu.cn/Pub/Index?state=STA!salary");
+            ChildMenu menu12 = new ChildMenu("项目查询", ChildMenu.MenuTypeEnum.view, "http://Cwcw.sta.edu.cn/Pub/Index?state=STA!fund");
+            ChildMenu menu13 = new ChildMenu("学费查询", ChildMenu.MenuTypeEnum.view, "http://Cwcw.sta.edu.cn/Pub/Index?state=STA!charge");
             ChildMenu menu14 = new ChildMenu("来款查询", ChildMenu.MenuTypeEnum.click, "14");
             ChildMenu menu15 = new ChildMenu("通知公告", ChildMenu.MenuTypeEnum.view, "http://cwcw.sta.edu.cn:8001/Home/Articles?m=0c356049-28f7-475f-98fa-152d51737ed5");
 
@@ -146,7 +146,7 @@ namespace WeChat.WebApp
             menu1.sub_button.Add(menu14);
             menu1.sub_button.Add(menu15);
 
-            ChildMenu menu21 = new ChildMenu("报销制度", ChildMenu.MenuTypeEnum.view, "http://cwcw.sta.edu.cn:8003/bxzn.html");
+            ChildMenu menu21 = new ChildMenu("报销制度", ChildMenu.MenuTypeEnum.view, "http://cwcw.sta.edu.cn/bxzn.html");
             ChildMenu menu22 = new ChildMenu("报账跟踪", ChildMenu.MenuTypeEnum.click, "22");
             ChildMenu menu23 = new ChildMenu("发票验真", ChildMenu.MenuTypeEnum.view, "https://www.tax.sh.gov.cn/wsbs/WSBSptFpCx_loginsNewl.jsp");
 
@@ -161,7 +161,7 @@ namespace WeChat.WebApp
             rootmenu.button.Add(menu1);
             rootmenu.button.Add(menu2);
             rootmenu.button.Add(menu3);
-            pubCore.CreateMenu(rootmenu);
+            pubCoreSta.CreateMenu(rootmenu);
             #endregion
         }
         #endregion

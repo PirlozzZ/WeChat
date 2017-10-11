@@ -17,13 +17,13 @@ namespace WeChat.WebApp
     {
 
         static log4net.ILog log = log4net.LogManager.GetLogger("Log.Logging");//获取一个日志记录器 
-        static CorpCore corpCore;
+        static CorpCore corpCoreShtvu;
         static string logoutURL = ConfigurationManager.AppSettings["ShtvuLogoutURL"];
         static string agentid = ConfigurationManager.AppSettings["ShtvuAgentid"];
 
         static CorpWeChatShtvu()
         {
-            corpCore = new CorpCore("Shtvu");
+            corpCoreShtvu = new CorpCore("Shtvu");
              
         }
 
@@ -59,7 +59,7 @@ namespace WeChat.WebApp
                 log.Debug("CorpWeChatShtvu ProcessRequest Get:" + postStr);
                 if (!string.IsNullOrEmpty(postStr))
                 {
-                    sResult = corpCore.ProcessMsg(postStr, pMsgSignature, pTimeStamp, pNonce);
+                    sResult = corpCoreShtvu.ProcessMsg(postStr, pMsgSignature, pTimeStamp, pNonce);
                     log.Debug("CorpWeChatShtvu ProcessRequest sResult:" + sResult);
                 }
                 HttpContext.Current.Response.Write(sResult);
@@ -72,7 +72,7 @@ namespace WeChat.WebApp
                 string pEchoStr = HttpContext.Current.Request.QueryString["echostr"];
                 try
                 { 
-                    pEchoStr = corpCore.CorpAuth(pTimeStamp, pNonce, pEchoStr, pMsgSignature);
+                    pEchoStr = corpCoreShtvu.CorpAuth(pTimeStamp, pNonce, pEchoStr, pMsgSignature);
                     log.Debug("CorpWeChatShtvu ProcessRequest after pEchoStr:" + pEchoStr);
                     HttpContext.Current.Response.Write(pEchoStr);
                     HttpContext.Current.ApplicationInstance.CompleteRequest();

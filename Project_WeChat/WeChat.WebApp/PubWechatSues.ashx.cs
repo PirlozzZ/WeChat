@@ -15,12 +15,12 @@ namespace WeChat.WebApp
     public class PubWeChatSues : IHttpHandler
     {
         static log4net.ILog log = log4net.LogManager.GetLogger("Log.Logging");//获取一个日志记录器 
-        static PubCore pubCore;
+        static PubCore pubCoreSues;
         static string logoutURL= ConfigurationManager.AppSettings["SuesLogoutURL"]; 
 
         static PubWeChatSues()
         { 
-            pubCore = new PubCore("Sues");            
+            pubCoreSues = new PubCore("Sues");            
             PubRecEventClick.OnEventClick += DoClick;
             PubRecEventSubscribe.OnEventSubscribe += DoSubscribe;        
             PubRecMsgText.OnMsgText += DoMsgText;     
@@ -53,7 +53,7 @@ namespace WeChat.WebApp
                 log.Debug("ProcessRequest Get:" + postStr);
                 if (!string.IsNullOrEmpty(postStr))
                 {
-                    sResult = pubCore.ProcessMsg(postStr, pMsgSignature, pTimeStamp, pNonce);
+                    sResult = pubCoreSues.ProcessMsg(postStr, pMsgSignature, pTimeStamp, pNonce);
                     log.Debug("ProcessRequest sResult:" + sResult);
                 }
                 HttpContext.Current.Response.Write(sResult);
@@ -67,7 +67,7 @@ namespace WeChat.WebApp
                 try
                 {
 
-                    if (pubCore.PubAuth(pTimeStamp, pNonce, pEchoStr, pMsgSignature))
+                    if (pubCoreSues.PubAuth(pTimeStamp, pNonce, pEchoStr, pMsgSignature))
                     {
                         HttpContext.Current.Response.Write(pEchoStr);
                         HttpContext.Current.ApplicationInstance.CompleteRequest();
@@ -87,7 +87,7 @@ namespace WeChat.WebApp
             if ("32".Equals(instanse.EventKey))
             {
                 
-                return pubCore.TransferCustomerService(instanse);
+                return pubCoreSues.TransferCustomerService(instanse);
             }
             else if ("31".Equals(instanse.EventKey))
             { 
@@ -103,7 +103,7 @@ namespace WeChat.WebApp
                         //msg.ToUserName = instanse.FromUserName;
                         //strResult = pubCore.AutoResponse(msg);
                         PubSendMsgText msg = new PubSendMsgText("解除绑定成功！", instanse.FromUserName);
-                        pubCore.SendMsg(msg);
+                        pubCoreSues.SendMsg(msg);
                         strResult = "success";
                     }
                 }
@@ -118,7 +118,7 @@ namespace WeChat.WebApp
                 PubSendMsgMpnews mpnews = new PubSendMsgMpnews();
                 mpnews.touser = instanse.FromUserName;
                 mpnews.mpnews.media_id = "SitB_ly1YP7cYE4v-8ZkxfIHJBKFLpZrkr0nO2Okucs";
-                pubCore.SendMsg(mpnews);
+                pubCoreSues.SendMsg(mpnews);
                 strResult = "success";
             }
             else
@@ -130,7 +130,7 @@ namespace WeChat.WebApp
                 //msg.ToUserName = instanse.FromUserName;
                 //strResult = pubCore.AutoResponse(msg);
                 PubSendMsgText msg = new PubSendMsgText("开发中，敬请期待！", instanse.FromUserName);
-                pubCore.SendMsg(msg);
+                pubCoreSues.SendMsg(msg);
                 strResult = "success";
             }
             return strResult;
@@ -140,7 +140,7 @@ namespace WeChat.WebApp
         {
             //PubSendMsgText msg = new PubSendMsgText("欢迎您关注\n上海工程技术大学财务处公众号\n我们将秉承\n构建服务型窗口的一贯宗旨\n将便捷的服务带入您的掌上生活\n在这里，您可以\n便捷的查询薪资信息、项目信息\n我们也将陆续开通更多人性化功能\n程财小天使愿随时随地为您服务", instanse.FromUserName);
             PubSendMsgText msg = new PubSendMsgText("1、输入数字1，即可查询到“个人所得税”的税率计算表等内容：\n 2、输入数字2，即可查询到“学校账号”基本开户行信息：\n 3、输入数字3，即可查询到学校的“纳税人识别号”：\n 4、输入数字4，即可查询到学校的“统一社会信用代码”：\n 5、输入数字5，即可查询到“教师报销业务”常见问题：\n 6、输入数字6，即可查询到“学生报销业务”常见问题：\n 7、输入数字7，即可查询到各银行上门服务时间：\n 8、输入数字8，即可查询到“差旅费报销”规定：\n 9、再次感谢关注上海工程技术大学财务处官方微信平台，如有任何疑问或者建议请直接联系我们财务处。", instanse.FromUserName);
-            pubCore.SendMsg(msg);
+            pubCoreSues.SendMsg(msg);
             return "success";
         }
 
@@ -155,14 +155,14 @@ namespace WeChat.WebApp
             else if ("materialcondition".Equals(instanse.Content.ToLower()))
             {
                 MaterialCondition condition = new MaterialCondition(MaterialTypeEnum.news,0,20);
-                pubCore.batchget_material(condition);
+                pubCoreSues.batchget_material(condition);
             }
             else if ("1".Equals(instanse.Content) || "个人所得税".Equals(instanse.Content))
             {
                 PubSendMsgMpnews mpnews = new PubSendMsgMpnews();
                 mpnews.touser = instanse.FromUserName;
                 mpnews.mpnews.media_id = "SitB_ly1YP7cYE4v-8ZkxWXl9PSzK3OMUIc8_fERI8c";
-                pubCore.SendMsg(mpnews);
+                pubCoreSues.SendMsg(mpnews);
                 strResult = "success";
             }
             else if ("2".Equals(instanse.Content) || "学校账户".Equals(instanse.Content)|| "账号".Equals(instanse.Content)|| "学校账号".Equals(instanse.Content)|| "银行账号".Equals(instanse.Content)|| "学校帐户".Equals(instanse.Content) || "帐号".Equals(instanse.Content) || "学校帐号".Equals(instanse.Content) || "银行帐号".Equals(instanse.Content))
@@ -173,7 +173,7 @@ namespace WeChat.WebApp
                 //msg.ToUserName = instanse.FromUserName;
                 //strResult = pubCore.AutoResponse(msg);
                 PubSendMsgText msg = new PubSendMsgText("上海工程技术大学\n31982603001717943\n上海银行松江支行", instanse.FromUserName);
-                pubCore.SendMsg(msg);
+                pubCoreSues.SendMsg(msg);
                 return "success";
             }
             else if ("3".Equals(instanse.Content) || "纳税人识别号".Equals(instanse.Content) || "税号".Equals(instanse.Content) || "学校税号".Equals(instanse.Content) || "开票信息".Equals(instanse.Content))
@@ -184,13 +184,13 @@ namespace WeChat.WebApp
                 //msg.ToUserName = instanse.FromUserName;
                 //strResult = pubCore.AutoResponse(msg);
                 PubSendMsgText msg = new PubSendMsgText("名称：上海工程技术大学\n纳税人识别号：310105425022547\n地址 ：上海市松江区龙腾路333号\n开户行及账号：上海银行松江支行：31982603001717943\n联系电话：021-67791159", instanse.FromUserName);
-                pubCore.SendMsg(msg);
+                pubCoreSues.SendMsg(msg);
                 return "success";
             }
             else if ("4".Equals(instanse.Content) || "信用代码".Equals(instanse.Content) || "统一社会信用代码".Equals(instanse.Content) || "学校信用社会代码".Equals(instanse.Content))
             {
                 PubSendMsgText msg = new PubSendMsgText("上海工程技术大学\n统一社会信用代码：12310000425022547M", instanse.FromUserName);
-                pubCore.SendMsg(msg);
+                pubCoreSues.SendMsg(msg);
                 return "success";
             }
             else if ("5".Equals(instanse.Content) || "报销业务常见问题".Equals(instanse.Content)|| "教师报销".Equals(instanse.Content))
@@ -198,7 +198,7 @@ namespace WeChat.WebApp
                 PubSendMsgMpnews mpnews = new PubSendMsgMpnews();
                 mpnews.touser = instanse.FromUserName;
                 mpnews.mpnews.media_id = "SitB_ly1YP7cYE4v-8ZkxeR3-nQaOnRQUBA8gsjsy_8";
-                pubCore.SendMsg(mpnews);
+                pubCoreSues.SendMsg(mpnews);
                 strResult = "success";
             }
             else if ("6".Equals(instanse.Content) || "大学生创新项目".Equals(instanse.Content) || "学生报销".Equals(instanse.Content) || "学生".Equals(instanse.Content))
@@ -206,7 +206,7 @@ namespace WeChat.WebApp
                 PubSendMsgMpnews mpnews = new PubSendMsgMpnews();
                 mpnews.touser = instanse.FromUserName;
                 mpnews.mpnews.media_id = "SitB_ly1YP7cYE4v-8ZkxfcscwdzfvQWZxxukBEV2uA";
-                pubCore.SendMsg(mpnews);
+                pubCoreSues.SendMsg(mpnews);
                 strResult = "success";
             }
             
@@ -215,7 +215,7 @@ namespace WeChat.WebApp
                 PubSendMsgMpnews mpnews = new PubSendMsgMpnews();
                 mpnews.touser = instanse.FromUserName;
                 mpnews.mpnews.media_id = "SitB_ly1YP7cYE4v-8ZkxUnsUDjLYgmEVUmEVcyibQQ";
-                pubCore.SendMsg(mpnews);
+                pubCoreSues.SendMsg(mpnews);
                 strResult= "success";
             }
             else if ("8".Equals(instanse.Content) || "差旅费".Equals(instanse.Content))
@@ -223,7 +223,7 @@ namespace WeChat.WebApp
                 PubSendMsgMpnews mpnews = new PubSendMsgMpnews();
                 mpnews.touser = instanse.FromUserName;
                 mpnews.mpnews.media_id = "SitB_ly1YP7cYE4v-8Zkxbg2WpgT2JOhD8DY6_KICeQ";
-                pubCore.SendMsg(mpnews);
+                pubCoreSues.SendMsg(mpnews);
                 strResult = "success";
             }
             else if ("帮助".Equals(instanse.Content) )
@@ -235,7 +235,7 @@ namespace WeChat.WebApp
                 //strResult = pubCore.AutoResponse(msg);
                 //PubSendMsgText msg = new PubSendMsgText("回复：\n 1、输入关键字“个人所得税”即可出现个税税率计算表等内容；\n2、输入关键字“学校账号”即可出现学校基本开户行信息；\n3、输入关键字“纳税人识别号”即可出现学校纳税人识别号；\n4、输入关键字“统一社会信用代码”即可查询统一社会信用代码；\n5、输入关键字“教师报销”即可出现教师报销业务常见问题；\n6、输入关键字“学生报销”即可出现学生报销业务常见问题；\n7、输入关键字“银行服务”即可查阅具体各银行上门服务时间；\n8、输入关键字“差旅费”即可查询差旅费报销规定；\n9、再次感谢关注上海工程技术大学财务处官方微信平台，如有任何疑问或者建议请直接联系我们财务处。", instanse.FromUserName);
                 PubSendMsgText msg = new PubSendMsgText("1、输入数字1，即可查询到“个人所得税”的税率计算表等内容：\n 2、输入数字2，即可查询到“学校账号”基本开户行信息：\n 3、输入数字3，即可查询到学校的“纳税人识别号”：\n 4、输入数字4，即可查询到学校的“统一社会信用代码”：\n 5、输入数字5，即可查询到“教师报销业务”常见问题：\n 6、输入数字6，即可查询到“学生报销业务”常见问题：\n 7、输入数字7，即可查询到各银行上门服务时间：\n 8、输入数字8，即可查询到“差旅费报销”规定：\n 9、再次感谢关注上海工程技术大学财务处官方微信平台，如有任何疑问或者建议请直接联系我们财务处。", instanse.FromUserName);
-                pubCore.SendMsg(msg);
+                pubCoreSues.SendMsg(msg);
                 return "success";
             }
             else
@@ -246,7 +246,7 @@ namespace WeChat.WebApp
                 //msg.ToUserName = instanse.FromUserName;
                 //strResult = pubCore.AutoResponse(msg);
                 PubSendMsgText msg = new PubSendMsgText("1、输入数字1，即可查询到“个人所得税”的税率计算表等内容：\n 2、输入数字2，即可查询到“学校账号”基本开户行信息：\n 3、输入数字3，即可查询到学校的“纳税人识别号”：\n 4、输入数字4，即可查询到学校的“统一社会信用代码”：\n 5、输入数字5，即可查询到“教师报销业务”常见问题：\n 6、输入数字6，即可查询到“学生报销业务”常见问题：\n 7、输入数字7，即可查询到各银行上门服务时间：\n 8、输入数字8，即可查询到“差旅费报销”规定：\n 9、再次感谢关注上海工程技术大学财务处官方微信平台，如有任何疑问或者建议请直接联系我们财务处。", instanse.FromUserName);
-                pubCore.SendMsg(msg);
+                pubCoreSues.SendMsg(msg);
                 return "success";
 
             }
@@ -301,7 +301,7 @@ namespace WeChat.WebApp
             rootmenu.button.Add(menu1);
             rootmenu.button.Add(menu2);
             rootmenu.button.Add(menu3);
-            pubCore.CreateMenu(rootmenu);
+            pubCoreSues.CreateMenu(rootmenu);
         }
         #endregion
     }

@@ -17,13 +17,13 @@ namespace WeChat.WebApp
     {
 
         static log4net.ILog log = log4net.LogManager.GetLogger("Log.Logging");//获取一个日志记录器 
-        static CorpCore corpCore;
+        static CorpCore corpCoreShsmu;
         static string logoutURL = ConfigurationManager.AppSettings["ShsmuLogoutURL"];
         static string agentid = ConfigurationManager.AppSettings["ShsmuAgentid"]; 
 
         static CorpWeChatShsmu()
         {
-            corpCore = new CorpCore("Shsmu");
+            corpCoreShsmu = new CorpCore("Shsmu");
             CorpRecEventClick.OnEventClick += DoClick;
             CorpRecMsgText.OnMsgText += DoMsgText;
         }
@@ -60,7 +60,7 @@ namespace WeChat.WebApp
                 log.Debug("ProcessRequest Get:" + postStr);
                 if (!string.IsNullOrEmpty(postStr))
                 {
-                    sResult = corpCore.ProcessMsg(postStr, pMsgSignature, pTimeStamp, pNonce);
+                    sResult = corpCoreShsmu.ProcessMsg(postStr, pMsgSignature, pTimeStamp, pNonce);
                     log.Debug("ProcessRequest sResult:" + sResult);
                 }
                 HttpContext.Current.Response.Write(sResult);
@@ -74,7 +74,7 @@ namespace WeChat.WebApp
                 try
                 { 
 
-                    pEchoStr = corpCore.CorpAuth(pTimeStamp, pNonce, pEchoStr, pMsgSignature);
+                    pEchoStr = corpCoreShsmu.CorpAuth(pTimeStamp, pNonce, pEchoStr, pMsgSignature);
                     log.Debug("ProcessRequest pEchoStr:" + pEchoStr);
                     HttpContext.Current.Response.Write(pEchoStr);
                     HttpContext.Current.ApplicationInstance.CompleteRequest(); 
@@ -100,7 +100,7 @@ namespace WeChat.WebApp
                     if (bool.Parse(flag))
                     {
                         CorpSendMsgText msg = new CorpSendMsgText("解除绑定成功！", instanse.ToUserName); 
-                        corpCore.SendMsg(msg);
+                        corpCoreShsmu.SendMsg(msg);
                     }
                 }
                 catch (Exception e)
@@ -111,7 +111,7 @@ namespace WeChat.WebApp
             else
             { 
                 CorpSendMsgText msg = new CorpSendMsgText("开发中，敬请期待！", instanse.ToUserName);
-                corpCore.SendMsg(msg);
+                corpCoreShsmu.SendMsg(msg);
             }
             return strResult;
         }

@@ -18,12 +18,12 @@ namespace WeChat.WebApp
     {
 
         static log4net.ILog log = log4net.LogManager.GetLogger("Log.Logging");//获取一个日志记录器 
-        static PubCore pubCore;
+        static PubCore pubCoreDsta;
         static string logoutURL = ConfigurationManager.AppSettings["DstaLogoutURL"];
 
         static PubWeChatDsta()
         { 
-            pubCore = new PubCore("Dsta");
+            pubCoreDsta = new PubCore("Dsta");
             PubRecEventClick.OnEventClick += DoClick;
             PubRecMsgText.OnMsgText += DoMsgText;
         }
@@ -60,7 +60,7 @@ namespace WeChat.WebApp
                 log.Debug("ProcessRequest Get:" + postStr);
                 if (!string.IsNullOrEmpty(postStr))
                 {
-                    sResult = pubCore.ProcessMsg(postStr, pMsgSignature, pTimeStamp, pNonce);
+                    sResult = pubCoreDsta.ProcessMsg(postStr, pMsgSignature, pTimeStamp, pNonce);
                     log.Debug("ProcessRequest sResult:" + sResult);
                 }
                 HttpContext.Current.Response.Write(sResult);
@@ -80,7 +80,7 @@ namespace WeChat.WebApp
                     //pMsgSignature = "7ebda6ce61cbd4f8fbbca69e195c2768e3c9e71e";
                     #endregion
 
-                    if (pubCore.PubAuth(pTimeStamp, pNonce, pEchoStr, pMsgSignature))
+                    if (pubCoreDsta.PubAuth(pTimeStamp, pNonce, pEchoStr, pMsgSignature))
                     {
                         HttpContext.Current.Response.Write(pEchoStr);
                         HttpContext.Current.ApplicationInstance.CompleteRequest();
@@ -110,7 +110,7 @@ namespace WeChat.WebApp
                         msg.CreateTime = instanse.CreateTime;
                         msg.FromUserName = instanse.ToUserName;
                         msg.ToUserName = instanse.FromUserName;
-                        strResult = pubCore.AutoResponse(msg);
+                        strResult = pubCoreDsta.AutoResponse(msg);
                     }
                 }
                 catch (Exception e)
@@ -125,7 +125,7 @@ namespace WeChat.WebApp
                 msg.CreateTime = instanse.CreateTime;
                 msg.FromUserName = instanse.ToUserName;
                 msg.ToUserName = instanse.FromUserName;
-                strResult = pubCore.AutoResponse(msg);
+                strResult = pubCoreDsta.AutoResponse(msg);
             }
             return strResult;
         }
@@ -159,7 +159,7 @@ namespace WeChat.WebApp
             rootmenu.button.Add(menu2);
 
 
-            pubCore.CreateMenu(rootmenu);
+            pubCoreDsta.CreateMenu(rootmenu);
         }
         #endregion
     }
