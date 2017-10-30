@@ -622,14 +622,14 @@ namespace WeChat.PubLib.Core
                 try
                 {
                     string url = string.Format("https://api.weixin.qq.com/sns/oauth2/access_token?appid={0}&secret={1}&code={2}&grant_type=authorization_code", config.AppID, config.Secret, code);
-                    result = HTTPHelper.GetRequest(url);
+                    result = HTTPHelper.GetRequest(url); 
                     if (!result.Contains("errcode"))
                     {
                         robject = new PubOAuth_AccessToken(result);
                     }
                     else
                     {
-                        log.Info("Pub getOAuth_access_token Failed! ");
+                        log.Info("Pub getOAuth_access_token Failed! "+result);
                     }
                 }
                 catch (Exception e)
