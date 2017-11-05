@@ -21,7 +21,7 @@ namespace WeChat.FormTest
         private void button1_Click(object sender, EventArgs e)
         {
             VertificationShsmu demo = new VertificationShsmu();
-            demo.VertifyMethod("183725", "092830");
+            //demo.VertifyMethod("183725", "092830");
         }
     }
 }
