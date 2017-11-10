@@ -82,7 +82,7 @@
     <Compile Include="Model\PubRecMsg\PubRecMsgImage.cs" />
     <Compile Include="Model\PubRecMsg\PubRecMsgLink.cs" />
     <Compile Include="Model\PubRecMsg\PubRecMsgLocation.cs" />
-    <Compile Include="Model\PubRecMsg\PubRecMsgTemplate.cs" />
+    <Compile Include="Model\PubSendMsg\PubSendMsgTemplate.cs" />
     <Compile Include="Model\PubRecMsg\PubRecMsgText.cs" />
     <Compile Include="Model\PubRecMsg\PubRecMsgVideo.cs" />
     <Compile Include="Model\PubRecMsg\PubRecMsgVoice.cs" />

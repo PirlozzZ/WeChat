@@ -5,9 +5,9 @@ using System.Web;
 
 namespace WeChat.PubLib.Model
 {
-    public class PubRecMsgTemplate
+    public class PubSendMsgTemplate
     {
-        public PubRecMsgTemplate()
+        public PubSendMsgTemplate()
         {
             this.data = new TemplateData();
             this.topcolor = "#FF0000";

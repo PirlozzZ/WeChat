@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -20,8 +21,10 @@ namespace WeChat.FormTest
 
         private void button1_Click(object sender, EventArgs e)
         {
-            VertificationShsmu demo = new VertificationShsmu();
+            //VertificationShsmu demo = new VertificationShsmu();
             //demo.VertifyMethod("183725", "092830");
+            DateTime startDate = DateTime.Parse(ConfigurationManager.AppSettings["startDate"].ToString());
+            string a = "1";
         }
     }
 }

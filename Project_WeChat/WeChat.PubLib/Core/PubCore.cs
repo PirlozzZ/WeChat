@@ -568,7 +568,7 @@ namespace WeChat.PubLib.Core
         /// </summary>
         /// <param name="template"></param>
         /// <returns></returns>
-        public bool SsendTemplate(PubRecMsgTemplate template)
+        public bool SendTemplate(PubSendMsgTemplate template)
         {
             bool sign = false;
             string result = string.Empty;
