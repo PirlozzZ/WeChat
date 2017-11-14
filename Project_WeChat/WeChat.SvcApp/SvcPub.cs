@@ -48,7 +48,7 @@ namespace WeChat.SvcApp
             PubCore core = new PubCore(sign);
             if (DateTime.Compare(startDate, now) < 0)
             {
-                string sql = string.Format("select * from [SFP_Middle].[dbo].[Mid_O_ClaimsOrder] where Sendstate=0");
+                string sql = string.Format("select * from [SFP_Middle].[dbo].[Mid_O_ClaimsOrder] a left join [WechatDB].[dbo].[T_User] b on a.Touser=b.Loginno where Sendstate=0");
                 using (SqlConnection conn = new SqlConnection(connStr))
                 {
                     conn.Open();
@@ -61,13 +61,30 @@ namespace WeChat.SvcApp
                     sda.Fill(dt);
                     foreach (DataRow item in dt.Rows)
                     {
-                        template.data.first.value = string.Format("您好，你的预约审核{0}", item["Field2"].ToString());
+                        template.touser = item["OpenID"].ToString();
                         template.data.keyword1.value = item["Field1"].ToString();
                         template.data.keyword2.value = item["Remark"].ToString();
                         template.data.keyword3.value = item["Field8"].ToString();
                         template.data.keyword4.value = item["Field6"].ToString();
                         template.data.keyword5.value = item["Field5 "].ToString();
-                        template.data.remark.value = item["Field4 "].ToString();
+                        if ("驳回".Equals(item["Field2"].ToString()))
+                        {
+                            template.data.first.value = string.Format("您好，你的预约审核被{0}", item["Field2"].ToString());
+                            template.data.remark.value = item["Field3 "].ToString();
+                        }
+                        else if ("完成".Equals(item["Field2"].ToString()))
+                        {
+                            template.data.first.value = string.Format("您好，你的预约审核{0}", item["Field2"].ToString());
+                            template.data.remark.value = string.Format("将在一周内完成打款，若有疑问请至财务处咨询。");
+                        }
+                        else
+                        {
+                            template.data.first.value = string.Format("您好，你的预约审核{0}", item["Field2"].ToString());
+                            template.data.remark.value = string.Format("");
+                        }
+                        
+                        
+                        
                         if (!core.SendTemplate(template))
                         {
                             log.Info(string.Format("Send Template Failed：{0}——{1}", item["Empname"].ToString(), now));
