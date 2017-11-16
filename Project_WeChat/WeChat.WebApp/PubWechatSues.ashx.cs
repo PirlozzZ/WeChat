@@ -235,7 +235,7 @@ namespace WeChat.WebApp
             {
                 PubSendMsgMpnews mpnews = new PubSendMsgMpnews();
                 mpnews.touser = instanse.FromUserName;
-                mpnews.mpnews.media_id = "SitB_ly1YP7cYE4v-8ZkxXOV2sthNwm0VXY4PFpGPzA";
+                mpnews.mpnews.media_id = "SitB_ly1YP7cYE4v-8ZkxR8JmHRHtBEeIsYJd5rYqco";
                 pubCoreSues.SendMsg(mpnews);
                 strResult = "success";
             }

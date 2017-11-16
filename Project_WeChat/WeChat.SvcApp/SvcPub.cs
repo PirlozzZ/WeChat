@@ -70,7 +70,7 @@ namespace WeChat.SvcApp
                         if ("驳回".Equals(item["Field2"].ToString()))
                         {
                             template.data.first.value = string.Format("您好，你的预约审核被{0}", item["Field2"].ToString());
-                            template.data.remark.value = item["Field3 "].ToString();
+                            template.data.remark.value = string.Format("财务处已驳回您的报销单，请登陆网上报销预约系统查看驳回窗口和驳回理由，请至该窗口拿回报销单。");
                         }
                         else if ("完成".Equals(item["Field2"].ToString()))
                         {
@@ -80,7 +80,7 @@ namespace WeChat.SvcApp
                         else
                         {
                             template.data.first.value = string.Format("您好，你的预约审核{0}", item["Field2"].ToString());
-                            template.data.remark.value = string.Format("");
+                            template.data.remark.value = string.Format("财务处已接收了您的报销单，请等待完成。");
                         }
                         
                         

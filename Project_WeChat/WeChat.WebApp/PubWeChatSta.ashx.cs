@@ -51,11 +51,11 @@ namespace WeChat.WebApp
                     postStr = Encoding.UTF8.GetString(postBytes);
                 }
 
-                log.Debug("ProcessRequest Get:" + postStr);
+                log.Debug("ProcessRequestSta Get:" + postStr);
                 if (!string.IsNullOrEmpty(postStr))
                 {
                     sResult = pubCoreSta.ProcessMsg(postStr, pMsgSignature, pTimeStamp, pNonce);
-                    log.Debug("ProcessRequest sResult:" + sResult);
+                    log.Debug("ProcessRequestSta sResult:" + sResult);
                 }
                 HttpContext.Current.Response.Write(sResult);
                 HttpContext.Current.ApplicationInstance.CompleteRequest();
@@ -76,7 +76,7 @@ namespace WeChat.WebApp
                 }
                 catch (Exception e)
                 {
-                    log.Error("ProcessRequest Get:", e);//写入一条新log
+                    log.Error("ProcessRequestSta Get:", e);//写入一条新log
                 }
             }
         }
