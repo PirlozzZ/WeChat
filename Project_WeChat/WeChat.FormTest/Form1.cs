@@ -32,7 +32,7 @@ namespace WeChat.FormTest
         private void button1_Click(object sender, EventArgs e)
         {
             DateTime now = DateTime.Now;
-            string sql = string.Format("select * from [SFP_Middle].[dbo].[Mid_O_ClaimsOrder] a left join [WechatDB].[dbo].[T_User] b on a.Touser=b.Loginno where Sendstate=0");
+            string sql = string.Format("select * from [SFP_Middle].[dbo].[Mid_O_ClaimsOrder] a left join [WechatDB].[dbo].[T_User] b on a.Touser=b.Loginno where Sendstate=3");
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 conn.Open();
