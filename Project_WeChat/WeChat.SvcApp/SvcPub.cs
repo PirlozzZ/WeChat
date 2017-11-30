@@ -48,7 +48,7 @@ namespace WeChat.SvcApp
             PubCore core = new PubCore(sign);
             if (DateTime.Compare(startDate, now) < 0)
             {
-                string sql = string.Format("select * from [SFP_Middle].[dbo].[Mid_O_ClaimsOrder] a left join [WechatDB].[dbo].[T_User] b on a.Touser=b.Loginno where Sendstate=0");
+                string sql = string.Format("select * from [SFP_Middle].[dbo].[Mid_O_ClaimsOrder] a left join [WechatDB].[dbo].[T_User] b on a.Touser=b.Loginno where Sendstate=0 and isActive=1 and Operationtime>'{0}'",startDate);
                 using (SqlConnection conn = new SqlConnection(connStr))
                 {
                     conn.Open();
@@ -66,7 +66,7 @@ namespace WeChat.SvcApp
                         template.data.keyword2.value = item["Remark"].ToString();
                         template.data.keyword3.value = item["Field8"].ToString();
                         template.data.keyword4.value = item["Field6"].ToString();
-                        template.data.keyword5.value = item["Field5 "].ToString();
+                        template.data.keyword5.value = item["Field5"].ToString();
                         if ("驳回".Equals(item["Field2"].ToString()))
                         {
                             template.data.first.value = string.Format("您好，你的预约审核被{0}", item["Field2"].ToString());
@@ -87,11 +87,11 @@ namespace WeChat.SvcApp
                         
                         if (!core.SendTemplate(template))
                         {
-                            log.Info(string.Format("Send Template Failed：{0}——{1}", item["Empname"].ToString(), now));
+                            log.Info(string.Format("Send Template Failed：{0}——{1}", item["First"].ToString(), now));
                         }
                         else
                         {
-                            cmd.CommandText = string.Format("update [SFP_Middle].[dbo].[Mid_O_ClaimsOrder] set Sendstate=1 where Field1={0}", item["Field1"].ToString());
+                            cmd.CommandText = string.Format("update [SFP_Middle].[dbo].[Mid_O_ClaimsOrder] set Sendstate=1,Sendtime='{0}' where Field1={1}", now,item["Field1"].ToString());
                             if (cmd.ExecuteNonQuery() != 1)
                             {
                                 log.Info(string.Format("Send Template SysnDB Failed：{0}", item["Field1"].ToString()));

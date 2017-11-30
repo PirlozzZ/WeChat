@@ -21,7 +21,7 @@ namespace WeChat.PubLib.Core
     {
         private DateTime sDateTime { get; set; }
         private string _sAccessToken;
-
+        private string _sign = string.Empty;
         private string sAccessToken
         {
             get { 
@@ -55,7 +55,8 @@ namespace WeChat.PubLib.Core
         }
 
         public PubCore(string sign)
-        { 
+        {
+            _sign = sign;
             config = new Config(sign);
             sDateTime = DateTime.Now;
             isDES = bool.Parse(ConfigurationManager.AppSettings[sign+"isDES"]);
@@ -77,7 +78,7 @@ namespace WeChat.PubLib.Core
         {
             try
             {
-                log.Info("PubCore Refresh GetAccessToken!——sDateTime：" + sDateTime.ToString());
+                log.Info("|PubCore Refresh GetAccessToken!——sDateTime：" + sDateTime.ToString());
                 string url = string.Format("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}", config.AppID, config.Secret);
                 string result = string.Empty;
                 result = HTTPHelper.GetRequest(url);
@@ -87,7 +88,7 @@ namespace WeChat.PubLib.Core
             }
             catch (Exception err)
             {
-                log.Error("PubCore GetAccessToken error!", err);
+                log.Error(_sign+"|PubCore GetAccessToken error!", err);
             }
         }
        
@@ -130,11 +131,11 @@ namespace WeChat.PubLib.Core
                 {
                     sign = false;
                 }
-                log.Debug("PubCore PubAuth:" + sTimeStamp + "-" + sNonce + "-" + sMsgEncrypt);
+                log.Debug(_sign + "|PubCore PubAuth:" + sTimeStamp + "-" + sNonce + "-" + sMsgEncrypt);
             }
-            catch (Exception e)
+            catch (Exception err)
             {
-                log.Error("PubCore PubAuth:", e);
+                log.Error(_sign + "|PubCore PubAuth:", err);
             }
             return sign;
         }
@@ -170,11 +171,11 @@ namespace WeChat.PubLib.Core
                 {
                     type = assembly.GetType("WeChat.PubLib.Model.PubRecMsg" + sMsgType.Substring(0, 1).ToUpper() + sMsgType.Substring(1).ToLower());
                 }
-                log.Debug("PubCore ReflectClassName:" + type.Name);
+                log.Debug(_sign + "|PubCore ReflectClassName:" + type.Name);
                 object instance = Activator.CreateInstance(type, new object[] { sMsg });
                 if (instance != null)
                 {
-                    log.Debug("PubCore ProcessMsg instance:" + instance.ToString());
+                    log.Debug(_sign + "|PubCore ProcessMsg instance:" + instance.ToString());
                     PubRecAbstract temp = (PubRecAbstract)instance;
                     sResult = temp.DoProcess();
                     if (string.IsNullOrEmpty(sResult))
@@ -184,9 +185,9 @@ namespace WeChat.PubLib.Core
                     
                 }
             }
-            catch (Exception e)
+            catch (Exception err)
             {
-                log.Error("PubCore ProcessMsg:", e);
+                log.Error(_sign+"|PubCore ProcessMsg:", err);
             }
 
             return EncryptMsg(pTimeStamp, pNonce, sResult);
@@ -221,7 +222,7 @@ namespace WeChat.PubLib.Core
             {
                 string url = string.Format("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token={0}", sAccessToken);
                 string result = string.Empty;
-                log.Debug("PubCore SendMsg:" + msg.ToJson());
+                log.Debug(_sign + "|PubCore SendMsg:" + msg.ToJson());
                 result = HTTPHelper.PostRequest(url, DataTypeEnum.json, msg.ToJson());
                 JObject jo = (JObject)JsonConvert.DeserializeObject(result);
                 if ("ok".Equals(jo["errmsg"].ToString()))
@@ -230,12 +231,12 @@ namespace WeChat.PubLib.Core
                 }
                 else
                 {
-                    log.Info(string.Format("PubCore SendMsg Failed: {0} ", result));
+                    log.Info(string.Format(_sign + "|PubCore SendMsg Failed: {0} ", result));
                 }
             }
             catch (Exception err)
             {
-                log.Error("PubCore SendMsg error!", err);
+                log.Error(_sign + "|PubCore SendMsg error!", err);
             }
             return sign;
         }
@@ -270,17 +271,17 @@ namespace WeChat.PubLib.Core
                 {
                     int ret = 0;
                     ret = wxcpt.DecryptMsg(sMsgSignature, sTimeStamp, sNonce, postStr, ref strReuslt);
-                    log.Debug("PubCore DecryptMsg Msg:" + strReuslt);
+                    log.Debug(_sign + "|PubCore DecryptMsg Msg:" + strReuslt);
                     if (ret != 0)
                     {
-                        log.Info("PubCore DecryptMsg failed");
+                        log.Info(_sign + "|PubCore DecryptMsg failed");
                     }
                 }
                 return strReuslt;
             }
             catch (Exception e)
             {
-                log.Error("PubCore DecryptMsg:", e);
+                log.Error(_sign + "|PubCore DecryptMsg:", e);
                 return strReuslt;
             }
         }
@@ -298,15 +299,15 @@ namespace WeChat.PubLib.Core
             string[] tempArray = Regex.Split(postStr,"!@!");
             try
             {
-                log.Debug("before EncryptMsg:" + strReuslt);
+                log.Debug(_sign + "before EncryptMsg:" + strReuslt);
                 if (isDES&&(!"success".Equals(tempArray[0])))
                 {
                     int ret = 0;
                     ret = wxcpt.EncryptMsg(postStr, sTimeStamp, sNonce,  ref strReuslt);
-                    log.Debug("PubCore EncryptMsg Msg:" + strReuslt);
+                    log.Debug(_sign + "|PubCore EncryptMsg Msg:" + strReuslt);
                     if (ret != 0)
                     {
-                        log.Info("PubCore EncryptMsg failed");
+                        log.Info(_sign + "|PubCore EncryptMsg failed");
                     }
                 }
                 if (tempArray.Length == 2)
@@ -317,7 +318,7 @@ namespace WeChat.PubLib.Core
             }
             catch (Exception e)
             {
-                log.Error("PubCore EncryptMsg:", e);
+                log.Error(_sign + "|PubCore EncryptMsg:", e);
                 return strReuslt;
             }
         }
@@ -333,13 +334,13 @@ namespace WeChat.PubLib.Core
         {
             bool sign = false;
             string result = string.Empty; 
-            log.Info("createMenu strjson:" + root.ToJson());
+            log.Info(_sign + "createMenu strjson:" + root.ToJson());
             try
             {  
                 string url = string.Format("https://api.weixin.qq.com/cgi-bin/menu/create?access_token={0}", sAccessToken);
                 result = HTTPHelper.PostRequest(url, DataTypeEnum.json, root.ToJson());
 
-                log.Debug(string.Format("CreateMenu result: {0} ", result));
+                log.Debug(string.Format(_sign + "CreateMenu result: {0} ", result));
                 JObject jo = (JObject)JsonConvert.DeserializeObject(result);
 
                 if ("ok".Equals(jo["errmsg"].ToString()))
@@ -348,12 +349,12 @@ namespace WeChat.PubLib.Core
                 }
                 else
                 {
-                    log.Info(string.Format("createMenu Failed: {0} ", result));
+                    log.Info(string.Format(_sign + "createMenu Failed: {0} ", result));
                 }
             }
-            catch (Exception e)
+            catch (Exception err)
             {
-                log.Error("createMenu Error", e);
+                log.Error(_sign + "createMenu Error", err);
             }
             return sign;
         }
@@ -373,7 +374,7 @@ namespace WeChat.PubLib.Core
             }
             catch (Exception e)
             {
-                log.Error("DeleteMenu:", e);
+                log.Error(_sign + "DeleteMenu:", e);
             }
             return sign;
         }
@@ -385,11 +386,11 @@ namespace WeChat.PubLib.Core
             try
             {
                 strResult = HTTPHelper.GetRequest(url); 
-                log.Info("GetMenu result:" + strResult);
+                log.Info(_sign + "GetMenu result:" + strResult);
             }
             catch (Exception e)
             {
-                log.Error("GetMenu:", e);
+                log.Error(_sign + "GetMenu:", e);
             }
             return strResult;
         }
@@ -399,7 +400,7 @@ namespace WeChat.PubLib.Core
             bool sign = false;
             string result = string.Empty;
             string strJson = JsonConvert.SerializeObject(root); 
-            log.Debug("CreateConditionalMenu strjson:" + strJson);
+            log.Debug(_sign + "CreateConditionalMenu strjson:" + strJson);
             try
             {  
                 string url = string.Format("https://api.weixin.qq.com/cgi-bin/menu/addconditional?access_token={0}",  sAccessToken);
@@ -411,12 +412,12 @@ namespace WeChat.PubLib.Core
                 }
                 else
                 {
-                    log.Info(string.Format("createConditionalMenu Failed: {0} ", result));
+                    log.Info(string.Format(_sign + "createConditionalMenu Failed: {0} ", result));
                 }
             }
-            catch (Exception e)
+            catch (Exception err)
             {
-                log.Error("CreateConditionalMenu Error", e);
+                log.Error(_sign + "CreateConditionalMenu Error", err);
             }
             return sign;
         }
@@ -436,7 +437,7 @@ namespace WeChat.PubLib.Core
             }
             catch (Exception e)
             {
-                log.Error("DeleteConditionalMenu:", e);
+                log.Error(_sign + "DeleteConditionalMenu:", e);
             }
             return sign;
         }
@@ -558,7 +559,7 @@ namespace WeChat.PubLib.Core
             }
             catch (Exception e)
             {
-                log.Error("getTemplateID error!", e);
+                log.Error(_sign + "getTemplateID error!", e);
             }
             return result;
         }
@@ -586,7 +587,7 @@ namespace WeChat.PubLib.Core
             }
             catch (Exception e)
             {
-                log.Error("sendTemplate error!", e);
+                log.Error(_sign + "sendTemplate error!", e);
             }
             return sign;
         }
@@ -629,12 +630,12 @@ namespace WeChat.PubLib.Core
                     }
                     else
                     {
-                        log.Info("Pub getOAuth_access_token Failed! "+result);
+                        log.Info(_sign + "|PubCore getOAuth_access_token Failed! " +result);
                     }
                 }
                 catch (Exception e)
                 {
-                    log.Error("Pub getOAuth_access_token error", e);
+                    log.Error(_sign + "|PubCore getOAuth_access_token error", e);
                 }
             }
             return robject;
@@ -658,7 +659,7 @@ namespace WeChat.PubLib.Core
             }
             catch (Exception e)
             {
-                log.Error("refreshOAuth_access_token error", e);
+                log.Error(_sign + "|PubCore refreshOAuth_access_token error", e);
             }
             return robject;
         }
@@ -683,13 +684,13 @@ namespace WeChat.PubLib.Core
                 }
                 else
                 {
-                    log.Info(string.Format("checkOAuth_access_token failed: {0} ", result));
+                    log.Info(string.Format(_sign + "|PubCore checkOAuth_access_token failed: {0} ", result));
                 }
 
             }
             catch (Exception e)
             {
-                log.Error("checkOAuth_access_token error", e);
+                log.Error(_sign + "|PubCore checkOAuth_access_token error", e);
             }
             return sign;
         }
@@ -717,12 +718,12 @@ namespace WeChat.PubLib.Core
                 }
                 if (temp == null)
                 {
-                    log.Info("getUserInfo result: PubReqPersonInfo is null");
+                    log.Info(_sign + "|Pubcore getUserInfo result: PubReqPersonInfo is null");
                 }
             }
             catch (Exception e)
             {
-                log.Error("getUserInfo error", e);
+                log.Error(_sign + "|Pubcore getUserInfo error", e);
             }
             return temp;
         }
@@ -748,12 +749,12 @@ namespace WeChat.PubLib.Core
             {
                 string url = string.Format("https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token={0}", sAccessToken);
                 result = HTTPHelper.PostRequest(url, DataTypeEnum.json, condition.ToJson() );
-                log.Info(string.Format("batchget_material result: {0} ", result));
+                log.Info(string.Format(_sign + "|Pubcore batchget_material result: {0} ", result));
                 JObject jo = (JObject)JsonConvert.DeserializeObject(result);
             }
             catch (Exception e)
             {
-                log.Error("batchget_material Error", e);
+                log.Error(_sign + "|Pubcore batchget_material Error", e);
             }
             return result;
         }
@@ -810,7 +811,7 @@ namespace WeChat.PubLib.Core
             }
             catch (Exception e)
             {
-                log.Error("getServerIP error: {0} ", e);
+                log.Error(_sign + "|Pubcore getServerIP error: {0} ", e);
             }
             return result;
         }

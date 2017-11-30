@@ -247,6 +247,14 @@ namespace WeChat.WebApp
                 pubCoreSues.SendMsg(mpnews);
                 strResult = "success";
             }
+            else if ("医保".Equals(instanse.Content) || "医保费".Equals(instanse.Content) || "大学生医保".Equals(instanse.Content))
+            {
+                PubSendMsgMpnews mpnews = new PubSendMsgMpnews();
+                mpnews.touser = instanse.FromUserName;
+                mpnews.mpnews.media_id = "SitB_ly1YP7cYE4v-8ZkxeQ-G4Ua5ErFkydPoXr6eWY";
+                pubCoreSues.SendMsg(mpnews);
+                strResult = "success";
+            }
             else if ("帮助".Equals(instanse.Content) )
             {
                 //msg.Content = "回复：\n 1、输入关键字“个人所得税”即可出现个税税率计算表等内容；\n2、输入关键字“学校账号”即可出现学校基本开户行信息；\n3、输入关键字“纳税人识别号”即可出现学校纳税人识别号；\n4、输入关键字“教师报销”即可出现教师报销业务常见问题；\n5、输入关键字“学生报销”即可出现学生报销业务常见问题；\n6、输入“银行服务”即可查阅具体各银行上门服务时间；\n7、输入“差旅费”即可查询差旅费报销规定；\n8、再次感谢关注上海工程技术大学财务处官方微信平台，如有任何疑问或者建议请直接联系我们财务处。";
