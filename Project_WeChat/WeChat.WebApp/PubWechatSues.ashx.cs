@@ -64,10 +64,15 @@ namespace WeChat.WebApp
             else
             {
                 string pEchoStr = HttpContext.Current.Request.QueryString["echostr"];
+                string seaskyAccessToken = HttpContext.Current.Request.QueryString["seaskyAccessToken"];
                 try
                 {
-
-                    if (pubCoreSues.PubAuth(pTimeStamp, pNonce, pEchoStr, pMsgSignature))
+                    if("Sues".Equals(seaskyAccessToken))
+                    {
+                        HttpContext.Current.Response.Write(pubCoreSues.sAccessToken);
+                        HttpContext.Current.ApplicationInstance.CompleteRequest();
+                    }
+                    else if (pubCoreSues.PubAuth(pTimeStamp, pNonce, pEchoStr, pMsgSignature))
                     {
                         HttpContext.Current.Response.Write(pEchoStr);
                         HttpContext.Current.ApplicationInstance.CompleteRequest();

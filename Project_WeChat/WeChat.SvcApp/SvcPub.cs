@@ -21,8 +21,10 @@ namespace WeChat.SvcApp
         string templateID = ConfigurationManager.AppSettings["templateID"].ToString();
         string sign = ConfigurationManager.AppSettings["sign"].ToString();
         private System.Timers.Timer _timerOverDayHourFroze;
+        static PubCore core; 
         public SvcPub()
         {
+            core = new PubCore(sign);
             InitializeComponent();
         }
 
@@ -45,10 +47,10 @@ namespace WeChat.SvcApp
         {
             
             DateTime now = DateTime.Now;
-            PubCore core = new PubCore(sign);
+            
             if (DateTime.Compare(startDate, now) < 0)
             {
-                string sql = string.Format("select * from [SFP_Middle].[dbo].[Mid_O_ClaimsOrder] a left join [WechatDB].[dbo].[T_User] b on a.Touser=b.Loginno where Sendstate=0 and isActive=1 and Operationtime>'{0}'",startDate);
+                string sql = string.Format("select * from [SFP_Middle].[dbo].[Mid_O_ClaimsOrder] a left join [WechatDB].[dbo].[T_User] b on a.Touser=b.Loginno where Sendstate=0 and isActive=1  and Operationtime>'{0}'",startDate);
                 using (SqlConnection conn = new SqlConnection(connStr))
                 {
                     conn.Open();
@@ -85,7 +87,7 @@ namespace WeChat.SvcApp
                         
                         
                         
-                        if (!core.SendTemplate(template))
+                        if (!core.SendTemplate(template, PubCore.SendTemplateMethod.LocalServer))
                         {
                             log.Info(string.Format("Send Template Failed：{0}——{1}", item["First"].ToString(), now));
                         }

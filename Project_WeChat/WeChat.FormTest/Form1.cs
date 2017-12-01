@@ -30,11 +30,11 @@ namespace WeChat.FormTest
         }
 
         private void button1_Click(object sender, EventArgs e)
-        {
+        {     
             DateTime now = DateTime.Now;
             if (DateTime.Compare(startDate, now) < 0)
             {
-                string sql = string.Format("select * from [SFP_Middle].[dbo].[Mid_O_ClaimsOrder] a left join [WechatDB].[dbo].[T_User] b on a.Touser=b.Loginno where Sendstate=3 and isActive=1and Operationtime>'{0}'", startDate);
+                string sql = string.Format("select * from [SFP_Middle].[dbo].[Mid_O_ClaimsOrder] a left join [WechatDB].[dbo].[T_User] b on a.Touser=b.Loginno where Sendstate=3 and isActive=1 and Operationtime>'{0}'", startDate);
                 log.Debug(sql);
                 using (SqlConnection conn = new SqlConnection(connStr))
                 {
@@ -72,7 +72,7 @@ namespace WeChat.FormTest
 
 
 
-                        if (!core.SendTemplate(template))
+                        if (!core.SendTemplate(template, PubCore.SendTemplateMethod.LocalServer))
                         {
                             log.Info(string.Format("Send Template Failed：{0}——{1}", item["First"].ToString(), now));
                         }
