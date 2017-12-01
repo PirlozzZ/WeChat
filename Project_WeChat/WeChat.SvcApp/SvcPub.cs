@@ -50,7 +50,7 @@ namespace WeChat.SvcApp
             
             if (DateTime.Compare(startDate, now) < 0)
             {
-                string sql = string.Format("select * from [SFP_Middle].[dbo].[Mid_O_ClaimsOrder] a left join [WechatDB].[dbo].[T_User] b on a.Touser=b.Loginno where Sendstate=0 and isActive=1  and Operationtime>'{0}'",startDate);
+                string sql = string.Format("select * from [SFP_Middle].[dbo].[Mid_O_ClaimsOrder] a left join [WechatDB].[dbo].[T_User] b on a.Touser=b.Loginno where Sendstate=0 and isActive=1  and datediff(day,Field7,'{0}')<=0", startDate);
                 using (SqlConnection conn = new SqlConnection(connStr))
                 {
                     conn.Open();
@@ -93,7 +93,7 @@ namespace WeChat.SvcApp
                         }
                         else
                         {
-                            cmd.CommandText = string.Format("update [SFP_Middle].[dbo].[Mid_O_ClaimsOrder] set Sendstate=1,Sendtime='{0}' where Field1={1}", now,item["Field1"].ToString());
+                            cmd.CommandText = string.Format("update [SFP_Middle].[dbo].[Mid_O_ClaimsOrder] set Sendstate=1,Sendtime='{0}' where id='{1}'", now,item["ID"].ToString());
                             if (cmd.ExecuteNonQuery() != 1)
                             {
                                 log.Info(string.Format("Send Template SysnDB Failed：{0}", item["Field1"].ToString()));

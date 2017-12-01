@@ -34,7 +34,7 @@ namespace WeChat.FormTest
             DateTime now = DateTime.Now;
             if (DateTime.Compare(startDate, now) < 0)
             {
-                string sql = string.Format("select * from [SFP_Middle].[dbo].[Mid_O_ClaimsOrder] a left join [WechatDB].[dbo].[T_User] b on a.Touser=b.Loginno where Sendstate=3 and isActive=1 and Operationtime>'{0}'", startDate);
+                string sql = string.Format("select * from [SFP_Middle].[dbo].[Mid_O_ClaimsOrder] a left join [WechatDB].[dbo].[T_User] b on a.Touser=b.Loginno where Sendstate=3 and isActive=1 and datediff(day,Field7,'{0}')<=0", startDate);
                 log.Debug(sql);
                 using (SqlConnection conn = new SqlConnection(connStr))
                 {
