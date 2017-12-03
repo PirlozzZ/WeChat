@@ -22,6 +22,7 @@ namespace WeChat.PubLib.Core
         private DateTime sDateTime { get; set; }
         private string _sAccessToken;
         private string _sign = string.Empty;
+        private ServerType _serverType = ServerType.LocalServer;
         public string sAccessToken
         {
             get { 
@@ -68,6 +69,23 @@ namespace WeChat.PubLib.Core
             if(sAccessToken==null)
             GetAccessToken();
         }
+
+        public PubCore(string sign,ServerType serverType)
+        {
+            _sign = sign;
+            _serverType = serverType;
+            config = new Config(sign);
+            sDateTime = DateTime.Now;
+            isDES = bool.Parse(ConfigurationManager.AppSettings[sign + "isDES"]);
+            isCustomerMsg = bool.Parse(ConfigurationManager.AppSettings[sign + "isCustomerMsg"]);
+            if (isDES)
+            {
+                wxcpt = new WXBizMsgCrypt(config.Token, config.EncodingAESKey, config.AppID);
+            }
+            if (sAccessToken == null)
+                GetAccessToken();
+        }
+
         #endregion
 
         #region 核心方法
@@ -79,12 +97,21 @@ namespace WeChat.PubLib.Core
             try
             {
                 log.Info("|PubCore Refresh GetAccessToken!——sDateTime：" + sDateTime.ToString());
-                string url = string.Format("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}", config.AppID, config.Secret);
-                string result = string.Empty;
-                result = HTTPHelper.GetRequest(url);
-                log.Debug(string.Format("GetAccessToken result: {0} ", result + "--" + url));
-                JObject o = (JObject)JsonConvert.DeserializeObject(result);
-                sAccessToken = o["access_token"].ToString();
+                if (ServerType.LocalServer == _serverType)
+                {
+                    string url = string.Format("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}", config.AppID, config.Secret);
+                    string result = string.Empty;
+                    result = HTTPHelper.GetRequest(url);
+                    log.Debug(string.Format("PubCore GetAccessToken Local result: {0} ", result + "--" + url));
+                    JObject o = (JObject)JsonConvert.DeserializeObject(result);
+                    sAccessToken = o["access_token"].ToString();
+                }
+                else
+                {
+                    string url = string.Format("{0}?seaskyAccessToken={1}", ConfigurationManager.AppSettings["serverURL"], _sign);
+                    sAccessToken = HTTPHelper.GetRequest(url);
+                    log.Debug(string.Format("PubCore GetAccessToken Other result: {0} ", sAccessToken + "--" + url));
+                }
             }
             catch (Exception err)
             {
@@ -92,27 +119,6 @@ namespace WeChat.PubLib.Core
             }
         }
 
-        /// <summary>
-        /// 从指定的URL地址获取accessToken
-        /// </summary>
-        /// <returns></returns>
-        public string GetAccessToken_LocalServer(string url)
-        {
-            string result = string.Empty;
-            //string accessToken_LocalServer = string.Empty;
-            try
-            { 
-                result = HTTPHelper.GetRequest(url); 
-                //JObject o = (JObject)JsonConvert.DeserializeObject(result);
-                //accessToken_LocalServer= o["access_token"].ToString();
-            }
-            catch (Exception err)
-            {
-                log.Error(_sign + "|PubCore GetAccessToken_LocalServer error!", err);
-            }
-            log.Debug(_sign + "|PubCore GetAccessToken_LocalServer:" + result);
-            return result;
-        }
 
         /// <summary>
         /// 服务器验证
@@ -589,24 +595,14 @@ namespace WeChat.PubLib.Core
         /// </summary>
         /// <param name="template"></param>
         /// <returns></returns>
-        public bool SendTemplate(PubSendMsgTemplate template, SendTemplateMethod method)
+        public bool SendTemplate(PubSendMsgTemplate template)
         {
             bool sign = false;
             string result = string.Empty;
-            string strJson = JsonConvert.SerializeObject(template);
-            string m_sAccessToken = string.Empty;
-            if(method== SendTemplateMethod.LocalServer)
-            {
-                m_sAccessToken = sAccessToken;
-            }
-            else
-            {
-                string _url =ConfigurationManager.AppSettings["serverURL"];
-                m_sAccessToken = GetAccessToken_LocalServer(_url + "?seaskyAccessToken=" + _sign);
-            }
+            string strJson = JsonConvert.SerializeObject(template);    
             try
             { 
-                string url = string.Format("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={0}", m_sAccessToken);
+                string url = string.Format("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={0}", sAccessToken);
                 result = HTTPHelper.PostRequest(url, DataTypeEnum.json, strJson);
                 JObject jo = (JObject)JsonConvert.DeserializeObject(result);
                 if ("ok".Equals(jo["errmsg"].ToString()))
@@ -622,7 +618,7 @@ namespace WeChat.PubLib.Core
             return sign;
         }
 
-        public enum SendTemplateMethod
+        public enum ServerType
         {
             LocalServer,
             OtherServer

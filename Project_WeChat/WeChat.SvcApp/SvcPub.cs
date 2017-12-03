@@ -24,7 +24,7 @@ namespace WeChat.SvcApp
         static PubCore core; 
         public SvcPub()
         {
-            core = new PubCore(sign);
+            core = new PubCore(sign,PubCore.ServerType.OtherServer);
             InitializeComponent();
         }
 
@@ -87,9 +87,11 @@ namespace WeChat.SvcApp
                         
                         
                         
-                        if (!core.SendTemplate(template, PubCore.SendTemplateMethod.LocalServer))
+                        if (!core.SendTemplate(template))
                         {
                             log.Info(string.Format("Send Template Failed：{0}——{1}", item["First"].ToString(), now));
+                            cmd.CommandText = string.Format("update [SFP_Middle].[dbo].[Mid_O_ClaimsOrder] set Sendstate=3,Sendtime='{0}' where Field1={1}", now, item["Field1"].ToString());
+                            cmd.ExecuteNonQuery();
                         }
                         else
                         {
@@ -97,6 +99,8 @@ namespace WeChat.SvcApp
                             if (cmd.ExecuteNonQuery() != 1)
                             {
                                 log.Info(string.Format("Send Template SysnDB Failed：{0}", item["Field1"].ToString()));
+                                cmd.CommandText = string.Format("update [SFP_Middle].[dbo].[Mid_O_ClaimsOrder] set Sendstate=2,Sendtime='{0}' where Field1={1}", now, item["Field1"].ToString());
+                                cmd.ExecuteNonQuery();
                             }
                         }
                     }
