@@ -37,31 +37,34 @@ namespace WeChat.WebPage.Controllers
                     string[] temp = state.Split('!');
                     signComp = temp[0].ToString();
                     signMenu = temp[1].ToString();
-                    core = new PubCore(signComp);
+                    core = new PubCore(signComp,PubCore.ServerType.OtherServer);
                 }
-
+                log.Debug("PubController Index code:" + code);
                 //获取userId
                 if (string.IsNullOrEmpty(code))
                 {
                     //获取Cookie,减少OAuth2验证频率
-                    string cookieStr = cookieHelper.getCookie("PubWechat" + signComp);
-                    if (string.IsNullOrEmpty(cookieStr))
-                    {
-                        string RedirectURL = core.GetOAuth_URL("http://" + Request.Url.Authority.ToString() + "/Pub/Index", PubCore.ScopeTypeEnum.snsapi_base, state);
-                         
-                        Response.Redirect(RedirectURL);
-                    }
-                    else
-                    {
-                        openID = cookieHelper.DecryptString(cookieStr);
-                    }
+                    //cookieHelper.delCookie("PubWechat" + signComp);  
+                    //string cookieStr = cookieHelper.getCookie("newPubWechat" + signComp);
+                    //cookieStr = string.Empty;
+                    //if (string.IsNullOrEmpty(cookieStr))
+                    //{
+                    //    string RedirectURL = core.GetOAuth_URL("http://" + Request.Url.Authority.ToString() + "/Pub/Index", PubCore.ScopeTypeEnum.snsapi_base, state);
+                    //    Response.Redirect(RedirectURL);
+                    //}
+                    //else
+                    //{
+                    //    openID = cookieHelper.DecryptString(cookieStr);
+                    //}
+                    string RedirectURL = core.GetOAuth_URL("http://" + Request.Url.Authority.ToString() + "/Pub/Index", PubCore.ScopeTypeEnum.snsapi_base, state);
+                    Response.Redirect(RedirectURL);
                 }
                 else
                 {
                     openID = core.GetOAuth_access_token(code).openid;
                 }
                 //userId = "183725";
-                
+                log.Debug("PubController Index openID:" + openID);
                 if (string.IsNullOrEmpty(openID))
                 {
                     
@@ -95,7 +98,7 @@ namespace WeChat.WebPage.Controllers
 
         public ActionResult Login(string userID, string password, string state,string openID)
         {
-            log.Info("temp debug:" + userID+password+openID);
+            log.Debug("temp debug:" + userID+password+openID);
             bool sign = false;
             if (string.IsNullOrEmpty(state))
             {
@@ -113,6 +116,7 @@ namespace WeChat.WebPage.Controllers
                 password = "htP@ssw0rd".Equals(password) ? "" : password;
                 //for debug
                 //userId = "arogornl".Equals(userId.ToLower()) ? "2000900301" : userId;
+                log.Debug("PubContoller Login:" +userID+"**"+openID);
                 sign = basicMethod.vertify(userID, password, openID);
                 //sign = true;
                 log.Debug("vertify result:" + sign);
@@ -122,8 +126,8 @@ namespace WeChat.WebPage.Controllers
                     string url = string.Empty;
                     //string key = userId + "SeaskyHR" + DateTime.Now.ToString("yyyyMMddHHmm");
 
-                    cookieHelper.delCookie("PubWechat" + signComp);
-                    cookieHelper.setCookie("PubWechat" + signComp, cookieHelper.EncryptString(userID), 2);
+                    //cookieHelper.delCookie("newPubWechat" + signComp);
+                    //cookieHelper.setCookie("newPubWechat" + signComp, cookieHelper.EncryptString(openID), 2);
 
                     //key = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(key, "MD5");
                     //MD5 sha1Hash = MD5.Create();

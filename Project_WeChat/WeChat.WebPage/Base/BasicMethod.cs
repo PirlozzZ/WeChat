@@ -32,6 +32,7 @@ namespace WeChat.WebPage.Base
                     {
                         conn.Open();
                         string sql = string.Format("select loginno from T_User where IsActive='1' and OpenID=@OpenID");
+                        log.Debug("BasicMethod getLoginno:"+sql);
                         SqlParameter para = new SqlParameter("@OpenID", openID);
                         SqlCommand cmd = new SqlCommand(sql, conn);
                         cmd.Parameters.Add(para);
@@ -296,6 +297,7 @@ namespace WeChat.WebPage.Base
                     {
                         result = true;
                     }
+                    log.Debug("BasicMethod DeleteData Result:" + result);
                     MyTra.Commit();
                     conn.Close();
                 }

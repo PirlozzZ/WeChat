@@ -99,7 +99,7 @@ namespace WeChat.WebApp
                 try
                 {
                     //PubResMsgText msg = new PubResMsgText();
-                    string flag = HTTPHelper.GetRequest(logoutURL + "?openid=" + instanse.FromUserName); 
+                    string flag = HTTPHelper.GetRequest(logoutURL + "?openid=" + instanse.FromUserName + "&signComp=Sues");
                     if (bool.Parse(flag))
                     {
                         //msg.Content = "解除绑定成功！";

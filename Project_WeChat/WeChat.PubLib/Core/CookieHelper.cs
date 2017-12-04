@@ -78,9 +78,11 @@ namespace WeChat.PubLib.Core
             try
             {
                 HttpCookie Cookie = new HttpCookie(strName);
+                Cookie.Value = string.Empty;
                 //Cookie.Domain = ".xxx.com";//当要跨域名访问的时候,给cookie指定域名即可,格式为.xxx.com
                 Cookie.Expires = DateTime.Now.AddDays(-1);
                 HttpContext.Current.Response.Cookies.Add(Cookie);
+                //HttpContext.Current.Response.Cookies[strName].Expires = DateTime.Now.AddDays(-1);
                 return true;
             }
             catch(Exception e)

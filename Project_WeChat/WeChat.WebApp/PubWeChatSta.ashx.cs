@@ -65,10 +65,15 @@ namespace WeChat.WebApp
             else
             {
                 string pEchoStr = HttpContext.Current.Request.QueryString["echostr"];
+                string seaskyAccessToken = HttpContext.Current.Request.QueryString["seaskyAccessToken"];
                 try
                 {
-
-                    if (pubCoreSta.PubAuth(pTimeStamp, pNonce, pEchoStr, pMsgSignature))
+                    if ("Sta".Equals(seaskyAccessToken))
+                    {
+                        HttpContext.Current.Response.Write(pubCoreSta.sAccessToken);
+                        HttpContext.Current.ApplicationInstance.CompleteRequest();
+                    }
+                    else if (pubCoreSta.PubAuth(pTimeStamp, pNonce, pEchoStr, pMsgSignature))
                     {
                         HttpContext.Current.Response.Write(pEchoStr);
                         HttpContext.Current.ApplicationInstance.CompleteRequest();
@@ -89,7 +94,7 @@ namespace WeChat.WebApp
             {
                 try
                 {
-                    string flag = HTTPHelper.GetRequest(logoutURL + "?openid=" + instanse.FromUserName);
+                    string flag = HTTPHelper.GetRequest(logoutURL + "?openid=" + instanse.FromUserName+ "&signComp=Sta");
                     if (bool.Parse(flag))
                     {
                         PubSendMsgText msg = new PubSendMsgText("解除绑定成功！", instanse.FromUserName);
@@ -133,9 +138,9 @@ namespace WeChat.WebApp
             ChildMenu menu2 = new ChildMenu("业务查询");
             ChildMenu menu3 = new ChildMenu("用户信息");
 
-            ChildMenu menu11 = new ChildMenu("薪资查询", ChildMenu.MenuTypeEnum.view, "http://Cwcw.sta.edu.cn/Pub/Index?state=STA!salary");
-            ChildMenu menu12 = new ChildMenu("项目查询", ChildMenu.MenuTypeEnum.view, "http://Cwcw.sta.edu.cn/Pub/Index?state=STA!fund");
-            ChildMenu menu13 = new ChildMenu("学费查询", ChildMenu.MenuTypeEnum.view, "http://Cwcw.sta.edu.cn/Pub/Index?state=STA!charge");
+            ChildMenu menu11 = new ChildMenu("薪资查询", ChildMenu.MenuTypeEnum.view, "http://Cwcw.sta.edu.cn/Pub/Index?state=Sta!salary");
+            ChildMenu menu12 = new ChildMenu("项目查询", ChildMenu.MenuTypeEnum.view, "http://Cwcw.sta.edu.cn/Pub/Index?state=Sta!fund");
+            ChildMenu menu13 = new ChildMenu("学费查询", ChildMenu.MenuTypeEnum.view, "http://Cwcw.sta.edu.cn/Pub/Index?state=Sta!charge");
             ChildMenu menu14 = new ChildMenu("来款查询", ChildMenu.MenuTypeEnum.click, "14");
             ChildMenu menu15 = new ChildMenu("通知公告", ChildMenu.MenuTypeEnum.view, "http://cwcw.sta.edu.cn:8001/Home/Articles?m=0c356049-28f7-475f-98fa-152d51737ed5");
 
