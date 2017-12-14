@@ -19,7 +19,7 @@ namespace WeChat.PubLib.Core
 {
     public class PubCore
     {
-        private DateTime sDateTime { get; set; }
+        private static DateTime sDateTime { get; set; }
         private string _sAccessToken;
         private string _sign = string.Empty;
         private ServerType _serverType = ServerType.LocalServer;
@@ -30,9 +30,11 @@ namespace WeChat.PubLib.Core
                     DateTime temp = DateTime.Now;
                     TimeSpan timespan = temp - sDateTime; 
                     if (timespan.TotalMilliseconds>= config.expires_in)
-                    {                   
+                    {
+                        log.Debug("PubCore sAccessToken :" + sDateTime + "@@" + temp);              
                         GetAccessToken();
                         sDateTime = temp;
+                        log.Debug("PubCore sAccessToken2 :" + sDateTime);
                     }
                 }
                 catch (Exception  e)
