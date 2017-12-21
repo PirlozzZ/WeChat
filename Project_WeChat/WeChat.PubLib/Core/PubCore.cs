@@ -28,13 +28,14 @@ namespace WeChat.PubLib.Core
             get { 
                 try {
                     DateTime temp = DateTime.Now;
-                    TimeSpan timespan = temp - sDateTime; 
+                    TimeSpan timespan = temp - sDateTime;
+                    log.Debug("PubCore sAccessToken1 :" + sDateTime + "@@" + temp+"@@"+timespan.TotalMilliseconds+"@@"+config.expires_in);
                     if (timespan.TotalMilliseconds>= config.expires_in)
                     {
-                        log.Debug("PubCore sAccessToken :" + sDateTime + "@@" + temp);              
+                        log.Debug("PubCore sAccessToken2 :" + sDateTime + "@@" + temp);              
                         GetAccessToken();
                         sDateTime = temp;
-                        log.Debug("PubCore sAccessToken2 :" + sDateTime);
+                        log.Debug("PubCore sAccessToken3 :" + sDateTime);
                     }
                 }
                 catch (Exception  e)
@@ -98,13 +99,13 @@ namespace WeChat.PubLib.Core
         {
             try
             {
-                log.Info("|PubCore Refresh GetAccessToken!——sDateTime：" + sDateTime.ToString());
+                log.Info(_sign+"|PubCore Refresh GetAccessToken!——sDateTime：" + sDateTime.ToString());
                 if (ServerType.LocalServer == _serverType)
                 {
                     string url = string.Format("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}", config.AppID, config.Secret);
                     string result = string.Empty;
                     result = HTTPHelper.GetRequest(url);
-                    log.Debug(string.Format("PubCore GetAccessToken Local result: {0} ", result + "--" + url));
+                    log.Debug(string.Format(_sign+"|PubCore GetAccessToken Local result: {0} ", result + "--" + url));
                     JObject o = (JObject)JsonConvert.DeserializeObject(result);
                     sAccessToken = o["access_token"].ToString();
                 }
@@ -112,7 +113,7 @@ namespace WeChat.PubLib.Core
                 {
                     string url = string.Format("{0}?seaskyAccessToken={1}", ConfigurationManager.AppSettings["serverURL"], _sign);
                     sAccessToken = HTTPHelper.GetRequest(url);
-                    log.Debug(string.Format("PubCore GetAccessToken Other result: {0} ", sAccessToken + "--" + url));
+                    log.Debug(string.Format(_sign+"|PubCore GetAccessToken Other result: {0} ", sAccessToken + "--" + url));
                 }
             }
             catch (Exception err)
@@ -256,6 +257,11 @@ namespace WeChat.PubLib.Core
                 if ("ok".Equals(jo["errmsg"].ToString()))
                 {
                     sign = true;
+                }
+                else if ("42001".Equals(jo["errcode"].ToString()))
+                {
+                    GetAccessToken();
+                    SendMsg(msg);
                 }
                 else
                 {

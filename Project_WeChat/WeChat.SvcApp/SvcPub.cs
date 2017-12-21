@@ -65,7 +65,7 @@ namespace WeChat.SvcApp
                         foreach (DataRow item in dt.Rows)
                         {
                             string flag = item["isActive"] == null ? "0" : item["isActive"].ToString();
-                            if ("1".Equals(flag))
+                            if ("1".Equals(flag.Trim()))
                             {
                                 template.touser = item["OpenID"].ToString();
                                 template.data.keyword1.value = item["Field1"].ToString();
