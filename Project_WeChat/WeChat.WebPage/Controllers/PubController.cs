@@ -151,6 +151,15 @@ namespace WeChat.WebPage.Controllers
                     {
                         url = string.Format(fr_baseURL, "Charge_New.cpt&peoplecode=" + openID);
                     }
+                    else if ("allowance".Equals(signMenu))
+                    {
+                        url = string.Format(fr_baseURL, "Allowance.cpt&peoplecode=" + openID);
+                    }
+                    else if ("reimbursement".Equals(signMenu))
+                    {
+                        url = string.Format(fr_baseURL, "Reimbursement.cpt&peoplecode=" + openID);
+                    }
+
                     //MyLog.WriteLog(url);
                     Response.Redirect(url);
                 }
