@@ -120,6 +120,7 @@ namespace WeChat.WebPage.Controllers
                 sign = basicMethod.vertify(userID, password, openID);
                 //sign = true;
                 log.Debug("vertify result:" + sign);
+                log.Debug("PubContoller Login signMenu:" + signMenu);
                 if (sign)
                 {
 
@@ -139,6 +140,10 @@ namespace WeChat.WebPage.Controllers
                     //}
                     //key = sBuilder.ToString();
 
+                  
+                     
+
+
                     if ("salary".Equals(signMenu))
                     {
                         url = string.Format(fr_baseURL, "Salary_New.cpt&peoplecode=" + openID);
@@ -153,7 +158,9 @@ namespace WeChat.WebPage.Controllers
                     }
                     else if ("allowance".Equals(signMenu))
                     {
+                        
                         url = string.Format(fr_baseURL, "Allowance.cpt&peoplecode=" + openID);
+                        log.Debug("PubContoller Login allowance url:" + url);
                     }
                     else if ("reimbursement".Equals(signMenu))
                     {

@@ -147,6 +147,31 @@ namespace WeChat.PubLib.Core
                 //.Net 4.5版本后下列方法过时
                 //tempStr = FormsAuthentication.HashPasswordForStoringInConfigFile(tempStr, "SHA1").ToLower();
 
+                #region key校验测试
+                //DateTime now = DateTime.Now;
+                //string personCode = string.Empty;
+                //string key = "";
+                //bool sign = false;
+                //for(int i = -5; i <= 5; i++)
+                //{
+                //    DateTime tempTime = now.AddMinutes(i);
+                //    string tempKey = personCode + "Seasky" + tempTime.ToString("yyyyMMddHHmm");
+                //    MD5 md5Hash = MD5.Create();
+                //    byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(key));
+                //    StringBuilder sBuilder = new StringBuilder();
+                //    for (int i = 0; i < data.Length; i++)
+                //    {
+                //        sBuilder.Append(data[i].ToString("x2"));
+                //    }
+                //    tempKey = sBuilder.ToString();
+                //    if (key.Equals(tempKey))
+                //    {
+                //        sign = true;
+                //    }
+                //}
+                 
+                #endregion
+
                 SHA1 sha1Hash = SHA1.Create();
                 byte[] data = sha1Hash.ComputeHash(Encoding.UTF8.GetBytes(tempStr));
                 StringBuilder sBuilder = new StringBuilder();
