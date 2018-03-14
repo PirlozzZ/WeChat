@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BF760B02-FB11-4384-B7D3-D9F98DE75889}</ProjectGuid>
+    <ProjectGuid>{60B22F0A-041E-4DDF-A9F1-0FF4FE4BB0B3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VertificationLib</RootNamespace>
-    <AssemblyName>VertificationLib</AssemblyName>
+    <RootNamespace>MsgPushRuleLib</RootNamespace>
+    <AssemblyName>MsgPushRuleLib</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,27 +32,11 @@
   <ItemGroup>
     <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Dll\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Dll\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Seasky.SFP.Common.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=81e6df8a58b04f5f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Dll\Seasky.SFP.Common.Model.dll</HintPath>
-    </Reference>
-    <Reference Include="Seasky.SFP.Common.PlatAdmin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=81e6df8a58b04f5f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Dll\Seasky.SFP.Common.PlatAdmin.dll</HintPath>
-    </Reference>
-    <Reference Include="Seasky.StandardLib.FrameWork, Version=1.0.1.0, Culture=neutral, PublicKeyToken=81e6df8a58b04f5f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Dll\Seasky.StandardLib.FrameWork.dll</HintPath>
+      <HintPath>DLL\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -61,21 +44,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base\LDAPHelper.cs" />
-    <Compile Include="IVertification.cs" />
+    <Compile Include="IMsgPushRule.cs" />
+    <Compile Include="MsgPushRuleSta.cs" />
+    <Compile Include="MsgPushRuleSues.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VertificationShsmu.cs" />
-    <Compile Include="VertificationShxj.cs" />
-    <Compile Include="VertificationSta.cs" />
-    <Compile Include="VertificationSues.cs" />
-    <Compile Include="VertificationTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="DLL\log4net.dll" />
-    <Content Include="DLL\Newtonsoft.Json.dll" />
-    <Content Include="DLL\Seasky.SFP.Common.Model.dll" />
-    <Content Include="DLL\Seasky.SFP.Common.PlatAdmin.dll" />
-    <Content Include="DLL\Seasky.StandardLib.FrameWork.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WeChat.PubLib\WeChat.PubLib.csproj">
+      <Project>{1322d0c8-2d7f-4bf1-a6f2-3bf9a104afa4}</Project>
+      <Name>WeChat.PubLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
