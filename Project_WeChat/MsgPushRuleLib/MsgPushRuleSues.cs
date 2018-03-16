@@ -101,7 +101,7 @@ namespace MsgPushRuleLib
             }
             catch (Exception err)
             {
-                log.Error("SvcPub timerOverDayHourFroze_Elapsed:", err);
+                log.Error("MsgPushRuleSues MsgPushRuleMethod:", err);
             }
         }
     }

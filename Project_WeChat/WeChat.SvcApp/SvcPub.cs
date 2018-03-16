@@ -47,16 +47,21 @@ namespace WeChat.SvcApp
             try
             {
                 #region 利用反射机制调用身份验证
+               
                 Assembly assembly = Assembly.LoadFrom(System.AppDomain.CurrentDomain.BaseDirectory + @"DLL\" + dllname + ".dll");
+               
                 Type type = assembly.GetType(classname);
+               
                 Object obj = Activator.CreateInstance(type);
+                
                 MethodInfo mi = type.GetMethod("MsgPushRuleMethod");
+             
                 mi.Invoke(obj, null);
                 #endregion
             }
             catch (Exception err)
             {
-                log.Error("SvcPub timerOverDayHourFroze_Elapsed:", err); 
+                log.Error(System.AppDomain.CurrentDomain.BaseDirectory+dllname+ "|" + classname + "|SvcPub timerOverDayHourFroze_Elapsed:", err); 
             } 
 
             
