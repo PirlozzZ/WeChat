@@ -135,14 +135,14 @@ namespace WeChat.WebApp
             RootMenu rootmenu = new RootMenu();
 
             ChildMenu menu1 = new ChildMenu("信息查询");
-            ChildMenu menu2 = new ChildMenu("业务查询");
-            ChildMenu menu3 = new ChildMenu("用户信息");
+            ChildMenu menu2 = new ChildMenu("业务办理");
+            ChildMenu menu3 = new ChildMenu("用户服务");
 
             ChildMenu menu11 = new ChildMenu("薪资查询", ChildMenu.MenuTypeEnum.view, "http://Cwcw.sta.edu.cn/Pub/Index?state=Sta!salary");
             ChildMenu menu12 = new ChildMenu("项目查询", ChildMenu.MenuTypeEnum.view, "http://Cwcw.sta.edu.cn/Pub/Index?state=Sta!fund");
             ChildMenu menu13 = new ChildMenu("学费查询", ChildMenu.MenuTypeEnum.view, "http://Cwcw.sta.edu.cn/Pub/Index?state=Sta!charge");
             ChildMenu menu14 = new ChildMenu("来款查询", ChildMenu.MenuTypeEnum.click, "14");
-            ChildMenu menu15 = new ChildMenu("通知公告", ChildMenu.MenuTypeEnum.view, "http://cwcw.sta.edu.cn:8001/Home/Articles?m=0c356049-28f7-475f-98fa-152d51737ed5");
+            ChildMenu menu15 = new ChildMenu("经补贴查询", ChildMenu.MenuTypeEnum.click, "15");
 
 
             menu1.sub_button.Add(menu11);
@@ -151,17 +151,21 @@ namespace WeChat.WebApp
             menu1.sub_button.Add(menu14);
             menu1.sub_button.Add(menu15);
 
-            ChildMenu menu21 = new ChildMenu("报销制度", ChildMenu.MenuTypeEnum.view, "http://cwcw.sta.edu.cn/bxzn.html");
+            ChildMenu menu21 = new ChildMenu("学生缴费", ChildMenu.MenuTypeEnum.click, "21");
             ChildMenu menu22 = new ChildMenu("报账跟踪", ChildMenu.MenuTypeEnum.click, "22");
-            ChildMenu menu23 = new ChildMenu("发票验真", ChildMenu.MenuTypeEnum.view, "https://www.tax.sh.gov.cn/wsbs/WSBSptFpCx_loginsNewl.jsp");
-
+            
 
             menu2.sub_button.Add(menu21);
             menu2.sub_button.Add(menu22);
-            menu2.sub_button.Add(menu23);
 
-            ChildMenu menu31 = new ChildMenu("解除绑定", ChildMenu.MenuTypeEnum.click, "31");
+            ChildMenu menu31 = new ChildMenu("通知公告", ChildMenu.MenuTypeEnum.view, "http://cwcw.sta.edu.cn:8001/Home/Articles?m=0c356049-28f7-475f-98fa-152d51737ed5");
+            ChildMenu menu32 = new ChildMenu("报销制度", ChildMenu.MenuTypeEnum.view, "http://cwcw.sta.edu.cn/bxzn.html");
+            ChildMenu menu33 = new ChildMenu("发票验真", ChildMenu.MenuTypeEnum.view, "https://www.tax.sh.gov.cn/wsbs/WSBSptFpCx_loginsNewl.jsp");
+            ChildMenu menu34 = new ChildMenu("解除绑定", ChildMenu.MenuTypeEnum.click, "31");
             menu3.sub_button.Add(menu31);
+            menu3.sub_button.Add(menu32);
+            menu3.sub_button.Add(menu33);
+            menu3.sub_button.Add(menu34);
 
             rootmenu.button.Add(menu1);
             rootmenu.button.Add(menu2);

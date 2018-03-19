@@ -29,7 +29,7 @@ namespace WeChat.PubLib.Core
                 try {
                     DateTime temp = DateTime.Now;
                     TimeSpan timespan = temp - sDateTime;
-                    log.Debug("PubCore sAccessToken1 :" + sDateTime + "@@" + temp+"@@"+timespan.TotalMilliseconds+"@@"+config.expires_in);
+                    //log.Debug("PubCore sAccessToken1 :" + sDateTime + "@@" + temp+"@@"+timespan.TotalMilliseconds+"@@"+config.expires_in);
                     if (timespan.TotalMilliseconds>= config.expires_in)
                     {
                         log.Debug("PubCore sAccessToken2 :" + sDateTime + "@@" + temp);              

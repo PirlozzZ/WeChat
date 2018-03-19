@@ -15,7 +15,8 @@ namespace VertificationLib
             try {
                 LDAPHelper objldap = new LDAPHelper();
                 string strLDAPPath = "LDAP://202.121.127.222/dc=sues,dc=edu,dc=cn";
-                string strLDAPAdminName = "uid=ldapsus,cn=People,dc=sues,dc=edu,dc=cn";
+                string strLDAPAdminName = "uid=ldapsus,ou=People,dc=sues,dc=edu,dc=cn";
+                //string strLDAPAdminName = "uid=ldapsus,cn=People,dc=sues,dc=edu,dc=cn";
                 string strLDAPAdminPwd = "sus1qaz";
                 string strLDAPFilter = string.Format("(uid= {0})");
                 bool blRet = objldap.OpenConnection(strLDAPPath, strLDAPAdminName, strLDAPAdminPwd);

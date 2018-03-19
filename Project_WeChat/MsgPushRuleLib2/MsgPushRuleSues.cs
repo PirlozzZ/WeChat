@@ -10,7 +10,7 @@ using WeChat.PubLib.Model;
 
 namespace MsgPushRuleLib
 {
-    public class MsgPushRuleSta : IMsgPushRule
+    public class MsgPushRuleSues : IMsgPushRule
     {
         static log4net.ILog log = log4net.LogManager.GetLogger("Log.Logging");//获取一个日志记录器 
         string connStr = ConfigurationManager.AppSettings["sqlConn"].ToString();
@@ -19,16 +19,9 @@ namespace MsgPushRuleLib
         string sign = ConfigurationManager.AppSettings["sign"].ToString();
         static PubCore core;
 
-        public MsgPushRuleSta()
+        public MsgPushRuleSues()
         {
-            try
-            {
-                core = new PubCore(sign, PubCore.ServerType.OtherServer);
-            }
-            catch (Exception err)
-            {
-                log.Error("MsgPushRuleSta|" + sign, err);
-            }
+            core = new PubCore(sign, PubCore.ServerType.OtherServer);
         }
 
         public void MsgPushRuleMethod()
@@ -57,23 +50,23 @@ namespace MsgPushRuleLib
                                 template.touser = item["OpenID"].ToString();
                                 template.data.keyword1.value = item["Field1"].ToString();
                                 template.data.keyword2.value = item["Remark"].ToString();
-                                template.data.keyword3.value = decimal.Round(decimal.Parse(item["Field8"].ToString()), 2).ToString(); 
+                                template.data.keyword3.value = item["Field8"].ToString();
                                 template.data.keyword4.value = item["Field6"].ToString();
                                 template.data.keyword5.value = item["Field5"].ToString();
                                 if ("驳回".Equals(item["Field2"].ToString()))
                                 {
                                     template.data.first.value = string.Format("您好，你的预约审核被{0}", item["Field2"].ToString());
-                                    template.data.remark.value = string.Format("您好，您的报销单已驳回，驳回人：{0} \n财务处已驳回您的报销单，请登录网上报销系统查看。", item["Field9"].ToString());
+                                    template.data.remark.value = string.Format("财务处已驳回您的报销单，请登陆网上报销预约系统查看驳回窗口和驳回理由，请至该窗口拿回报销单。");
                                 }
                                 else if ("完成".Equals(item["Field2"].ToString()))
                                 {
                                     template.data.first.value = string.Format("您好，你的预约审核{0}", item["Field2"].ToString());
-                                    template.data.remark.value = string.Format("审核：您好，您的报销单已审核完成，审核人：{0} \n财务处将在3个工作日内完成打款，若有疑问请至财务处咨询。", item["Field9"].ToString());
+                                    template.data.remark.value = string.Format("将在一周内完成打款，若有疑问请至财务处咨询。");
                                 }
                                 else
                                 {
                                     template.data.first.value = string.Format("您好，你的预约审核{0}", item["Field2"].ToString());
-                                    template.data.remark.value = string.Format("您好，您的预约单据已接收，接收人：{0} \n财务处已接收了您的报销单，请等待审核。", item["Field9"].ToString());
+                                    template.data.remark.value = string.Format("财务处已接收了您的报销单，请等待完成。");
                                 }
 
 
@@ -108,7 +101,7 @@ namespace MsgPushRuleLib
             }
             catch (Exception err)
             {
-                log.Error("MsgPushRuleSta MsgPushRuleMethod:", err);
+                log.Error("SvcPub timerOverDayHourFroze_Elapsed:", err);
             }
         }
     }
