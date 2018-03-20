@@ -151,7 +151,7 @@ namespace WeChat.WebApp
             menu1.sub_button.Add(menu14);
             menu1.sub_button.Add(menu15);
 
-            ChildMenu menu21 = new ChildMenu("学生缴费", ChildMenu.MenuTypeEnum.click, "21");
+            ChildMenu menu21 = new ChildMenu("学生缴费", ChildMenu.MenuTypeEnum.view, " http://payment.cloud.ccb.com/index_u.jhtml?param=4C4A647F371B43F11DBA91BA7799EE58C59D79B9E834A07D7CE6C5522E5A9F46DA6A3FC12483D94B4D562A556E153CFFD15776F0B17D91BE65EC5221B4A931F1C1F6331EE5E1ED11232A46AA1E196B49DC7901A2E97F9D32C9472BFD4CA567687AC7760BB7E6CB52E11236DC3E5F61C1D1B21F50E66048EA47A4526B703C5C90546B9B12CB61C99D9264D07D287F5EC8");
             ChildMenu menu22 = new ChildMenu("报账跟踪", ChildMenu.MenuTypeEnum.click, "22");
             
 

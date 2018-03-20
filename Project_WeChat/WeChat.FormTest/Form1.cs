@@ -40,5 +40,37 @@ namespace WeChat.FormTest
         {
 
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            string strLDAPFilter = string.Format(this.txtFilter.Text, this.txtUserName.Text.Trim());
+            string text = this.txtUserName.Text;
+            string testUserPwd = this.txtPwd.Text;
+            LDAPHelper helper = new LDAPHelper();
+            string lADPath = this.txtLDAP.Text;
+            string authUserName = this.txtLUserName.Text;
+            string authPWD = this.txtLPwd.Text;
+            string errorMessage = "";
+            if (helper.OpenConnection(lADPath, authUserName, authPWD))
+            {
+                bool flag = helper.CheckUidAndPwd(strLDAPFilter, text, testUserPwd, ref errorMessage);
+                if (flag)
+                {
+                    errorMessage = "检测用户名" + text + "和密码" + testUserPwd + "成功";
+                }
+                else if (!(flag || !string.IsNullOrEmpty(errorMessage)))
+                {
+                    errorMessage = "检测用户名" + text + "和密码" + testUserPwd + "失败";
+                }
+            }
+            //this.txtLog.Text = DateTime.Now.ToString() + ":" + errorMessage + "\r\n\r\n" + this.txtLog.Text;
+            MessageBox.Show(errorMessage);
+
+        }
+
+        private void textBox5_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

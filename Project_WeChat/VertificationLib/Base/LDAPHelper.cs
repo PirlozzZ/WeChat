@@ -6,6 +6,7 @@ using System.Text;
 
 namespace VertificationLib.Base
 {
+    
     public class LDAPHelper
     {
         private DirectoryEntry _objDirectoryEntry;
@@ -18,15 +19,22 @@ namespace VertificationLib.Base
         /// <param name="authPWD">连接密码</param>
         public bool OpenConnection(string LADPath, string authUserName, string authPWD)
         {    //创建一个连接 
-            _objDirectoryEntry = new DirectoryEntry(LADPath, authUserName, authPWD, AuthenticationTypes.None);
+            try
+            {
+                _objDirectoryEntry = new DirectoryEntry(LADPath, authUserName, authPWD, AuthenticationTypes.None);
 
-            if (null == _objDirectoryEntry)
-            {
-                return false;
+                if (null == _objDirectoryEntry)
+                {
+                    return false;
+                }
+                else if (_objDirectoryEntry.Properties != null && _objDirectoryEntry.Properties.Count > 0)
+                {
+                    return true;
+                }
             }
-            else if (_objDirectoryEntry.Properties != null && _objDirectoryEntry.Properties.Count > 0)
+            catch (Exception e)
             {
-                return true;
+                throw e;
             }
             return false;
         }
@@ -75,11 +83,14 @@ namespace VertificationLib.Base
             }
             catch (Exception ex)
             {
+                ErrorMessage = "检测异常：" + ex.StackTrace;
+            }
+            finally
+            {
                 if (null != _objDirectoryEntry)
                 {
                     _objDirectoryEntry.Close();
                 }
-                ErrorMessage = "检测异常：" + ex.StackTrace;
             }
             return blRet;
         }

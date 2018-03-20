@@ -12,13 +12,13 @@ namespace VertificationLib
         public bool VertifyMethod(string loginno, string password)
         {
             bool result = false;
-            try {
-                LDAPHelper objldap = new LDAPHelper();
-                string strLDAPPath = "LDAP://202.121.127.222/dc=sues,dc=edu,dc=cn";
+            LDAPHelper objldap = new LDAPHelper();
+            try {    
+                string strLDAPPath = "LDAP://202.121.127.222:389/ou=People,dc=sues,dc=edu,dc=cn";
                 string strLDAPAdminName = "uid=ldapsus,ou=People,dc=sues,dc=edu,dc=cn";
                 //string strLDAPAdminName = "uid=ldapsus,cn=People,dc=sues,dc=edu,dc=cn";
                 string strLDAPAdminPwd = "sus1qaz";
-                string strLDAPFilter = string.Format("(uid= {0})");
+                string strLDAPFilter = string.Format("(uid= {0})", loginno);
                 bool blRet = objldap.OpenConnection(strLDAPPath, strLDAPAdminName, strLDAPAdminPwd);
                 string strMsg = string.Empty;
 
@@ -34,6 +34,10 @@ namespace VertificationLib
             catch(Exception e)
             {
                 log.Error("VertificationSues VertifyMethod error!", e);
+            }
+            finally
+            {
+                objldap.closeConnection();
             }
             return result;
         }
