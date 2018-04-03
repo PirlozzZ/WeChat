@@ -177,7 +177,7 @@ namespace WeChat.WebApp
                 //msg.FromUserName = instanse.ToUserName;
                 //msg.ToUserName = instanse.FromUserName;
                 //strResult = pubCore.AutoResponse(msg);
-                PubSendMsgText msg = new PubSendMsgText("名称：上海工程技术大学\n统一社会信用代码：12310000425022547M\n开户行及账号：\n中国建设银行上海第五支行\n31050166360000002376\n联系电话：67791402-82", instanse.FromUserName);
+                PubSendMsgText msg = new PubSendMsgText("名称：上海工程技术大学\n统一社会信用代码：12310000425022547M\n地址：上海市松江区龙腾路333号\n开户行及账号：\n中国建设银行上海第五支行\n31050166360000002376\n联系电话：67791402-82", instanse.FromUserName);
                 pubCoreSues.SendMsg(msg);
                 return "success";
             }
@@ -240,7 +240,7 @@ namespace WeChat.WebApp
             {
                 PubSendMsgMpnews mpnews = new PubSendMsgMpnews();
                 mpnews.touser = instanse.FromUserName;
-                mpnews.mpnews.media_id = "SitB_ly1YP7cYE4v-8ZkxR8JmHRHtBEeIsYJd5rYqco";
+                mpnews.mpnews.media_id = "SitB_ly1YP7cYE4v-8ZkxdF0VROpAfkPn5UoZCQ2AVU";
                 pubCoreSues.SendMsg(mpnews);
                 strResult = "success";
             }
