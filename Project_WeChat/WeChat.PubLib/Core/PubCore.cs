@@ -99,7 +99,7 @@ namespace WeChat.PubLib.Core
         {
             try
             {
-                log.Info(_sign+"|PubCore Refresh GetAccessToken!——sDateTime：" + sDateTime.ToString());
+                log.Debug(_sign+"|PubCore Refresh GetAccessToken!——sDateTime：" + sDateTime.ToString());
                 if (ServerType.LocalServer == _serverType)
                 {
                     string url = string.Format("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}", config.AppID, config.Secret);
