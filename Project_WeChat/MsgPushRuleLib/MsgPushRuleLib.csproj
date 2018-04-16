@@ -50,13 +50,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DLL\log4net.dll" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\WeChat.PubLib\WeChat.PubLib.csproj">
       <Project>{1322d0c8-2d7f-4bf1-a6f2-3bf9a104afa4}</Project>
       <Name>WeChat.PubLib</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DLL\log4net.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
