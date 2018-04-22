@@ -31,8 +31,16 @@ namespace WeChat.FormTest
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string a = "42.0000";
-            a= decimal.Round(decimal.Parse(a),2).ToString();
+            //string a = "42.0000";
+            //a= decimal.Round(decimal.Parse(a),2).ToString();
+            List<string> temp = new List<string>();
+            temp.Add("a1");
+            temp.Add("a2");
+            temp.Add("v1");
+            bool result1=temp.Contains("a");
+            bool result2 = temp.Contains("a1");
+            temp.RemoveAll(x =>x.StartsWith("a"));
+
 
         }
 

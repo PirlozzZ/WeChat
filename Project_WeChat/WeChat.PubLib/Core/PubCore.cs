@@ -32,10 +32,10 @@ namespace WeChat.PubLib.Core
                     //log.Debug("PubCore sAccessToken1 :" + sDateTime + "@@" + temp+"@@"+timespan.TotalMilliseconds+"@@"+config.expires_in);
                     if (timespan.TotalMilliseconds>= config.expires_in)
                     {
-                        log.Debug("PubCore sAccessToken2 :" + sDateTime + "@@" + temp);              
+                        //log.Debug("PubCore sAccessToken2 :" + sDateTime + "@@" + temp);              
                         GetAccessToken();
                         sDateTime = temp;
-                        log.Debug("PubCore sAccessToken3 :" + sDateTime);
+                        //log.Debug("PubCore sAccessToken3 :" + sDateTime);
                     }
                 }
                 catch (Exception  e)

@@ -12,6 +12,7 @@ namespace WeChat.CorpLib.Core
 {
     public class CorpCore
     {
+        static List<string> list = new List<string>();
         private DateTime sDateTime { get;  set; }
         private string _sAccessToken;
         private string sAccessToken
@@ -218,6 +219,7 @@ namespace WeChat.CorpLib.Core
             string sEventType = string.Empty;
             string sResult = string.Empty;
             string sMsg = DecryptMsg(sMsgSignature, pTimeStamp, pNonce, postStr);  // 解析之后的明文
+            
             try
             {
                 XmlDocument doc = new XmlDocument();
@@ -242,10 +244,18 @@ namespace WeChat.CorpLib.Core
                 if (instance != null)
                 {
                     CorpRecAbstract temp = (CorpRecAbstract)instance;
-                    sResult = temp.DoProcess();
+                    if (list.Contains(temp.FromUserName + temp.CreateTime)) 
+                    {
+                        list.RemoveAll(x=>x.StartsWith(temp.FromUserName));
+                    }
+                    else{
+                        list.Add(temp.FromUserName + temp.CreateTime);
+                        sResult = temp.DoProcess();
+                    }
+                    
                     if (string.IsNullOrEmpty(sResult))
                     {
-                        sResult = "success";
+                        sResult = "";
                     }
                     log.Debug("CorpCore ProcessMsg instance:" + instance.ToString());
                 } 
@@ -278,6 +288,7 @@ namespace WeChat.CorpLib.Core
                 JObject jo = (JObject)JsonConvert.DeserializeObject(result);
                 if ("ok".Equals(jo["errmsg"].ToString()))
                 {
+                    log.Debug("CorpCore SendMsg Result:"+jo.ToString());
                     sign = true;
                 }
                 else
