@@ -19,6 +19,9 @@ namespace WeChat.PubLib.Core
 {
     public class PubCore
     {
+        //排重集合
+        private List<string> list;
+
         private static DateTime sDateTime { get; set; }
         private string _sAccessToken;
         private string _sign = string.Empty;
@@ -63,6 +66,7 @@ namespace WeChat.PubLib.Core
             _sign = sign;
             config = new Config(sign);
             sDateTime = DateTime.Now;
+            list = new List<string>();
             isDES = bool.Parse(ConfigurationManager.AppSettings[sign+"isDES"]);
             isCustomerMsg = bool.Parse(ConfigurationManager.AppSettings[sign+"isCustomerMsg"]);
             if (isDES)
@@ -231,7 +235,18 @@ namespace WeChat.PubLib.Core
                 {
                     log.Debug(_sign + "|PubCore ProcessMsg instance:" + instance.ToString());
                     PubRecAbstract temp = (PubRecAbstract)instance;
-                    sResult = temp.DoProcess();
+
+                    //排重处理，同一个用户同一个创建时间只响应一次
+                    if (list.Contains(temp.FromUserName + temp.CreateTime))
+                    {
+                        list.RemoveAll(x => x.StartsWith(temp.FromUserName));
+                    }
+                    else
+                    {
+                        list.Add(temp.FromUserName + temp.CreateTime);
+                        sResult = temp.DoProcess();
+                    }
+
                     if (string.IsNullOrEmpty(sResult))
                     {
                         sResult = "success";

@@ -12,7 +12,9 @@ namespace WeChat.CorpLib.Core
 {
     public class CorpCore
     {
-        static List<string> list = new List<string>();
+        //排重集合
+        private List<string> list;
+
         private DateTime sDateTime { get;  set; }
         private string _sAccessToken;
         private string sAccessToken
@@ -46,6 +48,7 @@ namespace WeChat.CorpLib.Core
             config = new Config(sign);
             sDateTime = DateTime.Now;
             isDES = bool.Parse(ConfigurationManager.AppSettings[sign + "isDES"]);
+            list =  new List<string>();
             //isCustomerMsg = bool.Parse(ConfigurationManager.AppSettings[sign + "isCustomerMsg"]);
             if (isDES)
             {
@@ -244,6 +247,8 @@ namespace WeChat.CorpLib.Core
                 if (instance != null)
                 {
                     CorpRecAbstract temp = (CorpRecAbstract)instance;
+
+                    //排重处理，同一个用户同一个创建时间只响应一次
                     if (list.Contains(temp.FromUserName + temp.CreateTime)) 
                     {
                         list.RemoveAll(x=>x.StartsWith(temp.FromUserName));
