@@ -11,9 +11,9 @@ namespace WeChat.WebPage
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/Scripts").Include(
-                        "~/Scripts/jquery-1.*"));
+                        "~/Scripts/jquery-1.*", "~/Scripts/swiper.js"));
             bundles.Add(new StyleBundle("~/Css").Include(
-                        "~/Css/weui.css"));
+                        "~/Css/weui.css", "~/Css/reset.css", "~/Css/swiper.css"));
         }
     }
 }

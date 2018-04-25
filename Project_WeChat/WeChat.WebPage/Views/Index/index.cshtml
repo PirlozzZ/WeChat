@@ -1,0 +1,164 @@
+﻿@{
+    ViewBag.title = "首页";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string openID = ViewData["openID"] as string;
+}
+
+<!DOCTYPE html>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>nine-box</title>
+    <!-- phone -->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+
+    <!-- 初始化样式 -->
+    <link rel="stylesheet" type="text/css" href="static/css/reset.css">
+
+    <link rel="stylesheet" type="text/css" href="static/swiper.min.css">
+
+    <script type="text/javascript" src='static/jQuery.js'></script>
+
+    <script type="text/javascript" src='static/swiper.min.js'></script>
+
+    <!-- Demo styles -->
+    <style>
+        body {
+            background: #eee;
+            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            color: #000;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            z-index: 99;
+            height: 45px;
+            line-height: 45px;
+            width: 100%;
+            background-color: #3099b1;
+            text-align: center;
+            color: #fff;
+        }
+
+        .swiper-container {
+            width: 100%;
+            height: auto;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .swiper-slide {
+            text-decoration-line: none;
+            color: #333;
+            text-align: center;
+            font-size: 15px;
+            background: #fff;
+            height: 100px;
+            /* Center slide text vertically */
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
+
+            .swiper-slide:active { /*移动端的点击效果*/
+                background-color: #3099b1;
+            }
+
+            .swiper-slide span {
+                margin-top: 5px;
+                display: block;
+            }
+
+        .mtP {
+            position: absolute;
+            bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>九宫格按钮</header>
+    <!-- Swiper -->
+    <div class="swiper-container mtP">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <div>
+                    <img src="icon_1.png" width="32" /><span>Slide 1</span>
+                </div>
+            </div>
+            <div class="swiper-slide">
+                <div>
+                    <img src="icon_1.png" width="32" /><span>Slide 2</span>
+                </div>
+            </div>
+           <!-- <div class="swiper-slide">
+                <div>
+                    <img src="icon_1.png" width="32" /><span>Slide 3</span>
+                </div>
+            </div>
+            <div class="swiper-slide">
+                <div>
+                    <img src="icon_1.png" width="32" /><span>Slide 4</span>
+                </div>
+            </div>
+            <div class="swiper-slide">
+                <div>
+                    <img src="icon_1.png" width="32" /><span>Slide 5</span>
+                </div>
+            </div>
+            <div class="swiper-slide">
+                <div>
+                    <img src="icon_1.png" width="32" /><span>Slide 6</span>
+                </div>
+            </div>
+            <div class="swiper-slide">
+                <div>
+                    <img src="icon_1.png" width="32" /><span>Slide 7</span>
+                </div>
+            </div>
+            <div class="swiper-slide">
+                <div>
+                    <img src="icon_1.png" width="32" /><span>Slide 8</span>
+                </div>
+            </div>
+            <div class="swiper-slide">
+                <div>
+                    <img src="icon_1.png" width="32" /><span>Slide 9</span>
+                </div>
+            </div>-->
+        </div>
+    </div>
+
+
+
+    <script type="text/javascript">
+
+var swiper = new Swiper('.swiper-container', {
+   	slidesPerView: 3,
+    slidesPerColumn: 30,
+    slidesPerColumnFill : 'row',
+    spaceBetween: 1
+});
+
+document.body.addEventListener('touchstart', function() {});
+
+    </script>
+
+
+</body>
+</html>

@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  wechat.webpage:
+    image: wechatwebpage
+    build:
+      context: .\WeChat.WebPage
+      dockerfile: Dockerfile
