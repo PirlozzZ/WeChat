@@ -17,6 +17,8 @@ namespace WeChat.CorpLib.Core
 
         private DateTime sDateTime { get;  set; }
         private string _sAccessToken;
+        private string _sign = string.Empty;
+
         private string sAccessToken
         {
             get
@@ -44,7 +46,8 @@ namespace WeChat.CorpLib.Core
         }
 
         public CorpCore(string sign)
-        { 
+        {
+            _sign = sign;
             config = new Config(sign);
             sDateTime = DateTime.Now;
             isDES = bool.Parse(ConfigurationManager.AppSettings[sign + "isDES"]);
@@ -249,18 +252,18 @@ namespace WeChat.CorpLib.Core
                     CorpRecAbstract temp = (CorpRecAbstract)instance;
 
                     //排重处理，同一个用户同一个创建时间只响应一次
-                    if (list.Contains(temp.FromUserName + temp.CreateTime)) 
+                    if (list.Contains(_sign + temp.FromUserName + temp.CreateTime)) 
                     {
-                        list.RemoveAll(x=>x.StartsWith(temp.FromUserName));
+                        list.RemoveAll(x=>x.StartsWith(_sign + temp.FromUserName));
                     }
                     else{
-                        list.Add(temp.FromUserName + temp.CreateTime);
+                        list.Add(_sign+temp.FromUserName + temp.CreateTime);
                         sResult = temp.DoProcess();
                     }
                     
                     if (string.IsNullOrEmpty(sResult))
                     {
-                        sResult = "";
+                        sResult = "success";
                     }
                     log.Debug("CorpCore ProcessMsg instance:" + instance.ToString());
                 } 

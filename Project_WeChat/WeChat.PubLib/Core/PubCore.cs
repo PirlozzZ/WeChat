@@ -237,13 +237,13 @@ namespace WeChat.PubLib.Core
                     PubRecAbstract temp = (PubRecAbstract)instance;
 
                     //排重处理，同一个用户同一个创建时间只响应一次
-                    if (list.Contains(temp.FromUserName + temp.CreateTime))
+                    if (list.Contains(_sign+temp.FromUserName + temp.CreateTime))
                     {
-                        list.RemoveAll(x => x.StartsWith(temp.FromUserName));
+                        list.RemoveAll(x => x.StartsWith(_sign+temp.FromUserName));
                     }
                     else
                     {
-                        list.Add(temp.FromUserName + temp.CreateTime);
+                        list.Add(_sign + temp.FromUserName + temp.CreateTime);
                         sResult = temp.DoProcess();
                     }
 
