@@ -126,6 +126,33 @@ namespace WeChat.WebApp
                 pubCoreSues.SendMsg(mpnews);
                 strResult = "success";
             }
+            else if ("21".Equals(instanse.EventKey))
+            {
+
+                PubSendMsgMpnews mpnews = new PubSendMsgMpnews();
+                mpnews.touser = instanse.FromUserName;
+                mpnews.mpnews.media_id = "SitB_ly1YP7cYE4v-8Zkxe6kCR21aAYs7vbPBKXmg98";
+                pubCoreSues.SendMsg(mpnews);
+                strResult = "success";
+            }
+            else if ("23".Equals(instanse.EventKey))
+            {
+
+                PubSendMsgMpnews mpnews = new PubSendMsgMpnews();
+                mpnews.touser = instanse.FromUserName;
+                mpnews.mpnews.media_id = "SitB_ly1YP7cYE4v-8ZkxUB2IejpcXnOmE1AgXK9HCs";
+                pubCoreSues.SendMsg(mpnews);
+                strResult = "success";
+            }
+            else if ("25".Equals(instanse.EventKey))
+            {
+
+                PubSendMsgMpnews mpnews = new PubSendMsgMpnews();
+                mpnews.touser = instanse.FromUserName;
+                mpnews.mpnews.media_id = "SitB_ly1YP7cYE4v-8ZkxZyZEjQbx4HwHWKrYfQzwbc";
+                pubCoreSues.SendMsg(mpnews);
+                strResult = "success";
+            }
             else
             {
                 //PubResMsgText msg = new PubResMsgText();
@@ -316,11 +343,11 @@ namespace WeChat.WebApp
             //ChildMenu menu24 = new ChildMenu("学生事务", ChildMenu.MenuTypeEnum.view, "http://cwpt.sues.edu.cn:80/web/4_xssw.html");
             //ChildMenu menu25 = new ChildMenu("公积金事务", ChildMenu.MenuTypeEnum.view, "http://cwpt.sues.edu.cn:80/web/5_gjjsw.html");
 
-            ChildMenu menu21 = new ChildMenu("报销事务", ChildMenu.MenuTypeEnum.click, "temp");
+            ChildMenu menu21 = new ChildMenu("报销事务", ChildMenu.MenuTypeEnum.click, "21");
             ChildMenu menu22 = new ChildMenu("办税服务", ChildMenu.MenuTypeEnum.view, "http://cwpt.sues.edu.cn:80/web/2_bsfw.html");
-            ChildMenu menu23 = new ChildMenu("薪资服务", ChildMenu.MenuTypeEnum.click, "temp");
-            ChildMenu menu24 = new ChildMenu("学生事务", ChildMenu.MenuTypeEnum.click, "temp");
-            ChildMenu menu25 = new ChildMenu("公积金事务", ChildMenu.MenuTypeEnum.click, "temp");
+            ChildMenu menu23 = new ChildMenu("薪资服务", ChildMenu.MenuTypeEnum.click, "23");
+            ChildMenu menu24 = new ChildMenu("学生事务", ChildMenu.MenuTypeEnum.view, "https://mp.weixin.qq.com/s/FQo4AN7LxX_5R_aH7NW91Q");
+            ChildMenu menu25 = new ChildMenu("公积金事务", ChildMenu.MenuTypeEnum.click, "25");
 
 
             menu2.sub_button.Add(menu21);
