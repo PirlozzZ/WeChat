@@ -91,35 +91,31 @@ namespace WeChat.WebApp
             string strResult = string.Empty;
             if ("32".Equals(instanse.EventKey))
             {
-                
+
                 return pubCoreSues.TransferCustomerService(instanse);
             }
             else if ("31".Equals(instanse.EventKey))
-            { 
+            {
                 try
                 {
                     //PubResMsgText msg = new PubResMsgText();
                     string flag = HTTPHelper.GetRequest(logoutURL + "?openid=" + instanse.FromUserName + "&signComp=Sues");
                     if (bool.Parse(flag))
                     {
-                        //msg.Content = "解除绑定成功！";
-                        //msg.CreateTime = instanse.CreateTime;
-                        //msg.FromUserName = instanse.ToUserName;
-                        //msg.ToUserName = instanse.FromUserName;
-                        //strResult = pubCore.AutoResponse(msg);
+                        
                         PubSendMsgText msg = new PubSendMsgText("解除绑定成功！", instanse.FromUserName);
                         pubCoreSues.SendMsg(msg);
                         strResult = "success";
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
-                    log.Error("PubWeChatSues DoClick Logout Err:",e);
+                    log.Error("PubWeChatSues DoClick Logout Err:", e);
                 }
-            } 
+            }
             else if ("35".Equals(instanse.EventKey))
             {
-                
+
                 PubSendMsgMpnews mpnews = new PubSendMsgMpnews();
                 mpnews.touser = instanse.FromUserName;
                 mpnews.mpnews.media_id = "SitB_ly1YP7cYE4v-8ZkxfIHJBKFLpZrkr0nO2Okucs";
@@ -155,12 +151,6 @@ namespace WeChat.WebApp
             }
             else
             {
-                //PubResMsgText msg = new PubResMsgText();
-                //msg.Content = "开发中，敬请期待！";
-                //msg.CreateTime = instanse.CreateTime;
-                //msg.FromUserName = instanse.ToUserName;
-                //msg.ToUserName = instanse.FromUserName;
-                //strResult = pubCore.AutoResponse(msg);
                 PubSendMsgText msg = new PubSendMsgText("开发中，敬请期待！", instanse.FromUserName);
                 pubCoreSues.SendMsg(msg);
                 strResult = "success";
